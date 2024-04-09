@@ -6,9 +6,9 @@ import {
   } from '@nestjs/common';
   
   import { Reflector } from '@nestjs/core'; // Provides access to controller and method metadata
-  import { Rol } from 'src/common/enums/rol.enum'; // Import role enumerator
+  import { Roles } from 'src/common/enums/roles.enum';
   import { Roles_Key } from '../decorators/roles.decorator'; // Import roles decorator
-  import { Errores_Roles } from 'src/common/helpers/Errores.service'; // Import error service related to roles
+  import { Errores_Roles } from 'src/common/helpers/Errores.service';
   
   /**
    * Authentication guard that validates user roles.
