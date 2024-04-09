@@ -1,33 +1,23 @@
-import { Entity, Column, PrimaryGeneratedColumn, DeleteDateColumn, OneToMany } from 'typeorm';
-
-import { Rol } from 'src/common/enums/rol.enum';
-import { Boleto } from 'src/resource/boletos/entities/boleto.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Error_Registro } from 'src/common/helpers/registro.helpers';
+import { Cuenta } from 'src/resource/cuentas/entities/cuenta.entity';
 
 @Entity()
 export class Usuario {
-
+    
     @PrimaryGeneratedColumn()
     id_usuario: number;
 
     @Column({ nullable: false })
-    name: string;
+    usuario_Nombre: string;
 
     @Column({ nullable: false })
-    lastname: string;
+    usuario_Apellidos: string;
 
     @Column({ nullable: false })
-    phone: string;
+    usuario_Edad: number;
 
     @Column({ nullable: false })
-    address: string;
-
-    @Column({ type: 'enum', default: Rol.ADMIN, enum: Rol })
-    rol: Rol;
-
-    @Column({ nullable: true, unique: true})
-    token_notificacion: string;
-
-    @OneToMany(() => Boleto, (boleto) => boleto.id_usuario)
-    boletos: Boleto[];
-
+    usuario_Telefono: string;
 }
+

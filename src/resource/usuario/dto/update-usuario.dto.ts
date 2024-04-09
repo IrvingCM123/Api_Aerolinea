@@ -21,7 +21,7 @@ export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
 
     @Matches(/^(\d{3})-(\d{3})-(\d{4})$/, {
         message: Error_Registro.FORMATO_TELEFONO,
-    })
+    }) 
     @MaxLength(12)
-    Usuario_Telefono: string;
+    Usuario_Telefono: string; 
 }

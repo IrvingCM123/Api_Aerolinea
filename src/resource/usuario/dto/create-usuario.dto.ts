@@ -1,11 +1,11 @@
 import { Error_Registro } from "src/common/helpers/registro.helpers";
-import { IsString, IsPhoneNumber, MaxLength, Matches, IsNumber, Max, Min } from 'class-validator';
+import { IsString, IsPhoneNumber, MaxLength, Matches, IsNumber, Max, Min, MinLength } from 'class-validator';
 
 export class CreateUsuarioDto {
 
     @IsString()
     @MaxLength(50)
-    usuario_Nombres: string;
+    usuario_Nombre: string;
 
     @IsString()
     @MaxLength(50)
@@ -15,12 +15,13 @@ export class CreateUsuarioDto {
     @MaxLength(3)
     @Max(120, { message: Error_Registro.EDAD_MAXIMA })
     @Min(18, { message: Error_Registro.EDAD_MINIMA })
+    @MinLength(2)
     usuario_Edad: number;
 
     @Matches(/^(\d{3})-(\d{3})-(\d{4})$/, {
         message: Error_Registro.FORMATO_TELEFONO,
     })
     @MaxLength(12)
-    Usuario_Telefono: string;
+    usuario_Telefono: string;
 
 }
