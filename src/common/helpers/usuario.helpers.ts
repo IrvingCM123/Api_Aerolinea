@@ -6,6 +6,7 @@ export enum Errores_USUARIO {
     USUARIO_NOT_UPDATED = 'Usuario no actualizado',
     USUARIO_NOT_DELETED = 'Usuario no eliminado',
     USUARIO_UNAUTHORIZED = 'Usuario no autorizado',
+    PASSWORD_NOT_MATCH = 'Contraseña incorrecta',
 }
 
 export enum Exito_USUARIO {

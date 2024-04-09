@@ -19,9 +19,5 @@ export class Usuario {
 
     @Column({ nullable: false })
     usuario_Telefono: string;
-
-    @Column() 
-    @OneToOne(() => Cuenta, cuenta => cuenta.usuario)
-    cuenta: Cuenta;
 }
 

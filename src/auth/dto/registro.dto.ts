@@ -16,10 +16,9 @@ import { Error_Registro } from 'src/common/helpers/registro.helpers';
 export class RegisterDto {
 
     @IsNotEmpty()
-    @Matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/) //Formato de llenado de correo: Irving.Conde123@gmail.com
-    @Matches(/^[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3}$/) //Formato de llenado de identificador: ABC-123-ABC
+    @Matches(/^(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3})$/) // Expresión regular combinada para correo electrónico o identificador
     identificador: string;
-
+    
     @IsNotEmpty()
     @IsString()
     @MinLength(8)
@@ -33,14 +32,13 @@ export class RegisterDto {
 
     @IsString()
     @MaxLength(50)
-    usuario_Nombres: string;
+    usuario_Nombre: string;
 
     @IsString()
     @MaxLength(50)
     usuario_Apellidos: string;
 
     @IsNumber()
-    @MaxLength(3)
     @Max(120, { message: Error_Registro.EDAD_MAXIMA })
     @Min(18, { message: Error_Registro.EDAD_MINIMA })
     @IsOptional()

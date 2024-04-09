@@ -35,16 +35,20 @@ export class AuthService {
       identificador,
       contraseña,
       rol,
-      usuario_Nombres,
+      usuario_Nombre,
       usuario_Apellidos,
       usuario_Edad,
       usuario_Telefono,
     } = registroDTO;
 
+    console.log(registroDTO, "auth");
+
     // Verificar si ya existe un usuario con el mismo identificador
     const user = await this.cuentasService.findOneByEmail(identificador);
 
-    if (user) {
+    console.log(user);
+
+    if (user != false) {
       throw new BadRequestException(Errores_USUARIO.USUARIO_DUPLICATED);
     }
 
@@ -59,7 +63,7 @@ export class AuthService {
     try {
       // Crear un nuevo usuario
       const usuario: any = await this.usuarioService.create({
-        usuario_Nombres,
+        usuario_Nombre,
         usuario_Apellidos,
         usuario_Edad,
         usuario_Telefono,
@@ -77,7 +81,7 @@ export class AuthService {
       // Confirmar la transacción si todo va bien
       await queryRunner.commitTransaction();
 
-      return { usuario_Nombres, identificador, message: Exito_USUARIO.USUARIO_CREATED };
+      return { usuario_Nombre, identificador, message: Exito_USUARIO.USUARIO_CREATED };
     } catch (error) {
       // Revertir la transacción si hay algún error
       await queryRunner.rollbackTransaction();
@@ -104,17 +108,17 @@ export class AuthService {
     );
 
     // Si no se encuentra la cuenta, lanzar una excepción de no autorizado
-    if (!cuenta) {
+    if (cuenta == null || cuenta == false) {
       throw new UnauthorizedException(Errores_USUARIO.USUARIO_NOT_FOUND);
     }
 
     // Verificar si la contraseña proporcionada coincide con la contraseña almacenada en la base de datos
-    if (!(await bcrypt.compare(contraseña, cuenta.cuenta.contraseña))) {
-      throw new UnauthorizedException(Errores_USUARIO.USUARIO_INVALID);
+    if (!(await bcrypt.compare(contraseña, cuenta.cuenta.cuenta_Contraseña))) {
+      throw new UnauthorizedException(Errores_USUARIO.PASSWORD_NOT_MATCH);
     }
 
     // Crear el payload para el token JWT con el identificador y el rol de la cuenta
-    const payload = { identificador: cuenta.cuenta.identificador, role: cuenta.cuenta.rol };
+    const payload = { identificador: cuenta.cuenta.cuenta_Identificador, role: cuenta.cuenta.cuenta_Rol };
 
     // Firmar el token JWT con el payload
     const access_Token = await this.jwtService.signAsync(payload);
@@ -123,7 +127,7 @@ export class AuthService {
     return {
       access_Token,
       identificador,
-      role: cuenta.cuenta.rol,
+      role: cuenta.cuenta.cuenta_Rol,
       message: Exito_USUARIO.Sesion_Activa,
     };
   }

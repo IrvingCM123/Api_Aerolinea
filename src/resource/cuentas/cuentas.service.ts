@@ -20,6 +20,8 @@ export class CuentasService {
   ) {}
 
   async create(createCuentaDto: CreateCuentaDto) {
+    let cuenta_nueva = this.cuentaRepository.create(createCuentaDto);
+    return this.cuentaRepository.save(cuenta_nueva);
   }
 
   findAll() {
@@ -30,7 +32,7 @@ export class CuentasService {
 
     let buscar_cuenta = await this.cuentaRepository
       .createQueryBuilder('cuenta')
-      .leftJoinAndSelect('cuenta.usuario', 'usuario')
+      .leftJoinAndSelect('cuenta.id_usuario', 'usuario')
       .where('cuenta.identificador = :identificador', { identificador })
       .getOne();
 
@@ -43,7 +45,7 @@ export class CuentasService {
         cuenta_Rol: buscar_cuenta.rol,
       };
 
-      let info_usuario = buscar_cuenta.usuario;
+      let info_usuario = buscar_cuenta.id_usuario;
 
       let usuario = {
         usuario_ID: info_usuario.id_usuario,
