@@ -7,6 +7,7 @@ export enum Estado {
 }
 
 export enum Errores_Cuentas {
+    CUENTA_NOT_CREATED = 'La cuenta no pudo ser creada',
     CUENTA_ALREADY_EXISTS = 'La cuenta ya existe',
     CUENTA_NOT_FOUND = 'La cuenta no existe',
     CUENTA_BLOQUEADA = 'La cuenta esta bloqueada',

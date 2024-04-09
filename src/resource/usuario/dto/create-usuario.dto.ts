@@ -21,6 +21,6 @@ export class CreateUsuarioDto {
         message: Error_Registro.FORMATO_TELEFONO,
     })
     @MaxLength(12)
-    Usuario_Telefono: string;
+    usuario_Telefono: string;
 
 }

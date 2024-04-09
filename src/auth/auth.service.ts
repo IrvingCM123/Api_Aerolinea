@@ -11,8 +11,9 @@ import { Connection } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { Exito_Cuentas, Errores_Cuentas } from 'src/common/enums/cuentas.enum';
+import { Exito_Cuentas, Errores_Cuentas, Estado } from 'src/common/enums/cuentas.enum';
 import { Exito_USUARIO, Errores_USUARIO } from 'src/common/helpers/usuario.helpers';
+import { RegisterDto } from './dto/registro.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,63 @@ export class AuthService {
     private jwtService: JwtService,
     private connection: Connection,
   ) {}
+
+    /**
+     * Registers a new user.
+     * @param registroDTO Data of the user to register.
+     * @returns Information of the registered user.
+     */
+    async register(registroDTO: RegisterDto) {
+      const {
+        identificador,
+        contraseña,
+        rol,
+        usuario_Nombres,
+        usuario_Apellidos,
+        usuario_Edad,
+        usuario_Telefono,
+      } = registroDTO;
+  
+      const user = await this.cuentasService.findOneByEmail(identificador);
+  
+      if (user) {
+        throw new BadRequestException(Errores_USUARIO.USUARIO_DUPLICATED);
+      }
+  
+      const hashedPassword = await bcrypt.hash(contraseña, 10);
+  
+      const queryRunner = this.connection.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+  
+      try {
+        const usuario: any = await this.usuarioService.create({
+          usuario_Nombres,
+          usuario_Apellidos,
+          usuario_Edad,
+          usuario_Telefono,
+        });
+  
+        await this.cuentasService.create({
+          identificador,
+          contraseña: hashedPassword,
+          rol,
+          estado_cuenta: Estado.PENDIENTE,
+          id_usuario: usuario.id_usuario,
+        });
+  
+        await queryRunner.commitTransaction();
+  
+        return { usuario_Nombres, identificador, message: Exito_USUARIO.USUARIO_CREATED };
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+        throw new BadRequestException(Errores_Cuentas.CUENTA_NOT_CREATED);
+      } finally {
+        await queryRunner.release();
+      }
+    }
+  
+
 
   /**
    * Inicia sesión para un usuario existente.

@@ -5,7 +5,8 @@ import {
     Matches,
     MaxLength,
     MinLength,
-    IsNumber
+    IsNumber,
+    IsOptional
 } from 'class-validator';
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 
@@ -25,6 +26,9 @@ export class CreateCuentaDto {
 
     @IsString()
     rol : string;
+
+    @IsOptional()
+    estado_cuenta: string;
 
     @IsNumber()
     id_usuario: Usuario;

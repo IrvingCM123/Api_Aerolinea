@@ -25,7 +25,7 @@ export class Cuenta {
     @Column({ type: 'enum', default: Estado.PENDIENTE, enum: Estado, nullable: true })
     estado_cuenta: string;
 
-    @Column({ nullable: false, enum: Roles })
+    @Column({ nullable: false, enum: Roles, default: Roles.USUARIO})
     rol: string;
 
     @OneToOne(() => Usuario , (usuario) => usuario.cuenta, { eager: true })
