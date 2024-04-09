@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 import { IsString, MaxLength, IsNumber, Min, Max, Matches } from 'class-validator';
 import { Error_Registro } from 'src/common/helpers/registro.helpers';
+import { Cuenta } from 'src/resource/cuentas/entities/cuenta.entity';
 
 // Decorador personalizado para validar el formato del teléfono
 function IsTelefonoValido() {
@@ -36,4 +37,9 @@ export class Usuario {
     @MaxLength(12)
     @IsTelefonoValido()
     usuario_Telefono: string;
+
+    @Column() 
+    @OneToOne(() => Cuenta, cuenta => cuenta.usuario)
+    cuenta: Cuenta;
 }
+

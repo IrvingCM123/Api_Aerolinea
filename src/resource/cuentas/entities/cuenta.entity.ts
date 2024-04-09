@@ -28,7 +28,7 @@ export class Cuenta {
     @Column({ nullable: false, enum: Roles })
     rol: string;
 
-    @OneToOne(() => Usuario)
-    @JoinColumn({ name: 'id_usuario' }) 
-    id_usuario: Usuario; 
+    @OneToOne(() => Usuario , (usuario) => usuario.cuenta, { eager: true })
+    @JoinColumn()
+    usuario: Usuario; 
 }
