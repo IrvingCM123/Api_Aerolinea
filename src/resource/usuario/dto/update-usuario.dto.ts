@@ -23,5 +23,5 @@ export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
         message: Error_Registro.FORMATO_TELEFONO,
     })
     @MaxLength(12)
-    Usuario_Telefono: string;
+    Usuario_Telefono: string; 
 }
