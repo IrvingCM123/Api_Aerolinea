@@ -1,33 +1,39 @@
-import { Entity, Column, PrimaryGeneratedColumn, DeleteDateColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IsString, MaxLength, IsNumber, Min, Max, Matches } from 'class-validator';
+import { Error_Registro } from 'src/common/helpers/registro.helpers';
 
-import { Rol } from 'src/common/enums/rol.enum';
-import { Boleto } from 'src/resource/boletos/entities/boleto.entity';
+// Decorador personalizado para validar el formato del teléfono
+function IsTelefonoValido() {
+    return Matches(/^(\d{3})-(\d{3})-(\d{4})$/, {
+        message: Error_Registro.FORMATO_TELEFONO,
+    });
+}
 
 @Entity()
 export class Usuario {
-
+    
     @PrimaryGeneratedColumn()
     id_usuario: number;
 
     @Column({ nullable: false })
-    name: string;
+    @IsString()
+    @MaxLength(50)
+    usuario_Nombre: string;
 
     @Column({ nullable: false })
-    lastname: string;
+    @IsString()
+    @MaxLength(50)
+    usuario_Apellidos: string;
 
     @Column({ nullable: false })
-    phone: string;
+    @IsNumber()
+    @Max(120)
+    @Min(18)
+    usuario_Edad: number;
 
     @Column({ nullable: false })
-    address: string;
-
-    @Column({ type: 'enum', default: Rol.ADMIN, enum: Rol })
-    rol: Rol;
-
-    @Column({ nullable: true, unique: true})
-    token_notificacion: string;
-
-    @OneToMany(() => Boleto, (boleto) => boleto.id_usuario)
-    boletos: Boleto[];
-
+    @IsString()
+    @MaxLength(12)
+    @IsTelefonoValido()
+    usuario_Telefono: string;
 }
