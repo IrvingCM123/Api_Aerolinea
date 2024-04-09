@@ -8,72 +8,71 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { jwtConstants } from '../../common/constants/jwt.constant';
-
 import { Errores_TOKEN } from 'src/common/helpers/Token.helper';
 
-// Injectable decorator indicates that this service can be injected into other NestJS components
+// El decorador Injectable indica que este servicio puede ser inyectado en otros componentes de NestJS
 @Injectable()
 export class AuthGuard implements CanActivate {
-    // Dependency injection of JwtService to utilize JWT functionalities
+    // Inyección de dependencia de JwtService para utilizar funcionalidades de JWT
     constructor(private jwtService: JwtService) { }
 
-    // Method to verify if the request is authorized or not
+    // Método para verificar si la solicitud está autorizada o no
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        // Extract request from execution context
+        // Extraer la solicitud del contexto de ejecución
         const request: any = context.switchToHttp().getRequest();
 
-        // Extract authorization token from request
+        // Extraer el token de autorización de la solicitud
         const token = this.extractToken(request);
 
-        // If token is not found, throw an unauthorized exception
+        // Si no se encuentra el token, lanzar una excepción de no autorizado
         if (!token) {
             throw new UnauthorizedException(Errores_TOKEN.AUTH_TOKEN_NOT_FOUND);
         }
 
         try {
-            // Verify and decode token using JwtService
-            const payload = this.jwtService.verifyAsync(token, {
+            // Verificar y decodificar el token usando JwtService
+            const payload = await this.jwtService.verifyAsync(token, {
                 secret: jwtConstants.secret,
             });
 
-            // Assign decoded user to request
+            // Asignar el usuario decodificado a la solicitud
             request.user = payload;
 
-            // Request is authorized
+            // La solicitud está autorizada
             return true;
         } catch (error) {
-            // If there is an error verifying the token, throw an unauthorized exception
+            // Si hay un error al verificar el token, lanzar una excepción de no autorizado
             throw new UnauthorizedException(Errores_TOKEN.AUTH_TOKEN_INVALID);
         }
     }
 
-    // Private method to extract authorization token from request
+    // Método privado para extraer el token de autorización de la solicitud
     private extractToken(request: Request): string | undefined {
-        // Get authorization header from request
+        // Obtener el encabezado de autorización de la solicitud
         const authHeader = request.headers.authorization;
 
-        // If there is no authorization header, throw an unauthorized exception
+        // Si no hay encabezado de autorización, lanzar una excepción de no autorizado
         if (!authHeader) {
             throw new UnauthorizedException(Errores_TOKEN.AUTH_TOKEN_NOT_FOUND);
         }
 
-        // Split header into two parts: scheme and token
+        // Dividir el encabezado en dos partes: esquema y token
         const parts = authHeader.split(' ');
 
-        // If header does not contain two parts, token is malformed
+        // Si el encabezado no contiene dos partes, el token está mal formado
         if (parts.length !== 2) {
             throw new UnauthorizedException(Errores_TOKEN.AUTH_TOKEN_MALFORMED);
         }
 
-        // Get scheme and token from header
+        // Obtener el esquema y el token del encabezado
         const [scheme, token] = parts;
 
-        // Verify that token scheme is "Bearer"
+        // Verificar que el esquema del token sea "Bearer"
         if (!/^Bearer$/i.test(scheme)) {
             throw new UnauthorizedException(Errores_TOKEN.AUTH_TOKEN_MALFORMED);
         }
 
-        // Return extracted token
+        // Devolver el token extraído
         return token;
     }
 }
