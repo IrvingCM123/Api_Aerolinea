@@ -23,64 +23,70 @@ export class AuthService {
     private cuentasService: CuentasService,
     private jwtService: JwtService,
     private connection: Connection,
-  ) {}
+  ) { }
 
-    /**
-     * Registers a new user.
-     * @param registroDTO Data of the user to register.
-     * @returns Information of the registered user.
-     */
-    async register(registroDTO: RegisterDto) {
-      const {
-        identificador,
-        contraseña,
-        rol,
+  /**
+   * Registra un nuevo usuario.
+   * @param registroDTO Datos del usuario a registrar.
+   * @returns Información del usuario registrado.
+   */
+  async register(registroDTO: RegisterDto) {
+    const {
+      identificador,
+      contraseña,
+      rol,
+      usuario_Nombres,
+      usuario_Apellidos,
+      usuario_Edad,
+      usuario_Telefono,
+    } = registroDTO;
+
+    // Verificar si ya existe un usuario con el mismo identificador
+    const user = await this.cuentasService.findOneByEmail(identificador);
+
+    if (user) {
+      throw new BadRequestException(Errores_USUARIO.USUARIO_DUPLICATED);
+    }
+
+    // Hashear la contraseña antes de almacenarla en la base de datos
+    const hashedPassword = await bcrypt.hash(contraseña, 10);
+
+    // Iniciar una transacción para garantizar la integridad de los datos
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // Crear un nuevo usuario
+      const usuario: any = await this.usuarioService.create({
         usuario_Nombres,
         usuario_Apellidos,
         usuario_Edad,
         usuario_Telefono,
-      } = registroDTO;
-  
-      const user = await this.cuentasService.findOneByEmail(identificador);
-  
-      if (user) {
-        throw new BadRequestException(Errores_USUARIO.USUARIO_DUPLICATED);
-      }
-  
-      const hashedPassword = await bcrypt.hash(contraseña, 10);
-  
-      const queryRunner = this.connection.createQueryRunner();
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
-  
-      try {
-        const usuario: any = await this.usuarioService.create({
-          usuario_Nombres,
-          usuario_Apellidos,
-          usuario_Edad,
-          usuario_Telefono,
-        });
-  
-        await this.cuentasService.create({
-          identificador,
-          contraseña: hashedPassword,
-          rol,
-          estado_cuenta: Estado.PENDIENTE,
-          id_usuario: usuario.id_usuario,
-        });
-  
-        await queryRunner.commitTransaction();
-  
-        return { usuario_Nombres, identificador, message: Exito_USUARIO.USUARIO_CREATED };
-      } catch (error) {
-        await queryRunner.rollbackTransaction();
-        throw new BadRequestException(Errores_Cuentas.CUENTA_NOT_CREATED);
-      } finally {
-        await queryRunner.release();
-      }
-    }
-  
+      });
 
+      // Crear una nueva cuenta asociada al usuario
+      await this.cuentasService.create({
+        identificador,
+        contraseña: hashedPassword,
+        rol,
+        estado_cuenta: Estado.PENDIENTE,
+        id_usuario: usuario.id_usuario,
+      });
+
+      // Confirmar la transacción si todo va bien
+      await queryRunner.commitTransaction();
+
+      return { usuario_Nombres, identificador, message: Exito_USUARIO.USUARIO_CREATED };
+    } catch (error) {
+      // Revertir la transacción si hay algún error
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(Errores_Cuentas.CUENTA_NOT_CREATED);
+    } finally {
+      // Liberar la conexión de la transacción
+      await queryRunner.release();
+    }
+  }
 
   /**
    * Inicia sesión para un usuario existente.
