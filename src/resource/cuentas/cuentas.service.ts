@@ -27,30 +27,29 @@ export class CuentasService {
   }
 
   async findOneByEmail(identificador: string) {
+
     let buscar_cuenta = await this.cuentaRepository
       .createQueryBuilder('cuenta')
-      .leftJoinAndSelect('cuenta.id_usuario', 'usuario')
+      .leftJoinAndSelect('cuenta.usuario', 'usuario')
       .where('cuenta.identificador = :identificador', { identificador })
       .getOne();
 
     if (buscar_cuenta) {
       let cuenta = {
-        id_cuenta: buscar_cuenta.id_cuenta,
-        identificador: buscar_cuenta.identificador,
-        contraseña: buscar_cuenta.contraseña,
-        estado_cuenta: buscar_cuenta.estado_cuenta,
-        rol: buscar_cuenta.rol,
+        cuenta_ID: buscar_cuenta.id_cuenta,
+        cuenta_Identificador: buscar_cuenta.identificador,
+        cuenta_Contraseña: buscar_cuenta.contraseña,
+        cuenta_Estado_Cuenta: buscar_cuenta.estado_cuenta,
+        cuenta_Rol: buscar_cuenta.rol,
       };
 
-      let info_usuario = buscar_cuenta.id_usuario;
+      let info_usuario = buscar_cuenta.usuario;
 
       let usuario = {
-        id_usuario: info_usuario.id_usuario,
-        name: info_usuario.name,
-        lastname: info_usuario.lastname,
-        phone: info_usuario.phone,
-        address: info_usuario.address,
-        role: info_usuario.rol,
+        usuario_ID: info_usuario.id_usuario,
+        usuario_Nombre: info_usuario.usuario_Nombre,
+        usuario_Apellidos: info_usuario.usuario_Apellidos,
+        usuario_Telefono: info_usuario.usuario_Telefono,
       };
 
       return { cuenta, usuario };
