@@ -24,38 +24,43 @@ export class AuthService {
     private connection: Connection,
   ) {}
 
-  
-    /**
-     * Logs in an existing user.
-     * @param loginDto Data of the user login.
-     * @returns Information of the logged-in session.
-     */
+  /**
+   * Inicia sesión para un usuario existente.
+   * @param loginDto Datos del inicio de sesión del usuario.
+   * @returns Información de la sesión iniciada.
+   */
+  async login(loginDto: LoginDto) {
 
-    async login(loginDto: LoginDto) {
-      const { identificador, contraseña } = loginDto;
-  
-      const cuenta: any = await this.cuentasService.findOneByEmail(
-        identificador,
-      );
-  
-      if (!cuenta) {
-        throw new UnauthorizedException(Errores_USUARIO.USUARIO_NOT_FOUND);
-      }
-  
-      if (!(await bcrypt.compare(contraseña, cuenta.cuenta.contraseña))) {
-        throw new UnauthorizedException(Errores_USUARIO.USUARIO_INVALID);
-      }
-  
-      const payload = { identificador: cuenta.cuenta.identificador, role: cuenta.cuenta.rol };
-  
-      const access_token = await this.jwtService.signAsync(payload);
-  
-      return {
-        access_token,
-        identificador,
-        role: cuenta.cuenta.rol,
-        message: Exito_USUARIO.Sesion_Activa,
-      };
+    // Extraer identificador y contraseña del DTO de inicio de sesión
+    const { identificador, contraseña } = loginDto;
+
+    // Buscar la cuenta por el identificador (que puede ser un correo electrónico)
+    const cuenta: any = await this.cuentasService.findOneByEmail(
+      identificador,
+    );
+
+    // Si no se encuentra la cuenta, lanzar una excepción de no autorizado
+    if (!cuenta) {
+      throw new UnauthorizedException(Errores_USUARIO.USUARIO_NOT_FOUND);
     }
 
+    // Verificar si la contraseña proporcionada coincide con la contraseña almacenada en la base de datos
+    if (!(await bcrypt.compare(contraseña, cuenta.cuenta.contraseña))) {
+      throw new UnauthorizedException(Errores_USUARIO.USUARIO_INVALID);
+    }
+
+    // Crear el payload para el token JWT con el identificador y el rol de la cuenta
+    const payload = { identificador: cuenta.cuenta.identificador, role: cuenta.cuenta.rol };
+
+    // Firmar el token JWT con el payload
+    const access_Token = await this.jwtService.signAsync(payload);
+
+    // Devolver la información de la sesión iniciada
+    return {
+      access_Token,
+      identificador,
+      role: cuenta.cuenta.rol,
+      message: Exito_USUARIO.Sesion_Activa,
+    };
+  }
 }
