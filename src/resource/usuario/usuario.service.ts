@@ -12,6 +12,7 @@ export class UsuarioService {
   ) { }
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<number> {
+    console.log(createUsuarioDto);
     const usuario: any = await this.usuarioRepository.save(createUsuarioDto);
     return usuario;
   }
