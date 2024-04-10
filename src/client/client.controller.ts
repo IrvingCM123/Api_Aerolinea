@@ -5,4 +5,8 @@ import { ClientService } from './client.service';
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
+  @Post('emailvalidation')
+  create(@Body() Data: string) {
+    return this.clientService.validar_cuenta(Data);
+  }
 }

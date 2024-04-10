@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cuenta } from './entities/cuenta.entity';
 
-import { Errores_Cuentas, Exito_Cuentas } from 'src/common/enums/cuentas.enum';
+import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpers';
 
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 import { UsuarioService } from 'src/resource/usuario/usuario.service';

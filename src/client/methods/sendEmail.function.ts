@@ -9,10 +9,8 @@ const email_Server = dotenv_Config.parsed.NODEMAILER_EMAIL;
 const email_Password = dotenv_Config.parsed.NODEMAILER_PASSWORD;
 
 // Exporrar la función enviarEmail
-export async function enviarEmail(Data: any, html_template: any): Promise<string> {
+export async function enviarEmail(Destinatario: any, html_template: any): Promise<string> {
     try {
-        // Obtener los datos del destinatario y del email
-        const Destinatario = Data.Destinatario;
 
         // Construir el transportador de nodemailer
         let transporter = nodemailer.createTransport({
@@ -26,8 +24,8 @@ export async function enviarEmail(Data: any, html_template: any): Promise<string
         // Contruir el paquete del mensaje
         const msg = {
             to: Destinatario,
-            from: 'MexicanadeAviacion@gmail.com',
-            subject: 'Mexicana de aviación',
+            from: 'MexicanaDeVuelos@gmail.com',
+            subject: 'Mexicana de vuelos',
             html: html_template,
         };
 
@@ -39,6 +37,8 @@ export async function enviarEmail(Data: any, html_template: any): Promise<string
                 console.log("Email sent: " + info.response);
             }
         });
+
+        console.log('Email sent successfully');
         return 'Email sent successfully';
     } catch (error) {
         throw new Error('Error sending email');

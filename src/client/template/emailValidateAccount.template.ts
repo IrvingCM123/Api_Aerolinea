@@ -56,19 +56,20 @@ export function email_Validate_Account_Template(
         <div class="container">
 
         <div class="image-container">
-        <img src="https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/Captura%20de%20pantalla%202024-03-26%20220537.png?alt=media&token=1b3504aa-9a28-402b-bbed-c8b68ce6c8ef" alt="Imagen 1">
+        <img src="https://firebasestorage.googleapis.com/v0/b/viajes-5c870.appspot.com/o/plane-aircraft-travel-logo-design-template-vector.jpg?alt=media&token=e4ec1e93-f5e8-45de-924b-8c3b5152cd86" alt="Imagen 1">
         </div>
 
           <div class="header">
             <h2>Nuestra aerolinea te da la bienvenida</h2>
           </div>
           <div class="info">
-            <p> ${usuario_Email}!</p>
+            <p> Hola! ${usuario_Email}!</p>
           </div>
 
           <div class="info">
           <p> Gracias por elegirnos, por favor revise su correo electrónico para confirmar su cuenta.</p>
-          <p> Para validar su cuenta registre los siguientes números: ${Numeros_Confirmacion}  </p>
+          <p> Para validar su cuenta registre los siguientes números: </p>
+          <h4> ${Numeros_Confirmacion}  </h4>
         </div>
           <div class="info">
             <p>Si tiene alguna pregunta o necesita asistencia adicional, no dude en ponerse en contacto con nosotros. ¡Estamos aquí para ayudarle!</p>

@@ -11,7 +11,8 @@ import { Connection } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { Exito_Cuentas, Errores_Cuentas, Estado } from 'src/common/enums/cuentas.enum';
+import { Estado } from 'src/common/enums/cuentas.enum';
+import { Exito_Cuentas, Errores_Cuentas } from 'src/common/helpers/cuentas.helpers';
 import { Exito_USUARIO, Errores_USUARIO } from 'src/common/helpers/usuario.helpers';
 import { RegisterDto } from './dto/registro.dto';
 
