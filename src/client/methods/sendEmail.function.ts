@@ -1,45 +1,37 @@
-// Import necessary modules and functions
-import { email_template } from '../template/email.template';
+
 import * as dotenv from 'dotenv';
 import * as nodemailer from "nodemailer";
 
-// Load environment variables
+// Configurar las variables de entorno
 dotenv.config();
+const dotenv_Config = require('dotenv').config();
+const email_Server = dotenv_Config.parsed.NODEMAILER_EMAIL;
+const email_Password = dotenv_Config.parsed.NODEMAILER_PASSWORD;
 
-// Export asynchronous function for sending email
-export async function enviarEmail(Data: any): Promise<string> {
+// Exporrar la función enviarEmail
+export async function enviarEmail(Data: any, html_template: any): Promise<string> {
     try {
-        // Extract recipient and data from input
+        // Obtener los datos del destinatario y del email
         const Destinatario = Data.Destinatario;
-        const Datos = Data.Data;
 
-        // Create transporter for sending email
+        // Construir el transportador de nodemailer
         let transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "bagdiana03@gmail.com",
-                pass: "upwlojvmpxuahhyy",
+                user: email_Server,
+                pass: email_Password,
             },
         });
 
-        // Convert ticket image to base64 format
-        let imagen_boleto_path = await convert_Image(Datos);
-
-        // Convert ticket data to Google Wallet format
-        let url_wallet = await convertToWallet(Datos);
-
-        // Generate HTML email template
-        const html_template = email_template(Datos, imagen_boleto_path, url_wallet);
-
-        // Construct email message
+        // Contruir el paquete del mensaje
         const msg = {
             to: Destinatario,
             from: 'bagdiana03@gmail.com',
-            subject: 'You have your ticket!',
+            subject: 'Mexicana de aviación',
             html: html_template,
         };
 
-        // Send email
+        // Enviar el email
         transporter.sendMail(msg, function (error, info) {
             if (error) {
                 console.log(error);
@@ -49,7 +41,6 @@ export async function enviarEmail(Data: any): Promise<string> {
         });
         return 'Email sent successfully';
     } catch (error) {
-        // Throw error if email sending fails
         throw new Error('Error sending email');
     }
 }
