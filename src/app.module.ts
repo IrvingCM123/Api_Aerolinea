@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CuentasModule } from './resource/cuentas/cuentas.module';
 import { UsuarioModule } from './resource/usuario/usuario.module';
+import { ClientModule } from './client/client.module';
 import * as dotenv from 'dotenv';
 
 const dotenv_Config = require('dotenv').config();
@@ -35,7 +36,8 @@ const password = dotenv_Config.parsed.PG_PASSWORD;
     }),
     AuthModule,
     CuentasModule,
-    UsuarioModule],
+    UsuarioModule,
+    ClientModule],
   controllers: [AppController],
   providers: [AppService],
 })

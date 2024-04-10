@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cuenta } from './entities/cuenta.entity';
 
-import { Errores_Cuentas, Exito_Cuentas } from 'src/common/enums/cuentas.enum';
+import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpers';
 
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 import { UsuarioService } from 'src/resource/usuario/usuario.service';
@@ -70,6 +70,24 @@ export class CuentasService {
 
   update(id: number, updateCuentaDto: UpdateCuentaDto) {
     return this.cuentaRepository.update(id, updateCuentaDto);
+  }
+
+  actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
+    return this.cuentaRepository
+      .createQueryBuilder()
+      .update(Cuenta)
+      .set({ estado_cuenta: estado_cuenta })
+      .where('identificador = :identificador', { identificador })
+      .execute();
+  }
+
+  actualizarContraseña(identificador: string, contraseña: string) {
+    return this.cuentaRepository
+      .createQueryBuilder()
+      .update(Cuenta)
+      .set({ contraseña: contraseña })
+      .where('identificador = :identificador', { identificador })
+      .execute();
   }
 
   remove(id: number) {
