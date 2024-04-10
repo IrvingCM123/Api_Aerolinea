@@ -26,7 +26,7 @@ export async function enviarEmail(Data: any, html_template: any): Promise<string
         // Contruir el paquete del mensaje
         const msg = {
             to: Destinatario,
-            from: 'bagdiana03@gmail.com',
+            from: 'MexicanadeAviacion@gmail.com',
             subject: 'Mexicana de aviación',
             html: html_template,
         };

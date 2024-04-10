@@ -6,8 +6,11 @@ import { validateAccount } from './methods/validateAccount.function';
 export class ClientService {
 
   async validar_cuenta(Datos: any) {
-    let numeros_Validar = await validateAccount(Datos.usuario_Email);
-    
+    let template_email = await validateAccount(Datos.usuario_Email);
+    let Data: any = {
+      Destinatario: Datos.usuario_Email,
+    };
+    await enviarEmail(Data, template_email);
   }
 
 }
