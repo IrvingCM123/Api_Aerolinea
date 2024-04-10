@@ -72,6 +72,24 @@ export class CuentasService {
     return this.cuentaRepository.update(id, updateCuentaDto);
   }
 
+  actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
+    return this.cuentaRepository
+      .createQueryBuilder()
+      .update(Cuenta)
+      .set({ estado_cuenta: estado_cuenta })
+      .where('identificador = :identificador', { identificador })
+      .execute();
+  }
+
+  actualizarContraseña(identificador: string, contraseña: string) {
+    return this.cuentaRepository
+      .createQueryBuilder()
+      .update(Cuenta)
+      .set({ contraseña: contraseña })
+      .where('identificador = :identificador', { identificador })
+      .execute();
+  }
+
   remove(id: number) {
     return this.cuentaRepository.delete(id);
   }
