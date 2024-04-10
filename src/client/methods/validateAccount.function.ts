@@ -1,3 +1,5 @@
+import { }
+
 function generateRandomNumber(): string {
     const randomNumber = Math.floor(100 + Math.random() * 900); // Genera un número aleatorio de 100 a 999
     return randomNumber.toString(); // Convierte el número a cadena

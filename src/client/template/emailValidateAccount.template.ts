@@ -1,4 +1,4 @@
-export function email_template(
+export function email_Validate_Account_Template(
   Datos: any,
 ) {
   const html_boletos = `
@@ -59,15 +59,16 @@ export function email_template(
         </div>
 
           <div class="header">
-            <h2>¡Ya tienes tu boleto de autobús!</h2>
+            <h2>Nuestra aerolinea te da la bienvenida</h2>
           </div>
           <div class="info">
-            <p>Hola ${Datos.Nombre_Usuario}!</p>
-            <p>Fecha del viaje: ${Datos.Fecha_Salida}<br>
-              Viaje: ${Datos.Origen_Viaje} -  ${Datos.Destino_Viaje}<br>
-              Hora de salida: ${Datos.Hora_Salida}<br>
+            <p> ${Datos.usuario_Email}!</p>
           </div>
 
+          <div class="info">
+          <p> Gracias por elegirnos, por favor revise su correo electrónico para confirmar su cuenta.</p>
+          <p> Para validar su cuenta registre los siguientes números: ${Datos.Numeros_Confirmacion}  </p>
+        </div>
           <div class="info">
             <p>Si tiene alguna pregunta o necesita asistencia adicional, no dude en ponerse en contacto con nosotros. ¡Estamos aquí para ayudarle!</p>
             <p>Mexicana de aviación</p>
