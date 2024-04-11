@@ -7,7 +7,6 @@ import { ConfigModule } from '@nestjs/config';
 import { CuentasModule } from './resource/cuentas/cuentas.module';
 import { UsuarioModule } from './resource/usuario/usuario.module';
 import { ClientModule } from './client/client.module';
-import * as dotenv from 'dotenv';
 
 const dotenv_Config = require('dotenv').config();
 const host_develop = dotenv_Config.parsed.PG_HOST_DEVELOP;
@@ -16,22 +15,27 @@ const database = dotenv_Config.parsed.PG_DATABASE;
 const user = dotenv_Config.parsed.PG_USER;
 const password = dotenv_Config.parsed.PG_PASSWORD;
 
+const host_local = dotenv_Config.parsed.PG_HOST_LOCAL;
+const database_local = dotenv_Config.parsed.PG_DATABASE_LOCAL;
+const user_local = dotenv_Config.parsed.PG_USER_LOCAL;
+const password_local = dotenv_Config.parsed.PG_PASSWORD_LOCAL;
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: host_develop,
+      host: host_local,
       port: 5432,
-      username: user,
-      password: password,
-      database: database,
+      username: user_local,
+      password: password_local,
+      database: database_local,
       autoLoadEntities: true,
       synchronize: true,
-      extra: {
-        ssl: true,
-        sslmode: 'require',
-      },
+      //extra: {
+      //  ssl: true,
+      //  sslmode: 'require',
+      //},
       
     }),
     AuthModule,
