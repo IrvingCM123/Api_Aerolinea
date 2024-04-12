@@ -73,7 +73,7 @@ export class CuentasService {
     return this.cuentaRepository.update(id, updateCuentaDto);
   }
 
-  async actualizarEstadoCuenta(identificador: string, estado_cuenta: any, numero_activacion: string) {
+  async actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
 
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
@@ -89,11 +89,40 @@ export class CuentasService {
         throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
       }
 
-      console.log(cuentaUsuario.numero_activacion);
+      const cuenta_ID = cuentaUsuario.id_cuenta;
+
+      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: estado_cuenta });
+
+      await queryRunner.commitTransaction();
+
+      return Exito_Cuentas.CUENTA_ACTUALIZADA;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      return Errores_Cuentas.CUENTA_NOT_UPDATED;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async activarCuenta(identificador: string, estado_cuenta: any, numero_activacion: string) {
+
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const cuentaUsuario: any = await this.cuentaRepository.findOne({
+        where: { identificador: identificador },
+      });
+  
+      if (!cuentaUsuario) {
+        await queryRunner.rollbackTransaction();
+        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      }
 
       if (!(await bcrypt.compare(numero_activacion, cuentaUsuario.numero_activacion))) {
         await queryRunner.rollbackTransaction();
-        throw new UnauthorizedException(Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO);
+        throw new Error(Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO);
       }
 
       const cuenta_ID = cuentaUsuario.id_cuenta;
