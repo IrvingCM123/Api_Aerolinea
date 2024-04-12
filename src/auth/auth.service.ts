@@ -7,6 +7,7 @@ import {
 import { LoginDto } from './dto/login.dto';
 import { UsuarioService } from 'src/resource/usuario/usuario.service';
 import { CuentasService } from 'src/resource/cuentas/cuentas.service';
+import { ClientService } from 'src/client/client.service';
 import { Connection } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -22,6 +23,7 @@ export class AuthService {
   constructor(
     private usuarioService: UsuarioService,
     private cuentasService: CuentasService,
+    private clientService: ClientService,
     private jwtService: JwtService,
     private connection: Connection,
   ) { }
@@ -78,6 +80,9 @@ export class AuthService {
       // Confirmar la transacción si todo va bien
       await queryRunner.commitTransaction();
 
+      // Enviar correo de confirmación para activar la cuenta registrada
+      await this.clientService.validar_cuenta(identificador);
+
       return { usuario_Nombre, identificador, message: Exito_USUARIO.USUARIO_CREATED };
     } catch (error) {
       // Revertir la transacción si hay algún error
@@ -109,6 +114,19 @@ export class AuthService {
       throw new UnauthorizedException(Errores_USUARIO.USUARIO_NOT_FOUND);
     }
 
+    let estadoCuenta = cuenta.cuenta.estado_cuenta;
+
+    if (estadoCuenta == Estado.PENDIENTE || estadoCuenta == Estado.INACTIVO) {
+      throw new UnauthorizedException(Errores_Cuentas.CUENTA_INACTIVA);
+    }
+
+    if (estadoCuenta == Estado.BLOQUEADO) {
+      throw new UnauthorizedException(Errores_Cuentas.CUENTA_BLOQUEADA);
+    }
+
+    if (estadoCuenta == Estado.ELIMINADO) {
+      throw new UnauthorizedException(Errores_Cuentas.CUENTA_NOT_FOUND);
+    }
     // Verificar si la contraseña proporcionada coincide con la contraseña almacenada en la base de datos
     if (!(await bcrypt.compare(contraseña, cuenta.cuenta.cuenta_Contraseña))) {
       throw new UnauthorizedException(Errores_USUARIO.PASSWORD_NOT_MATCH);
