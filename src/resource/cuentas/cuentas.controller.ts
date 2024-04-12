@@ -36,9 +36,8 @@ export class CuentasController {
 
   @Patch('activarCuenta/:identificador')
   activarCuenta(@Param('identificador') identificador: string, @Body() Datos: any) {
-    let estado: any = Datos.estado_cuenta;
     let numero_activacion: any = Datos.numero_activacion;
-    return this.cuentasService.activarCuenta(identificador, estado, numero_activacion);
+    return this.cuentasService.activarCuenta(identificador, numero_activacion);
   }
 
   @Patch('actualizarContraseña/:identificador')

@@ -104,7 +104,7 @@ export class CuentasService {
     }
   }
 
-  async activarCuenta(identificador: string, estado_cuenta: any, numero_activacion: string) {
+  async activarCuenta(identificador: string,  numero_activacion: string) {
 
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
@@ -127,7 +127,7 @@ export class CuentasService {
 
       const cuenta_ID = cuentaUsuario.id_cuenta;
 
-      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: estado_cuenta });
+      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: Estado.ACTIVO });
 
       await queryRunner.commitTransaction();
 
