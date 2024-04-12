@@ -5,11 +5,13 @@ import { UsuarioModule } from 'src/resource/usuario/usuario.module';
 import { CuentasModule } from 'src/resource/cuentas/cuentas.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/common/constants/jwt.constant';
+import { ClientModule } from 'src/client/client.module';
 
 @Module({
   imports: [
     UsuarioModule,
     CuentasModule,
+    ClientModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,

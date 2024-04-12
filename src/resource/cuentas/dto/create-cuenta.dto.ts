@@ -32,4 +32,9 @@ export class CreateCuentaDto {
 
     @IsNumber()
     id_usuario: Usuario;
+
+    @IsOptional()
+    @Matches(/^(?:[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3})$/) // Expresión regular del identificador
+    @Transform(({ value }) => value.trim())
+    numero_activacion: string;
 }

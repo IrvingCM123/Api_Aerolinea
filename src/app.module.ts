@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CuentasModule } from './resource/cuentas/cuentas.module';
 import { UsuarioModule } from './resource/usuario/usuario.module';
-import * as dotenv from 'dotenv';
+import { ClientModule } from './client/client.module';
 
 const dotenv_Config = require('dotenv').config();
 const host_develop = dotenv_Config.parsed.PG_HOST_DEVELOP;
@@ -14,7 +14,6 @@ const host_production = dotenv_Config.parsed.PG_HOST_PRODUCTION;
 const database = dotenv_Config.parsed.PG_DATABASE;
 const user = dotenv_Config.parsed.PG_USER;
 const password = dotenv_Config.parsed.PG_PASSWORD;
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -31,11 +30,12 @@ const password = dotenv_Config.parsed.PG_PASSWORD;
         ssl: true,
         sslmode: 'require',
       },
-      
+
     }),
     AuthModule,
     CuentasModule,
-    UsuarioModule],
+    UsuarioModule,
+    ClientModule],
   controllers: [AppController],
   providers: [AppService],
 })
