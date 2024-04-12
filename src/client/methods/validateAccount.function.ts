@@ -17,5 +17,5 @@ export function validateAccount(usuario_Email: string) {
     const accountNumber = generateRandomAccountNumber(); // Genera un número de cuenta aleatorio
     // Quizá guardar el número generado en la bd para validar que sea el mismo, por lo mientras solo se imprime en consola y se retorna al usuario
     let template_email = email_Validate_Account_Template(usuario_Email, accountNumber); // Genera el template del email
-    return template_email;
+    return { template_email, accountNumber} ;
 }

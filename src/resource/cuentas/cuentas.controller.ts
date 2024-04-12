@@ -29,18 +29,26 @@ export class CuentasController {
 
   @Patch('actualizarCuenta/:identificador')
   actualizarEstadoCuenta(@Param('identificador') identificador: string, @Body() estado_cuenta: Estado) {
-    console.log(identificador, "id");
-    console.log(estado_cuenta, "estado")
-    return this.cuentasService.actualizarEstadoCuenta(identificador, estado_cuenta);
+    let estado: any = estado_cuenta;
+    estado = estado.estado_cuenta;
+    return this.cuentasService.actualizarEstadoCuenta(identificador, estado);
+  }
+
+  @Patch('activarCuenta/:identificador')
+  activarCuenta(@Param('identificador') identificador: string, @Body() Datos: any) {
+    let numero_activacion: any = Datos.numero_activacion;
+    return this.cuentasService.activarCuenta(identificador, numero_activacion);
   }
 
   @Patch('actualizarContraseña/:identificador')
-  actualizarContraseña(@Param('identificador') identificador: string, @Body() contraseña: Estado) {
-    return this.cuentasService.actualizarContraseña(identificador, contraseña);
+  actualizarContraseña(@Param('identificador') identificador: string, @Body() contraseña: string) {
+    let contrasena: any = contraseña;
+    contraseña = contrasena.contraseña;
+    return this.cuentasService.actualizarContraseña(identificador, contrasena);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cuentasService.remove(+id);
+  @Delete(':identificador')
+  remove(@Param('identificador') identificador: string) {
+    return this.cuentasService.remove(identificador);
   }
 }
