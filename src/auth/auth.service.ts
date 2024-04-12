@@ -114,8 +114,10 @@ export class AuthService {
       throw new UnauthorizedException(Errores_USUARIO.USUARIO_NOT_FOUND);
     }
 
-    let estadoCuenta = cuenta.cuenta.estado_cuenta;
+    // Verificar el estado de la cuenta para permitir el acceso
+    let estadoCuenta = cuenta.cuenta.cuenta_Estado_Cuenta;
 
+    //Permitir el acceso solo a cuentas activas y no bloqueadas
     if (estadoCuenta == Estado.PENDIENTE || estadoCuenta == Estado.INACTIVO) {
       throw new UnauthorizedException(Errores_Cuentas.CUENTA_INACTIVA);
     }
@@ -125,7 +127,7 @@ export class AuthService {
     }
 
     if (estadoCuenta == Estado.ELIMINADO) {
-      throw new UnauthorizedException(Errores_Cuentas.CUENTA_NOT_FOUND);
+      throw new UnauthorizedException(Errores_Cuentas.CUENTA_ELIMINADA);
     }
     // Verificar si la contraseña proporcionada coincide con la contraseña almacenada en la base de datos
     if (!(await bcrypt.compare(contraseña, cuenta.cuenta.cuenta_Contraseña))) {
