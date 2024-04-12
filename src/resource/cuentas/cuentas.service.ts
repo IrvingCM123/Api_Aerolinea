@@ -3,7 +3,7 @@ import { CreateCuentaDto } from './dto/create-cuenta.dto';
 import { UpdateCuentaDto } from './dto/update-cuenta.dto';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, getConnection } from 'typeorm';
+import { Connection, Repository, getConnection } from 'typeorm';
 import { Cuenta } from './entities/cuenta.entity';
 
 import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpers';
@@ -17,7 +17,9 @@ export class CuentasService {
   constructor(
     @InjectRepository(Cuenta)
     private cuentaRepository: Repository<Cuenta>,
-
+    private readonly connection: Connection,
+    @InjectRepository(Usuario)
+    private usuarioRepository: Repository<Usuario>,
   ) {}
 
   async create(createCuentaDto: CreateCuentaDto) {
@@ -31,11 +33,9 @@ export class CuentasService {
 
   async findOneByEmail(identificador: string) {
 
-    let buscar_cuenta = await this.cuentaRepository
-      .createQueryBuilder('cuenta')
-      .leftJoinAndSelect('cuenta.id_usuario', 'usuario')
-      .where('cuenta.identificador = :identificador', { identificador })
-      .getOne();
+    let buscar_cuenta = await this.cuentaRepository.findOne({
+      where: { identificador: identificador },
+    });
 
     if (buscar_cuenta) {
       let cuenta = {
@@ -92,30 +92,33 @@ export class CuentasService {
   }
 
   async remove(identificador: string) {
-    try {
-      const cuentaUsuario: any = await this.cuentaRepository
-        .createQueryBuilder('cuenta')
-        .leftJoinAndSelect('cuenta.id_usuario', 'usuario')
-        .where('cuenta.identificador = :identificador', { identificador })
-        .getOne();
-  
-      if (!cuentaUsuario) {
-        throw new Error('La cuenta no se encontró.');
-      }
 
-      console.log(cuentaUsuario);
-  
-      await getConnection().transaction(async transactionalEntityManager => {
-        await transactionalEntityManager.remove(cuentaUsuario.cuenta.id_usuario);
-        await transactionalEntityManager.remove(cuentaUsuario);
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const cuentaUsuario: any = await this.cuentaRepository.findOne({
+        where: { identificador: identificador },
       });
   
-      return true; // Indicar que la eliminación fue exitosa
+      if (!cuentaUsuario) {
+        await queryRunner.rollbackTransaction();
+        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      }
+
+      const cuenta_ID = cuentaUsuario.id_cuenta;
+
+      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: Estado.ELIMINADO });
+
+      await queryRunner.commitTransaction();
+
+      return Exito_Cuentas.CUENTA_ELIMINADA;
     } catch (error) {
-      console.error('Error al eliminar cuenta y usuario:', error);
-      return false; // Indicar que la eliminación falló
+      await queryRunner.rollbackTransaction();
+      return Errores_Cuentas.CUENTA_NO_ELIMINADA;
+    } finally {
+      await queryRunner.release();
     }
   }
-  
-  
 }
