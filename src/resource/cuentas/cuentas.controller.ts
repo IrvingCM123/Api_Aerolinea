@@ -29,8 +29,6 @@ export class CuentasController {
 
   @Patch('actualizarCuenta/:identificador')
   actualizarEstadoCuenta(@Param('identificador') identificador: string, @Body() estado_cuenta: Estado) {
-    console.log(identificador, "id");
-    console.log(estado_cuenta, "estado")
     return this.cuentasService.actualizarEstadoCuenta(identificador, estado_cuenta);
   }
 
