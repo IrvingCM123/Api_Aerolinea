@@ -14,12 +14,6 @@ const host_production = dotenv_Config.parsed.PG_HOST_PRODUCTION;
 const database = dotenv_Config.parsed.PG_DATABASE;
 const user = dotenv_Config.parsed.PG_USER;
 const password = dotenv_Config.parsed.PG_PASSWORD;
-
-const host_local = dotenv_Config.parsed.PG_HOST_LOCAL;
-const database_local = dotenv_Config.parsed.PG_DATABASE_LOCAL;
-const user_local = dotenv_Config.parsed.PG_USER_LOCAL;
-const password_local = dotenv_Config.parsed.PG_PASSWORD_LOCAL;
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -33,10 +27,10 @@ const password_local = dotenv_Config.parsed.PG_PASSWORD_LOCAL;
       autoLoadEntities: true,
       synchronize: true,
       extra: {
-       ssl: true,
-       sslmode: 'require',
+        ssl: true,
+        sslmode: 'require',
       },
-      
+
     }),
     AuthModule,
     CuentasModule,
