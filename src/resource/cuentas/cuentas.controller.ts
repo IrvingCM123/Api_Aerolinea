@@ -35,8 +35,10 @@ export class CuentasController {
   }
 
   @Patch('actualizarContraseña/:identificador')
-  actualizarContraseña(@Param('identificador') identificador: string, @Body() contraseña: Estado) {
-    return this.cuentasService.actualizarContraseña(identificador, contraseña);
+  actualizarContraseña(@Param('identificador') identificador: string, @Body() contraseña: string) {
+    let contrasena: any = contraseña;
+    contraseña = contrasena.contraseña;
+    return this.cuentasService.actualizarContraseña(identificador, contrasena);
   }
 
   @Delete(':identificador')
