@@ -3,7 +3,7 @@ import { CreateCuentaDto } from './dto/create-cuenta.dto';
 import { UpdateCuentaDto } from './dto/update-cuenta.dto';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, getConnection } from 'typeorm';
 import { Cuenta } from './entities/cuenta.entity';
 
 import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpers';
@@ -91,8 +91,31 @@ export class CuentasService {
       .execute();
   }
 
-  remove(id: number) {
-    return this.cuentaRepository.delete(id);
+  async remove(identificador: string) {
+    try {
+      const cuentaUsuario: any = await this.cuentaRepository
+        .createQueryBuilder('cuenta')
+        .leftJoinAndSelect('cuenta.id_usuario', 'usuario')
+        .where('cuenta.identificador = :identificador', { identificador })
+        .getOne();
+  
+      if (!cuentaUsuario) {
+        throw new Error('La cuenta no se encontró.');
+      }
+
+      console.log(cuentaUsuario);
+  
+      await getConnection().transaction(async transactionalEntityManager => {
+        await transactionalEntityManager.remove(cuentaUsuario.cuenta.id_usuario);
+        await transactionalEntityManager.remove(cuentaUsuario);
+      });
+  
+      return true; // Indicar que la eliminación fue exitosa
+    } catch (error) {
+      console.error('Error al eliminar cuenta y usuario:', error);
+      return false; // Indicar que la eliminación falló
+    }
   }
+  
   
 }

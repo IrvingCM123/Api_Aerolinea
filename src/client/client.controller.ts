@@ -6,7 +6,8 @@ export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
   @Post('emailvalidation')
-  create(@Body() Data: string) {
-    return this.clientService.validar_cuenta(Data);
+  create(@Body() Data: any) {
+    let Destinatario = Data.Destinatario;
+    return this.clientService.validar_cuenta(Destinatario);
   }
 }

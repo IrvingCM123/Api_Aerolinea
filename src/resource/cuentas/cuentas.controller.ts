@@ -37,8 +37,8 @@ export class CuentasController {
     return this.cuentasService.actualizarContraseña(identificador, contraseña);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cuentasService.remove(+id);
+  @Delete(':identificador')
+  remove(@Param('identificador') identificador: string) {
+    return this.cuentasService.remove(identificador);
   }
 }
