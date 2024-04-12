@@ -14,6 +14,7 @@ export enum Errores_Cuentas {
     CUENTA_NO_PENDIENTE = 'La cuenta no esta pendiente de activacion',
     CUENTA_NO_INACTIVA = 'La cuenta no esta inactiva',
     CONTRASEÑA_NO_ACTUALIZADA = 'La contraseña no fue actualizada',
+    NUMERO_ACTIVACION_NO_VALIDO = 'El numero de activacion no es valido',
 }
 
 export enum Exito_Cuentas {

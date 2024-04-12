@@ -68,6 +68,17 @@ export class AuthService {
         usuario_Telefono,
       });
 
+      // Enviar correo de confirmación para activar la cuenta registrada
+      let enviar_email = await this.clientService.validar_cuenta(identificador);
+
+      if (enviar_email.status != true) {
+        await queryRunner.rollbackTransaction();
+        throw new BadRequestException(Errores_Cuentas.CUENTA_NOT_CREATED);
+      }
+
+      // Hashear el numero de activacion antes de almacenarla en la base de datos
+      const hashedActivacion = await bcrypt.hash(enviar_email.codigo, 10);
+
       // Crear una nueva cuenta asociada al usuario
       await this.cuentasService.create({
         identificador,
@@ -75,13 +86,11 @@ export class AuthService {
         rol,
         estado_cuenta: Estado.PENDIENTE,
         id_usuario: usuario.id_usuario,
+        numero_activacion: hashedActivacion
       });
 
       // Confirmar la transacción si todo va bien
       await queryRunner.commitTransaction();
-
-      // Enviar correo de confirmación para activar la cuenta registrada
-      await this.clientService.validar_cuenta(identificador);
 
       return { usuario_Nombre, identificador, message: Exito_USUARIO.USUARIO_CREATED };
     } catch (error) {

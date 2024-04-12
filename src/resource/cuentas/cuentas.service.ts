@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateCuentaDto } from './dto/create-cuenta.dto';
 import { UpdateCuentaDto } from './dto/update-cuenta.dto';
 
@@ -9,8 +9,8 @@ import { Cuenta } from './entities/cuenta.entity';
 import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpers';
 
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
-import { UsuarioService } from 'src/resource/usuario/usuario.service';
 import { Estado } from 'src/common/enums/cuentas.enum';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class CuentasService {
@@ -73,7 +73,7 @@ export class CuentasService {
     return this.cuentaRepository.update(id, updateCuentaDto);
   }
 
-  async actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
+  async actualizarEstadoCuenta(identificador: string, estado_cuenta: any, numero_activacion: string) {
 
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
@@ -87,6 +87,13 @@ export class CuentasService {
       if (!cuentaUsuario) {
         await queryRunner.rollbackTransaction();
         throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      }
+
+      console.log(cuentaUsuario.numero_activacion);
+
+      if (!(await bcrypt.compare(numero_activacion, cuentaUsuario.numero_activacion))) {
+        await queryRunner.rollbackTransaction();
+        throw new UnauthorizedException(Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO);
       }
 
       const cuenta_ID = cuentaUsuario.id_cuenta;

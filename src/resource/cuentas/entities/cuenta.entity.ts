@@ -32,4 +32,7 @@ export class Cuenta {
     @OneToOne(() => Usuario, { eager: true })
     @JoinColumn({ name: 'id_usuario' })
     id_usuario: Usuario; 
+
+    @Column({ nullable: true }) 
+    numero_activacion: string;
 }
