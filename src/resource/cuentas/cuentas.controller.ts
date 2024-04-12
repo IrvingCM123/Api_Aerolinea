@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CuentasService } from './cuentas.service';
 import { CreateCuentaDto } from './dto/create-cuenta.dto';
 import { UpdateCuentaDto } from './dto/update-cuenta.dto';
-
+import { Estado } from 'src/common/enums/cuentas.enum';
 @Controller('cuentas')
 export class CuentasController {
   constructor(private readonly cuentasService: CuentasService) {}
@@ -25,6 +25,18 @@ export class CuentasController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCuentaDto: UpdateCuentaDto) {
     return this.cuentasService.update(+id, updateCuentaDto);
+  }
+
+  @Patch('actualizarCuenta/:identificador')
+  actualizarEstadoCuenta(@Param('identificador') identificador: string, @Body() estado_cuenta: Estado) {
+    console.log(identificador, "id");
+    console.log(estado_cuenta, "estado")
+    return this.cuentasService.actualizarEstadoCuenta(identificador, estado_cuenta);
+  }
+
+  @Patch('actualizarContraseña/:identificador')
+  actualizarContraseña(@Param('identificador') identificador: string, @Body() contraseña: Estado) {
+    return this.cuentasService.actualizarContraseña(identificador, contraseña);
   }
 
   @Delete(':id')

@@ -25,17 +25,17 @@ const password_local = dotenv_Config.parsed.PG_PASSWORD_LOCAL;
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: host_local,
+      host: host_develop,
       port: 5432,
-      username: user_local,
-      password: password_local,
-      database: database_local,
+      username: user,
+      password: password,
+      database: database,
       autoLoadEntities: true,
       synchronize: true,
-      //extra: {
-      //  ssl: true,
-      //  sslmode: 'require',
-      //},
+      extra: {
+       ssl: true,
+       sslmode: 'require',
+      },
       
     }),
     AuthModule,
