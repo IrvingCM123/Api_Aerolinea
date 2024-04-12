@@ -14,29 +14,23 @@ const host_production = dotenv_Config.parsed.PG_HOST_PRODUCTION;
 const database = dotenv_Config.parsed.PG_DATABASE;
 const user = dotenv_Config.parsed.PG_USER;
 const password = dotenv_Config.parsed.PG_PASSWORD;
-
-const host_local = dotenv_Config.parsed.PG_HOST_LOCAL;
-const database_local = dotenv_Config.parsed.PG_DATABASE_LOCAL;
-const user_local = dotenv_Config.parsed.PG_USER_LOCAL;
-const password_local = dotenv_Config.parsed.PG_PASSWORD_LOCAL;
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: host_local,
+      host: host_develop,
       port: 5432,
-      username: user_local,
-      password: password_local,
-      database: database_local,
+      username: user,
+      password: password,
+      database: database,
       autoLoadEntities: true,
       synchronize: true,
-      //extra: {
-      //  ssl: true,
-      //  sslmode: 'require',
-      //},
-      
+      extra: {
+        ssl: true,
+        sslmode: 'require',
+      },
+
     }),
     AuthModule,
     CuentasModule,

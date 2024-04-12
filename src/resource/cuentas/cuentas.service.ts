@@ -10,6 +10,7 @@ import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpe
 
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 import { UsuarioService } from 'src/resource/usuario/usuario.service';
+import { Estado } from 'src/common/enums/cuentas.enum';
 
 @Injectable()
 export class CuentasService {
@@ -76,7 +77,7 @@ export class CuentasService {
     return this.cuentaRepository
       .createQueryBuilder()
       .update(Cuenta)
-      .set({ estado_cuenta: estado_cuenta })
+      .set({ estado_cuenta: estado_cuenta.estado_cuenta })
       .where('identificador = :identificador', { identificador })
       .execute();
   }
