@@ -73,22 +73,67 @@ export class CuentasService {
     return this.cuentaRepository.update(id, updateCuentaDto);
   }
 
-  actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
-    return this.cuentaRepository
-      .createQueryBuilder()
-      .update(Cuenta)
-      .set({ estado_cuenta: estado_cuenta.estado_cuenta })
-      .where('identificador = :identificador', { identificador })
-      .execute();
+  async actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
+
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const cuentaUsuario: any = await this.cuentaRepository.findOne({
+        where: { identificador: identificador },
+      });
+  
+      if (!cuentaUsuario) {
+        await queryRunner.rollbackTransaction();
+        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      }
+
+      const cuenta_ID = cuentaUsuario.id_cuenta;
+
+      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: estado_cuenta });
+
+      await queryRunner.commitTransaction();
+
+      return Exito_Cuentas.CUENTA_ACTUALIZADA;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      return Errores_Cuentas.CUENTA_NOT_UPDATED;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
-  actualizarContraseña(identificador: string, contraseña: string) {
-    return this.cuentaRepository
-      .createQueryBuilder()
-      .update(Cuenta)
-      .set({ contraseña: contraseña })
-      .where('identificador = :identificador', { identificador })
-      .execute();
+  async actualizarContraseña(identificador: string, contraseña: string) {
+
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const cuentaUsuario: any = await this.cuentaRepository.findOne({
+        where: { identificador: identificador },
+      });
+  
+      if (!cuentaUsuario) {
+        await queryRunner.rollbackTransaction();
+        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      }
+
+      const cuenta_ID = cuentaUsuario.id_cuenta;
+
+      await queryRunner.manager.update(Cuenta, cuenta_ID , { contraseña: contraseña });
+
+      await queryRunner.commitTransaction();
+
+      return Exito_Cuentas.CONTRASEÑA_ACTUALIZADA;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      return Errores_Cuentas.CONTRASEÑA_NO_ACTUALIZADA;
+    } finally {
+      await queryRunner.release();
+    }
+
   }
 
   async remove(identificador: string) {
