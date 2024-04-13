@@ -158,7 +158,9 @@ export class CuentasService {
 
       const cuenta_ID = cuentaUsuario.id_cuenta;
 
-      await queryRunner.manager.update(Cuenta, cuenta_ID , { contraseña: contraseña });
+      const hashedPassword = await bcrypt.hash(contraseña, 10);
+
+      await queryRunner.manager.update(Cuenta, cuenta_ID , { contraseña: hashedPassword });
 
       await queryRunner.commitTransaction();
 
