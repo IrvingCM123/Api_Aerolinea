@@ -177,7 +177,6 @@ export class CuentasService {
   }
 
   async remove(identificador: string, user: User_Interface) {
-
     validateAdmin(user);
 
     const queryRunner = this.connection.createQueryRunner();

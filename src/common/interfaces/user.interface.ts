@@ -1,4 +1,4 @@
 export interface User_Interface {
-    email: string;
+    identificador: string;
     role: string;
 }
