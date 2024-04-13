@@ -11,6 +11,8 @@ import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpe
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 import { Estado } from 'src/common/enums/cuentas.enum';
 import * as bcrypt from 'bcrypt';
+import { User_Interface } from 'src/common/interfaces/user.interface';
+import { validateAdmin } from 'src/auth/guard/validateRole.guard';
 
 @Injectable()
 export class CuentasService {
@@ -174,7 +176,9 @@ export class CuentasService {
 
   }
 
-  async remove(identificador: string) {
+  async remove(identificador: string, user: User_Interface) {
+
+    validateAdmin(user);
 
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
