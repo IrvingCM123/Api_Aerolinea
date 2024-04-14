@@ -16,6 +16,8 @@ import { Estado } from 'src/common/enums/cuentas.enum';
 import { Exito_Cuentas, Errores_Cuentas } from 'src/common/helpers/cuentas.helpers';
 import { Exito_USUARIO, Errores_USUARIO } from 'src/common/helpers/usuario.helpers';
 import { RegisterDto } from './dto/registro.dto';
+import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
+import { Cuenta } from 'src/resource/cuentas/entities/cuenta.entity';
 
 @Injectable()
 export class AuthService {
@@ -59,14 +61,26 @@ export class AuthService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
+    const usuario_Data: any = {
+      usuario_Nombre: usuario_Nombre,
+      usuario_Apellidos: usuario_Apellidos,
+      usuario_Edad: usuario_Edad,
+      usuario_Telefono: usuario_Telefono
+    }
+
+    let nuevo_Usuario: any;
+
     try {
-      // Crear un nuevo usuario
-      const usuario: any = await this.usuarioService.create({
-        usuario_Nombre,
-        usuario_Apellidos,
-        usuario_Edad,
-        usuario_Telefono,
-      });
+
+      try {
+        // Guardar el nuevo usuario en la base de datos
+        nuevo_Usuario = await queryRunner.manager.save(Usuario, usuario_Data);
+      } catch (error) {
+        // Revertir la transacción si hay algún error
+        await queryRunner.rollbackTransaction();
+        // Liberar la conexión de la transacción
+        await queryRunner.release();
+      }
 
       // Enviar correo de confirmación para activar la cuenta registrada
       let enviar_email = await this.clientService.validar_cuenta(identificador);
@@ -80,14 +94,23 @@ export class AuthService {
       const hashedActivacion = await bcrypt.hash(enviar_email.codigo, 10);
 
       // Crear una nueva cuenta asociada al usuario
-      await this.cuentasService.create({
-        identificador,
+      const cuenta = {
+        identificador: identificador,
         contraseña: hashedPassword,
-        rol,
+        rol: rol,
         estado_cuenta: Estado.PENDIENTE,
-        id_usuario: usuario.id_usuario,
+        id_usuario: nuevo_Usuario.id_usuario,
         numero_activacion: hashedActivacion
-      });
+      }
+
+      try {
+        await queryRunner.manager.save(Cuenta, {});
+      } catch (error) {
+        // Revertir la transacción si hay algún error
+        await queryRunner.rollbackTransaction();
+        // Liberar la conexión de la transacción
+        await queryRunner.release();
+      }
 
       // Confirmar la transacción si todo va bien
       await queryRunner.commitTransaction();
