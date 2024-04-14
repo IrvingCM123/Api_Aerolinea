@@ -80,6 +80,7 @@ export class AuthService {
         await queryRunner.rollbackTransaction();
         // Liberar la conexión de la transacción
         await queryRunner.release();
+        return;
       }
 
       // Enviar correo de confirmación para activar la cuenta registrada
@@ -104,12 +105,13 @@ export class AuthService {
       }
 
       try {
-        await queryRunner.manager.save(Cuenta, {});
+        await queryRunner.manager.save(Cuenta, cuenta);
       } catch (error) {
         // Revertir la transacción si hay algún error
         await queryRunner.rollbackTransaction();
         // Liberar la conexión de la transacción
         await queryRunner.release();
+        return;
       }
 
       // Confirmar la transacción si todo va bien
