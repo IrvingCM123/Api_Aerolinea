@@ -74,7 +74,7 @@ export class AuthService {
 
       try {
         // Guardar el nuevo usuario en la base de datos
-        nuevo_Usuario = await queryRunner.manager.save(Usuario, {});
+        nuevo_Usuario = await queryRunner.manager.save(Usuario, usuario_Data);
       } catch (error) {
         // Revertir la transacción si hay algún error
         await queryRunner.rollbackTransaction();
