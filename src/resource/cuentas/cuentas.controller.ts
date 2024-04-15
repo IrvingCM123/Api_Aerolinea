@@ -3,6 +3,13 @@ import { CuentasService } from './cuentas.service';
 import { CreateCuentaDto } from './dto/create-cuenta.dto';
 import { UpdateCuentaDto } from './dto/update-cuenta.dto';
 import { Estado } from 'src/common/enums/cuentas.enum';
+
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Roles } from 'src/common/enums/roles.enum';
+import { ActiveUser } from 'src/common/decorators/user.decorator';
+import { User_Interface } from 'src/common/interfaces/user.interface';
+
+
 @Controller('cuentas')
 export class CuentasController {
   constructor(private readonly cuentasService: CuentasService) {}
@@ -40,15 +47,14 @@ export class CuentasController {
     return this.cuentasService.activarCuenta(identificador, numero_activacion);
   }
 
-  @Patch('actualizarContraseña/:identificador')
-  actualizarContraseña(@Param('identificador') identificador: string, @Body() contraseña: string) {
-    let contrasena: any = contraseña;
-    contraseña = contrasena.contraseña;
-    return this.cuentasService.actualizarContraseña(identificador, contrasena);
+  @Patch('actualizarContrasena/:identificador')
+  actualizarContraseña(@Param('identificador') identificador: string, @Body() Datos: any) {
+    return this.cuentasService.actualizarContraseña(identificador, Datos.contraseña);
   }
 
+  @Auth(Roles.ADMIN)
   @Delete(':identificador')
-  remove(@Param('identificador') identificador: string) {
-    return this.cuentasService.remove(identificador);
+  remove(@Param('identificador') identificador: string, @ActiveUser() user: User_Interface) {
+    return this.cuentasService.remove(identificador, user);
   }
 }

@@ -1,4 +1,4 @@
-import { Roles as Rol } from './../../common/enums/roles.enum';
+import { Roles as Rol } from '../../common/enums/roles.enum';
 import { SetMetadata } from "@nestjs/common"; 
 
 // Define una constante 'Roles_Key' que sirve como clave para los metadatos de roles
