@@ -5,9 +5,7 @@ import { Tipo_Transaccion } from '../enums/tipo_Transaccion.enum';
 @Injectable()
 export class TransaccionService {
 
-    constructor(
-        private connection: Connection
-    ) { }
+    constructor( private connection: Connection ) { }
 
     async transaction(
         tipo: Tipo_Transaccion,
