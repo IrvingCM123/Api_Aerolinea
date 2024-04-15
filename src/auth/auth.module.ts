@@ -6,6 +6,7 @@ import { CuentasModule } from 'src/resource/cuentas/cuentas.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/common/constants/jwt.constant';
 import { ClientModule } from 'src/client/client.module';
+import { TransaccionModule } from 'src/common/transaction/transaccion.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ClientModule } from 'src/client/client.module';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '1d' },
     }),
+    TransaccionModule
   ],
   controllers: [AuthController],
   providers: [AuthService]
