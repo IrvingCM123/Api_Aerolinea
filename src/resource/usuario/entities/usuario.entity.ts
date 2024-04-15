@@ -1,6 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
-import { Error_Registro } from 'src/common/helpers/registro.helpers';
-import { Cuenta } from 'src/resource/cuentas/entities/cuenta.entity';
 
 @Entity()
 export class Usuario {

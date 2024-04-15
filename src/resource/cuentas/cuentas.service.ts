@@ -16,12 +16,11 @@ import { validateAdmin } from 'src/auth/guard/validateRole.guard';
 
 @Injectable()
 export class CuentasService {
+
   constructor(
     @InjectRepository(Cuenta)
     private cuentaRepository: Repository<Cuenta>,
     private readonly connection: Connection,
-    @InjectRepository(Usuario)
-    private usuarioRepository: Repository<Usuario>,
   ) {}
 
   async create(createCuentaDto: CreateCuentaDto) {
@@ -34,7 +33,6 @@ export class CuentasService {
   }
 
   async findOneByEmail(identificador: string) {
-
     let buscar_cuenta = await this.cuentaRepository.findOne({
       where: { identificador: identificador },
     });
