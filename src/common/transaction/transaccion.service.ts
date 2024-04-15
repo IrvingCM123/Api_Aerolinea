@@ -22,9 +22,12 @@ export class TransaccionService {
         switch (tipo) {
             case Tipo_Transaccion.Guardar:
                 try {
-                    await queryRunner.manager.save(entidad, datos_entidad);
+                    let resultado = await queryRunner.manager.save(entidad, datos_entidad);
                     await queryRunner.commitTransaction();
-                    return 'Éxito';
+                    return {
+                        mensaje: 'Éxito',
+                        resultado: resultado
+                    };
                 } catch (error) {
                     await queryRunner.rollbackTransaction();
                     return 'Error';
@@ -77,7 +80,9 @@ export class TransaccionService {
                 }
             case Tipo_Transaccion.Eliminar_Con_Parametros:
                 try {
-                    await queryRunner.manager.delete(entidad, { [campo_actualizar]: datos_entidad });
+                    await queryRunner.manager.delete(entidad, {
+                        [campo_actualizar]: campo_id
+                    });
                     await queryRunner.commitTransaction();
                     return 'Éxito';
                 } catch (error) {
@@ -96,7 +101,9 @@ export class TransaccionService {
                 }
             case Tipo_Transaccion.Consultar_Con_Parametros:
                 try {
-                    return await queryRunner.manager.findOne(entidad, { [campo_actualizar]: datos_entidad });
+                    return await queryRunner.manager.find(entidad, {
+                        where: { [campo_actualizar]: campo_id }
+                    });
                 } catch (error) {
                     return 'Error';
                 } finally {
@@ -106,4 +113,7 @@ export class TransaccionService {
                 break;
         }
     }
+
+
+
 }
