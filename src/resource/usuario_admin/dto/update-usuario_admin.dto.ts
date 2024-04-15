@@ -15,5 +15,4 @@ export class UpdateUsuarioAdminDto extends PartialType(CreateUsuarioAdminDto) {
     @MaxLength(50, { message: Errores_USUARIO.USUARIO_APELLIDOS_LONGITUD_MAX })
     @MinLength(3, { message: Errores_USUARIO.USUARIO_APELLIDOS_LONGITUD_MIN })
     usuarioAd_Apellidos : string;
-
 }
