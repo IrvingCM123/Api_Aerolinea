@@ -69,7 +69,7 @@ export class TransaccionService {
                 }
             case Tipo_Transaccion.Eliminar:
                 try {
-                    await queryRunner.manager.delete(entidad, campo_id);
+                    await queryRunner.manager.delete(entidad, datos_entidad);
                     await queryRunner.commitTransaction();
                     return 'Éxito';
                 } catch (error) {
