@@ -113,7 +113,4 @@ export class TransaccionService {
                 break;
         }
     }
-
-
-
 }
