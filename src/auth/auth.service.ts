@@ -19,15 +19,17 @@ import { RegisterDto } from './dto/registro.dto';
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 import { Cuenta } from 'src/resource/cuentas/entities/cuenta.entity';
 
+import { TransaccionService } from 'src/common/transaction/transaccion.service';
+import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
+
 @Injectable()
 export class AuthService {
 
   constructor(
-    private usuarioService: UsuarioService,
     private cuentasService: CuentasService,
     private clientService: ClientService,
     private jwtService: JwtService,
-    private connection: Connection,
+    private transaccionService: TransaccionService,
   ) { }
 
   /**
@@ -56,12 +58,7 @@ export class AuthService {
     // Hashear la contraseña antes de almacenarla en la base de datos
     const hashedPassword = await bcrypt.hash(contraseña, 10);
 
-    // Iniciar una transacción para garantizar la integridad de los datos
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    const usuario_Data: any = {
+      const usuario_Data: any = {
       usuario_Nombre: usuario_Nombre,
       usuario_Apellidos: usuario_Apellidos,
       usuario_Edad: usuario_Edad,
@@ -72,15 +69,9 @@ export class AuthService {
 
     try {
 
-      try {
-        // Guardar el nuevo usuario en la base de datos
-        nuevo_Usuario = await queryRunner.manager.save(Usuario, usuario_Data);
-      } catch (error) {
-        // Revertir la transacción si hay algún error
-        await queryRunner.rollbackTransaction();
-        // Liberar la conexión de la transacción
-        await queryRunner.release();
-        
+      // Guardar el nuevo usuario en la base de datos
+      nuevo_Usuario = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Usuario, usuario_Data);
+      if (nuevo_Usuario.mensaje == 'Error') {
         return {
           statusCode: 500, // Código de estado de error
           message: Errores_USUARIO.USUARIO_NOT_CREATED // Mensaje de error personalizado
@@ -91,7 +82,6 @@ export class AuthService {
       let enviar_email = await this.clientService.validar_cuenta(identificador);
 
       if (enviar_email.status != true) {
-        await queryRunner.rollbackTransaction();
         return {
           statusCode: 500, // Código de estado de error
           message: Errores_Cuentas.CUENTA_NOT_CREATED // Mensaje de error personalizado
@@ -107,37 +97,26 @@ export class AuthService {
         contraseña: hashedPassword,
         rol: rol,
         estado_cuenta: Estado.PENDIENTE,
-        id_usuario: nuevo_Usuario.id_usuario,
+        id_usuario: nuevo_Usuario.resultado.id_usuario,
         numero_activacion: hashedActivacion
       }
 
-      try {
-        await queryRunner.manager.save(Cuenta, cuenta);
-      } catch (error) {
-        // Revertir la transacción si hay algún error
-        await queryRunner.rollbackTransaction();
-        // Liberar la conexión de la transacción
-        await queryRunner.release();
+      // Guardar la nueva cuenta en la base de datos
+      let crearCuenta: any = await this.transaccionService.transaction(Tipo_Transaccion.Guardar,cuenta, Cuenta);
+      if (crearCuenta.mensaje != 'Éxito') {
+        await this.transaccionService.transaction(Tipo_Transaccion.Eliminar_Con_Parametros, Usuario,'', 'id_usuario', nuevo_Usuario.resultado.id_usuario  );
         return {
           statusCode: 500, // Código de estado de error
           message: Errores_Cuentas.CUENTA_NOT_CREATED // Mensaje de error personalizado
         };
       }
 
-      // Confirmar la transacción si todo va bien
-      await queryRunner.commitTransaction();
-
       return { usuario_Nombre, identificador, message: Exito_USUARIO.USUARIO_CREATED };
     } catch (error) {
-      // Revertir la transacción si hay algún error
-      await queryRunner.rollbackTransaction();
       return {
         statusCode: 500, // Código de estado de error
         message: Errores_USUARIO.USUARIO_NOT_CREATED // Mensaje de error personalizado
       };
-    } finally {
-      // Liberar la conexión de la transacción
-      await queryRunner.release();
     }
   }
 

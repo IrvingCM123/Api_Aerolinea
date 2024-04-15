@@ -8,11 +8,13 @@ import { Cuenta } from './entities/cuenta.entity';
 
 import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpers';
 
-import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 import { Estado } from 'src/common/enums/cuentas.enum';
 import * as bcrypt from 'bcrypt';
 import { User_Interface } from 'src/common/interfaces/user.interface';
 import { validateAdmin } from 'src/auth/guard/validateRole.guard';
+
+import { TransaccionService } from 'src/common/transaction/transaccion.service';
+import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
 
 @Injectable()
 export class CuentasService {
@@ -20,8 +22,8 @@ export class CuentasService {
   constructor(
     @InjectRepository(Cuenta)
     private cuentaRepository: Repository<Cuenta>,
-    private readonly connection: Connection,
-  ) {}
+    private transaccionService: TransaccionService
+  ) { }
 
   async create(createCuentaDto: CreateCuentaDto) {
     let cuenta_nueva = this.cuentaRepository.create(createCuentaDto);
@@ -75,134 +77,93 @@ export class CuentasService {
 
   async actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
 
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const cuentaUsuario: any = await this.cuentaRepository.findOne({
+      where: { identificador: identificador },
+    });
 
-    try {
-      const cuentaUsuario: any = await this.cuentaRepository.findOne({
-        where: { identificador: identificador },
-      });
-  
-      if (!cuentaUsuario) {
-        await queryRunner.rollbackTransaction();
-        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
-      }
+    if (!cuentaUsuario) {
+      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return;
+    }
 
-      const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_cuenta;
 
-      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: estado_cuenta });
+    let resultato = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, estado_cuenta, 'estado_cuenta', cuenta_ID);
 
-      await queryRunner.commitTransaction();
-
+    if (resultato == 'Éxito') {
       return Exito_Cuentas.CUENTA_ACTUALIZADA;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
+    } else {
       return Errores_Cuentas.CUENTA_NOT_UPDATED;
-    } finally {
-      await queryRunner.release();
     }
   }
 
-  async activarCuenta(identificador: string,  numero_activacion: string) {
+  async activarCuenta(identificador: string, numero_activacion: string) {
 
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const cuentaUsuario: any = await this.cuentaRepository.findOne({
+      where: { identificador: identificador },
+    });
 
-    try {
-      const cuentaUsuario: any = await this.cuentaRepository.findOne({
-        where: { identificador: identificador },
-      });
-  
-      if (!cuentaUsuario) {
-        await queryRunner.rollbackTransaction();
-        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
-      }
+    if (!cuentaUsuario) {
+      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+    }
 
-      if (!(await bcrypt.compare(numero_activacion, cuentaUsuario.numero_activacion))) {
-        await queryRunner.rollbackTransaction();
-        throw new Error(Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO);
-      }
+    if (!(await bcrypt.compare(numero_activacion, cuentaUsuario.numero_activacion))) {
+      throw new Error(Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO);
+    }
 
-      const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_cuenta;
 
-      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: Estado.ACTIVO });
+    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, Estado.ACTIVO, 'estado_cuenta', cuenta_ID);
 
-      await queryRunner.commitTransaction();
-
+    if (resultado == 'Éxito') {
       return Exito_Cuentas.CUENTA_ACTUALIZADA;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
+    } else {
       return Errores_Cuentas.CUENTA_NOT_UPDATED;
-    } finally {
-      await queryRunner.release();
     }
   }
 
   async actualizarContraseña(identificador: string, contraseña: string) {
 
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const cuentaUsuario: any = await this.cuentaRepository.findOne({
+      where: { identificador: identificador },
+    });
 
-    try {
-      const cuentaUsuario: any = await this.cuentaRepository.findOne({
-        where: { identificador: identificador },
-      });
-  
-      if (!cuentaUsuario) {
-        await queryRunner.rollbackTransaction();
-        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
-      }
-
-      const cuenta_ID = cuentaUsuario.id_cuenta;
-
-      const hashedPassword = await bcrypt.hash(contraseña, 10);
-
-      await queryRunner.manager.update(Cuenta, cuenta_ID , { contraseña: hashedPassword });
-
-      await queryRunner.commitTransaction();
-
-      return Exito_Cuentas.CONTRASEÑA_ACTUALIZADA;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      return Errores_Cuentas.CONTRASEÑA_NO_ACTUALIZADA;
-    } finally {
-      await queryRunner.release();
+    if (!cuentaUsuario) {
+      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
     }
 
+    const cuenta_ID = cuentaUsuario.id_cuenta;
+
+    const hashedPassword = await bcrypt.hash(contraseña, 10);
+
+    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, hashedPassword, 'contraseña', cuenta_ID);
+
+    if (resultado == 'Éxito') {
+      return Exito_Cuentas.CONTRASEÑA_ACTUALIZADA;
+    } else {
+      return Errores_Cuentas.CONTRASEÑA_NO_ACTUALIZADA;
+    }
   }
 
   async remove(identificador: string, user: User_Interface) {
     validateAdmin(user);
 
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const cuentaUsuario: any = await this.cuentaRepository.findOne({
+      where: { identificador: identificador },
+    });
 
-    try {
-      const cuentaUsuario: any = await this.cuentaRepository.findOne({
-        where: { identificador: identificador },
-      });
-  
-      if (!cuentaUsuario) {
-        await queryRunner.rollbackTransaction();
-        throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
-      }
+    if (!cuentaUsuario) {
+      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+    }
 
-      const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_cuenta;
 
-      await queryRunner.manager.update(Cuenta, cuenta_ID , { estado_cuenta: Estado.ELIMINADO });
+    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, Estado.ELIMINADO, 'estado_cuenta', cuenta_ID);
 
-      await queryRunner.commitTransaction();
-
+    if (resultado == 'Éxito') {
       return Exito_Cuentas.CUENTA_ELIMINADA;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
+    } else {
       return Errores_Cuentas.CUENTA_NO_ELIMINADA;
-    } finally {
-      await queryRunner.release();
     }
   }
 }

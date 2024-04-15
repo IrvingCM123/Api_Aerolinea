@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CuentasModule } from './resource/cuentas/cuentas.module';
 import { UsuarioModule } from './resource/usuario/usuario.module';
 import { ClientModule } from './client/client.module';
+import { TransaccionModule } from './common/transaction/transaccion.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -41,7 +42,9 @@ const password_local = secret.PG_PASSWORD_LOCAL
     AuthModule,
     CuentasModule,
     UsuarioModule,
-    ClientModule],
+    ClientModule,
+    TransaccionModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
