@@ -20,7 +20,6 @@ export function generar_Formato_Codigo(partes: number): string {
             codigo += '-';
         }
     }
-    console.log(codigo);
     // Retorna el código generado
     return codigo;
 }

@@ -10,4 +10,11 @@ export class ClientController {
     let Destinatario = Data.Destinatario;
     return this.clientService.validar_cuenta(Destinatario);
   }
+
+  @Post('passwordupdate')
+  actualizar_contraseña(@Body() Data: any) {
+    let Destinatario = Data.Destinatario;
+    return this.clientService.actualizar_contraseña(Destinatario);
+  }
+
 }

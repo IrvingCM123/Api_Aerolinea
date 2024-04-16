@@ -29,6 +29,11 @@ export class CuentasController {
     return this.cuentasService.findOne(+id);
   }
 
+  @Post('validarCodigo')
+  validarCodigo(@Body() Datos: any) {
+    return this.cuentasService.validar_codigo(Datos.identificador, Datos.codigo);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCuentaDto: UpdateCuentaDto) {
     return this.cuentasService.update(+id, updateCuentaDto);
@@ -49,7 +54,7 @@ export class CuentasController {
 
   @Patch('actualizarContrasena/:identificador')
   actualizarContraseña(@Param('identificador') identificador: string, @Body() Datos: any) {
-    return this.cuentasService.actualizarContraseña(identificador, Datos.contraseña);
+    return this.cuentasService.actualizarContraseña(identificador, Datos.contraseña, Datos.codigo );
   }
 
   @Auth(Roles.ADMIN)
