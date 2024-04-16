@@ -73,7 +73,7 @@ export class AuthService {
       nuevo_Usuario = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Usuario, usuario_Data);
       if (nuevo_Usuario.mensaje == 'Error') {
         return {
-          statusCode: 500, // Código de estado de error
+          status: 400, // Código de estado de error
           message: Errores_USUARIO.USUARIO_NOT_CREATED // Mensaje de error personalizado
         };
       }
@@ -81,9 +81,9 @@ export class AuthService {
       // Enviar correo de confirmación para activar la cuenta registrada
       let enviar_email = await this.clientService.validar_cuenta(identificador);
 
-      if (enviar_email.status != true) {
+      if (enviar_email.status != 201) {
         return {
-          statusCode: 500, // Código de estado de error
+          status: 400, // Código de estado de error
           message: Errores_Cuentas.CUENTA_NOT_CREATED // Mensaje de error personalizado
         };
       }
@@ -106,7 +106,7 @@ export class AuthService {
       if (crearCuenta.mensaje != 'Éxito') {
         await this.transaccionService.transaction(Tipo_Transaccion.Eliminar_Con_Parametros, Usuario,'', 'id_usuario', nuevo_Usuario.resultado.id_usuario  );
         return {
-          statusCode: 500, // Código de estado de error
+          status: 400, // Código de estado de error
           message: Errores_Cuentas.CUENTA_NOT_CREATED // Mensaje de error personalizado
         };
       }
@@ -114,7 +114,7 @@ export class AuthService {
       return { usuario_Nombre, identificador, message: Exito_USUARIO.USUARIO_CREATED };
     } catch (error) {
       return {
-        statusCode: 500, // Código de estado de error
+        status: 400, // Código de estado de error
         message: Errores_USUARIO.USUARIO_NOT_CREATED // Mensaje de error personalizado
       };
     }
