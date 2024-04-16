@@ -1,22 +1,22 @@
-import { email_Validate_Account_Template } from "../template/emailValidateAccount.template";
+import { template_Cuenta_Activacion } from "../template/emailValidateAccount.template";
 
-function generaNumeroRandom(): string {
-    const randomNumber = Math.floor(100 + Math.random() * 900); // Genera un número aleatorio de 100 a 999
-    return randomNumber.toString(); // Convierte el número a cadena
+function generar_Numero_Random(): string {
+    const numero_Random = Math.floor(100 + Math.random() * 900); // Genera un número aleatorio de 100 a 999
+    return numero_Random.toString(); // Convierte el número a cadena
 }
 
-function generateRandomAccountNumber(): string {
-    const firstPart = generaNumeroRandom(); // Genera la primera parte del número
-    const secondPart = generaNumeroRandom(); // Genera la segunda parte del número
-    const thirdPart = generaNumeroRandom(); // Genera la tercera parte del número
+function generar_Formato_Codigo(): string {
+    const primera_Parte = generar_Numero_Random(); // Genera la primera parte del número
+    const segunda_Parte = generar_Numero_Random(); // Genera la segunda parte del número
+    const tercera_Parte = generar_Numero_Random(); // Genera la tercera parte del número
 
-    return `${firstPart}-${secondPart}-${thirdPart}`; // Retorna el número aleatorio con el formato especificado
+    return `${primera_Parte}-${segunda_Parte}-${tercera_Parte}`; // Retorna el número aleatorio con el formato especificado
 }
 
-export function validateAccount(usuario_Email: string) {
-    const accountNumber = generateRandomAccountNumber(); // Genera un número de cuenta aleatorio
+export function activar_Cuenta(usuario_Email: string) {
+    const accountNumber = generar_Formato_Codigo(); // Genera un número de cuenta aleatorio
     // Quizá guardar el número generado en la bd para validar que sea el mismo, por lo mientras solo se imprime en consola y se retorna al usuario
-    let template_email = email_Validate_Account_Template(usuario_Email, accountNumber); // Genera el template del email
+    let template_email = template_Cuenta_Activacion(usuario_Email, accountNumber); // Genera el template del email
     return { template_email, accountNumber} ;
 }
 

@@ -1,4 +1,4 @@
-export function email_Validate_Account_Template(
+export function template_Cuenta_Activacion(
   usuario_Email: string,
   Numeros_Confirmacion: string
 ) {
