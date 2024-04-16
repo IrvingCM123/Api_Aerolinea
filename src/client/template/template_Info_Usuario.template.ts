@@ -1,6 +1,8 @@
-export function email_Validate_Account_Template(
+export function template_Email_Codigos(
   usuario_Email: string,
-  Numeros_Confirmacion: string
+  Numeros_Confirmacion: string,
+  titulo: string,
+  cuerpo: string
 ) {
   const html_boletos = `
     <!DOCTYPE html>
@@ -60,15 +62,14 @@ export function email_Validate_Account_Template(
         </div>
 
           <div class="header">
-            <h2>Nuestra aerolinea te da la bienvenida</h2>
+            <h2>${titulo}</h2>
           </div>
           <div class="info">
             <p> Hola! ${usuario_Email}!</p>
           </div>
 
           <div class="info">
-          <p> Gracias por elegirnos, por favor revise su correo electrónico para confirmar su cuenta.</p>
-          <p> Para validar su cuenta registre los siguientes números: </p>
+          <p> ${cuerpo} </p>
           <h4> ${Numeros_Confirmacion}  </h4>
         </div>
           <div class="info">

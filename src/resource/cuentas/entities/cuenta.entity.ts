@@ -35,4 +35,7 @@ export class Cuenta {
 
     @Column({ nullable: true }) 
     numero_activacion: string;
+
+    @Column({ nullable: true })
+    codigo_recuperacion: string;
 }

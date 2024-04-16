@@ -9,7 +9,7 @@ const email_Server = dotenv_Config.parsed.NODEMAILER_EMAIL;
 const email_Password = dotenv_Config.parsed.NODEMAILER_PASSWORD;
 
 // Exporrar la función enviarEmail
-export async function enviarEmail(Destinatario: any, html_template: any): Promise<string> {
+export async function enviar_Email(Destinatario: any, html_template: any): Promise<string> {
     try {
 
         // Construir el transportador de nodemailer
