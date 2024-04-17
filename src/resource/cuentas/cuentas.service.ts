@@ -103,11 +103,11 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return Errores_Cuentas.CUENTA_NOT_FOUND;
     }
 
     if (!(await bcrypt.compare(numero_activacion, cuentaUsuario.numero_activacion))) {
-      throw new Error(Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO);
+      return Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO;
     }
 
     const cuenta_ID = cuentaUsuario.id_cuenta;
@@ -128,7 +128,7 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return Errores_Cuentas.CUENTA_NOT_FOUND;
     }
 
     const cuenta_ID = cuentaUsuario.id_cuenta;
@@ -164,7 +164,7 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return Errores_Cuentas.CUENTA_NOT_FOUND;
     }
 
     const cuenta_ID = cuentaUsuario.id_cuenta;
