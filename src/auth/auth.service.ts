@@ -108,8 +108,6 @@ export class AuthService {
         cuenta_Fecha_Registro: fecha_formateada,
       }
 
-      console.log(cuenta)
-
       // Guardar la nueva cuenta en la base de datos
       let crearCuenta: any = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Cuenta, cuenta);
       if (crearCuenta.mensaje != 'Éxito') {
