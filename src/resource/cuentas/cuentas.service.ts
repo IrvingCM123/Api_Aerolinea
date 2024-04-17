@@ -36,25 +36,24 @@ export class CuentasService {
 
   async findOneByEmail(identificador: string) {
     let buscar_cuenta = await this.cuentaRepository.findOne({
-      where: { identificador: identificador },
+      where: { cuenta_Identificador: identificador },
     });
 
     if (buscar_cuenta) {
       let cuenta = {
-        cuenta_ID: buscar_cuenta.id_cuenta,
-        cuenta_Identificador: buscar_cuenta.identificador,
-        cuenta_Contraseña: buscar_cuenta.contraseña,
-        cuenta_Estado_Cuenta: buscar_cuenta.estado_cuenta,
-        cuenta_Rol: buscar_cuenta.rol,
+        cuenta_ID: buscar_cuenta.id_Cuenta,
+        cuenta_Identificador: buscar_cuenta.cuenta_Identificador,
+        cuenta_Contraseña: buscar_cuenta.cuenta_Contraseña,
+        cuenta_Estado_Cuenta: buscar_cuenta.cuenta_Estado_Cuenta,
+        cuenta_Rol: buscar_cuenta.cuenta_Rol,
       };
 
-      let info_usuario = buscar_cuenta.id_usuario;
+      let info_usuario = buscar_cuenta.id_Usuario;
 
       let usuario = {
-        usuario_ID: info_usuario.id_usuario,
+        usuario_ID: info_usuario.id_Usuario,
         usuario_Nombre: info_usuario.usuario_Nombre,
         usuario_Apellidos: info_usuario.usuario_Apellidos,
-        usuario_Telefono: info_usuario.usuario_Telefono,
       };
 
       return { cuenta, usuario };
@@ -78,7 +77,7 @@ export class CuentasService {
   async actualizarEstadoCuenta(identificador: string, estado_cuenta: any) {
 
     const cuentaUsuario: any = await this.cuentaRepository.findOne({
-      where: { identificador: identificador },
+      where: { cuenta_Identificador: identificador },
     });
 
     if (!cuentaUsuario) {
@@ -100,7 +99,7 @@ export class CuentasService {
   async activarCuenta(identificador: string, numero_activacion: string) {
 
     const cuentaUsuario: any = await this.cuentaRepository.findOne({
-      where: { identificador: identificador },
+      where: { cuenta_Identificador: identificador },
     });
 
     if (!cuentaUsuario) {
@@ -125,7 +124,7 @@ export class CuentasService {
   async actualizarContraseña(identificador: string, contraseña: string, codigo: number ) {
 
     const cuentaUsuario: any = await this.cuentaRepository.findOne({
-      where: { identificador: identificador },
+      where: { cuenta_Identificador: identificador },
     });
 
     if (!cuentaUsuario) {
@@ -161,7 +160,7 @@ export class CuentasService {
 
   async registrar_codigo(codigo: string, identificador: string) {
     const cuentaUsuario: any = await this.cuentaRepository.findOne({
-      where: { identificador: identificador },
+      where: { cuenta_Identificador: identificador },
     });
 
     if (!cuentaUsuario) {
@@ -183,7 +182,7 @@ export class CuentasService {
 
   async validar_codigo(identificador: string, codigo: string) {
     const cuentaUsuario: any = await this.cuentaRepository.findOne({
-      where: { identificador: identificador },
+      where: { cuenta_Identificador: identificador },
     });
 
     if (!cuentaUsuario) {
@@ -209,7 +208,7 @@ export class CuentasService {
     validateAdmin(user);
 
     const cuentaUsuario: any = await this.cuentaRepository.findOne({
-      where: { identificador: identificador },
+      where: { cuenta_Identificador: identificador },
     });
 
     if (!cuentaUsuario) {

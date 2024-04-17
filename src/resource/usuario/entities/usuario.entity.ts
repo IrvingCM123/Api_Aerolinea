@@ -4,7 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 export class Usuario {
     
     @PrimaryGeneratedColumn()
-    id_usuario: number;
+    id_Usuario: number;
 
     @Column({ nullable: false })
     usuario_Nombre: string;
