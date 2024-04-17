@@ -66,7 +66,10 @@ export class CuentasService {
     try {
       return this.cuentaRepository.findOneById(id);
     } catch (error) {
-      return Errores_Cuentas.CUENTA_NOT_FOUND;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
   }
 
@@ -81,8 +84,10 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
-      return;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
 
     const cuenta_ID = cuentaUsuario.id_cuenta;
@@ -90,9 +95,15 @@ export class CuentasService {
     let resultato = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, estado_cuenta, 'estado_cuenta', cuenta_ID);
 
     if (resultato == 'Éxito') {
-      return Exito_Cuentas.CUENTA_ACTUALIZADA;
+      return {
+        status: 201,
+        message: Exito_Cuentas.CUENTA_ACTUALIZADA
+      }
     } else {
-      return Errores_Cuentas.CUENTA_NOT_UPDATED;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_UPDATED
+      }
     }
   }
 
