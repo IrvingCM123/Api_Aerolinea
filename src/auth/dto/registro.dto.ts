@@ -27,10 +27,6 @@ export class RegisterDto {
     contraseña : string;
 
     @IsString()
-    @IsOptional()
-    rol : string;
-
-    @IsString()
     @MaxLength(50)
     usuario_Nombre: string;
 
@@ -43,12 +39,5 @@ export class RegisterDto {
     @Min(18, { message: Error_Registro.EDAD_MINIMA })
     @IsOptional()
     usuario_Edad: number;
-
-    @Matches(/^(\d{3})-(\d{3})-(\d{4})$/, {
-        message: Error_Registro.FORMATO_TELEFONO,
-    })
-    @MaxLength(12)
-    @IsOptional()
-    usuario_Telefono: string;
 
 }
