@@ -41,11 +41,9 @@ export class AuthService {
     const {
       identificador,
       contraseña,
-      rol,
       usuario_Nombre,
       usuario_Apellidos,
       usuario_Edad,
-      usuario_Telefono,
     } = registroDTO;
 
     // Verificar si ya existe un usuario con el mismo identificador
@@ -58,17 +56,15 @@ export class AuthService {
     // Hashear la contraseña antes de almacenarla en la base de datos
     const hashedPassword = await bcrypt.hash(contraseña, 10);
 
-      const usuario_Data: any = {
+    const usuario_Data: any = {
       usuario_Nombre: usuario_Nombre,
       usuario_Apellidos: usuario_Apellidos,
       usuario_Edad: usuario_Edad,
-      usuario_Telefono: usuario_Telefono
     }
 
     let nuevo_Usuario: any;
 
     try {
-
       // Guardar el nuevo usuario en la base de datos
       nuevo_Usuario = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Usuario, usuario_Data);
       if (nuevo_Usuario.mensaje == 'Error') {
@@ -91,20 +87,33 @@ export class AuthService {
       // Hashear el numero de activacion antes de almacenarla en la base de datos
       const hashedActivacion = await bcrypt.hash(enviar_email.codigo, 10);
 
+      //Obtener la fecha de registro
+      const fecha_registro: Date = new Date();
+
+      // Obtener el día, mes y año
+      const dia: string = fecha_registro.getDate().toString().padStart(2, '0');
+      const mes: string = (fecha_registro.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 porque los meses van de 0 a 11
+      const año: number = fecha_registro.getFullYear();
+
+
+      // Formatear la fecha en DD-MM-YYYY
+      const fecha_formateada: string = `${dia}-${mes}-${año}`;
+
       // Crear una nueva cuenta asociada al usuario
       const cuenta = {
-        identificador: identificador,
-        contraseña: hashedPassword,
-        rol: rol,
-        estado_cuenta: Estado.PENDIENTE,
-        id_usuario: nuevo_Usuario.resultado.id_usuario,
-        numero_activacion: hashedActivacion
+        cuenta_Identificador: identificador,
+        cuenta_Contraseña: hashedPassword,
+        id_Usuario: nuevo_Usuario.resultado.id_Usuario,
+        cuenta_Numero_Activacion: hashedActivacion,
+        cuenta_Fecha_Registro: fecha_formateada,
       }
 
+      console.log(cuenta)
+
       // Guardar la nueva cuenta en la base de datos
-      let crearCuenta: any = await this.transaccionService.transaction(Tipo_Transaccion.Guardar,cuenta, Cuenta);
+      let crearCuenta: any = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Cuenta, cuenta);
       if (crearCuenta.mensaje != 'Éxito') {
-        await this.transaccionService.transaction(Tipo_Transaccion.Eliminar_Con_Parametros, Usuario,'', 'id_usuario', nuevo_Usuario.resultado.id_usuario  );
+        await this.transaccionService.transaction(Tipo_Transaccion.Eliminar_Con_Parametros, Usuario, '', 'id_Usuario', nuevo_Usuario.resultado.id_Usuario);
         return {
           status: 400, // Código de estado de error
           message: Errores_Cuentas.CUENTA_NOT_CREATED // Mensaje de error personalizado
@@ -140,6 +149,7 @@ export class AuthService {
       throw new UnauthorizedException(Errores_USUARIO.USUARIO_NOT_FOUND);
     }
 
+    console.log(cuenta.cuenta)
     // Verificar el estado de la cuenta para permitir el acceso
     let estadoCuenta = cuenta.cuenta.cuenta_Estado_Cuenta;
 

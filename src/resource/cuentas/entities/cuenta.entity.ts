@@ -14,28 +14,31 @@ import { Roles } from 'src/common/enums/roles.enum';
 export class Cuenta {
 
     @PrimaryGeneratedColumn()
-    id_cuenta: number;
+    id_Cuenta: number;
 
     @Column({ unique: true, nullable: false })
-    identificador: string;
+    cuenta_Identificador: string;
 
     @Column({ nullable: false })
-    contraseña: string;
+    cuenta_Contraseña: string;
 
     @Column({ type: 'enum', default: Estado.PENDIENTE, enum: Estado, nullable: true })
-    estado_cuenta: string;
+    cuenta_Estado_Cuenta: string;
 
     @Column({ nullable: false, enum: Roles, default: Roles.USUARIO})
-    rol: string;
+    cuenta_Rol: string;
 
     @Column()
     @OneToOne(() => Usuario, { eager: true })
-    @JoinColumn({ name: 'id_usuario' })
-    id_usuario: Usuario; 
+    @JoinColumn({ name: 'id_Usuario' })
+    id_Usuario: Usuario; 
 
     @Column({ nullable: true }) 
-    numero_activacion: string;
+    cuenta_Numero_Activacion: string;
 
     @Column({ nullable: true })
-    codigo_recuperacion: string;
+    cuenta_Codigo_Recuperacion: string;
+
+    @Column({ nullable: true })
+    cuenta_Fecha_Registro: string;
 }

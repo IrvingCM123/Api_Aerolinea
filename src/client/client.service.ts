@@ -32,7 +32,6 @@ export class ClientService {
   
     return {
       status: 201,
-      codigo: actualizacion.numero_Activacion
     };
   }
 

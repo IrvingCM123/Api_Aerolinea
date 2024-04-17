@@ -15,26 +15,23 @@ export class CreateCuentaDto {
     @IsNotEmpty()
     // Formato de correo electrónico Irving@gmail.com, formato de identificador ABC-4SD-78A
     @Matches(/^(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3})$/) // Expresión regular combinada para correo electrónico o identificador
-    identificador: string;
+    cuenta_Identificador: string;
 
     @IsNotEmpty()
     @IsString()
     @MinLength(8)
     @MaxLength(20)
     @Transform(({ value }) => value.trim())
-    contraseña : string;
-
-    @IsString()
-    rol : string;
+    cuenta_Contraseña : string;
 
     @IsOptional()
-    estado_cuenta: string;
+    cuenta_Estado_Cuenta: string;
 
     @IsNumber()
-    id_usuario: Usuario;
+    id_Usuario: Usuario;
 
     @IsOptional()
     @Matches(/^(?:[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3})$/) // Expresión regular del identificador
     @Transform(({ value }) => value.trim())
-    numero_activacion: string;
+    cuenta_Numero_Activacion: string;
 }
