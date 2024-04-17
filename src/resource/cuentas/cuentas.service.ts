@@ -190,7 +190,10 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      return Errores_Cuentas.CUENTA_NOT_FOUND;
+      return {
+        status : 400,
+        message : Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
 
     const cuenta_ID = cuentaUsuario.id_cuenta;
@@ -200,9 +203,15 @@ export class CuentasService {
     let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, codigo_encriptado, 'codigo_recuperacion', cuenta_ID);
 
     if (resultado == 'Éxito') {
-      return Exito_Cuentas.CODIGO_REGISTRADO;
+      return {
+        status: 201,
+        message: Exito_Cuentas.CODIGO_REGISTRADO
+      }
     } else {
-      return Errores_Cuentas.CODIGO_NO_REGISTRADO;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CODIGO_NO_REGISTRADO
+      }
     }
   }
 
@@ -238,7 +247,10 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      return Errores_Cuentas.CUENTA_NOT_FOUND;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
 
     const cuenta_ID = cuentaUsuario.id_cuenta;
