@@ -8,6 +8,7 @@ import { CuentasModule } from './resource/cuentas/cuentas.module';
 import { UsuarioModule } from './resource/usuario/usuario.module';
 import { ClientModule } from './client/client.module';
 import { TransaccionModule } from './common/transaction/transaccion.module';
+import { ClienteModule } from './resource/cliente/cliente.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -43,7 +44,8 @@ const password_local = secret.PG_PASSWORD_LOCAL
     CuentasModule,
     UsuarioModule,
     ClientModule,
-    TransaccionModule
+    TransaccionModule,
+    ClienteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
