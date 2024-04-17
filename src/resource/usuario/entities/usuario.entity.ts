@@ -15,7 +15,5 @@ export class Usuario {
     @Column({ nullable: false })
     usuario_Edad: number;
 
-    @Column({ nullable: false })
-    usuario_Telefono: string;
 }
 

@@ -38,4 +38,7 @@ export class Cuenta {
 
     @Column({ nullable: true })
     codigo_recuperacion: string;
+
+    @Column({ nullable: true })
+    fecha_registro: string;
 }
