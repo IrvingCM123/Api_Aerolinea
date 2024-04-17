@@ -40,4 +40,23 @@ export class RegisterDto {
     @IsOptional()
     usuario_Edad: number;
 
+    @IsString()
+    @IsOptional()
+    usuario_Tarjeta_Titular: string;
+
+    @IsString()
+    @IsOptional()
+    usuario_Tarjeta_Direccion: string;
+
+    @IsNumber()
+    @IsOptional()
+    usuario_Tarjeta_Numero_Tarjeta: string;
+
+    @IsString()
+    @IsOptional()
+    @Matches(/^(\d{2})-(\d{2})$/, {
+        message: Error_Registro.FECHA_VENCIMIENTO,
+    })
+    usuario_Tarjeta_Fecha_Vencimiento: string;
+
 }

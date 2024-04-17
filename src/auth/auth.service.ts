@@ -5,10 +5,8 @@ import {
 } from '@nestjs/common';
 
 import { LoginDto } from './dto/login.dto';
-import { UsuarioService } from 'src/resource/usuario/usuario.service';
 import { CuentasService } from 'src/resource/cuentas/cuentas.service';
 import { ClientService } from 'src/client/client.service';
-import { Connection } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -44,6 +42,10 @@ export class AuthService {
       usuario_Nombre,
       usuario_Apellidos,
       usuario_Edad,
+      usuario_Tarjeta_Titular,
+      usuario_Tarjeta_Direccion,
+      usuario_Tarjeta_Numero_Tarjeta,
+      usuario_Tarjeta_Fecha_Vencimiento
     } = registroDTO;
 
     // Verificar si ya existe un usuario con el mismo identificador

@@ -27,17 +27,17 @@ const password_local = secret.PG_PASSWORD_LOCAL
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: host_develop,
+      host: host_local,
       port: 5432,
-      username: user,
-      password: password,
-      database: database,
+      username: user_local,
+      password: password_local,
+      database: database_local,
       autoLoadEntities: true,
       synchronize: true,
-      extra: {
-        ssl: true,
-        sslmode: 'require',
-      },
+      //extra: {
+      //  ssl: true,
+      //  sslmode: 'require',
+      //},
 
     }),
     AuthModule,
