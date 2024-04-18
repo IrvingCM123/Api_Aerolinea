@@ -18,6 +18,7 @@ export class TarjetaService {
   ) { }
 
   async create(createTarjetaDto: CreateTarjetaDto) {
+    
     let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Tarjeta, createTarjetaDto);
 
     if (resultado != 'Éxito') {

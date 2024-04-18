@@ -24,9 +24,6 @@ export class CreateCuentaDto {
     @Transform(({ value }) => value.trim())
     cuenta_Contraseña : string;
 
-    @IsOptional()
-    cuenta_Estado_Cuenta: string;
-
     @IsNumber()
     id_Usuario: Usuario;
 
@@ -34,4 +31,8 @@ export class CreateCuentaDto {
     @Matches(/^(?:[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3})$/) // Expresión regular del identificador
     @Transform(({ value }) => value.trim())
     cuenta_Numero_Activacion: string;
+
+    @IsOptional()
+    @IsString()
+    cuenta_Fecha_Registro: string;
 }

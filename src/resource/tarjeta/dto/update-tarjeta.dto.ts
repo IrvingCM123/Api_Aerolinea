@@ -7,18 +7,18 @@ import { Error_Registro } from "src/common/helpers/registro.helpers";
 export class UpdateTarjetaDto extends PartialType(CreateTarjetaDto) {
 
     @IsString()
-    usuario_Tarjeta_Titular: string;
+    tarjeta_Titular: string;
 
     @IsString()
-    usuario_Tarjeta_Direccion: string;
+    tarjeta_Direccion: string;
 
     @IsNumber()
-    usuario_Tarjeta_Numero_Tarjeta: string;
+    tarjeta_Numero_Tarjeta: string;
 
     @IsString()
     @Matches(/^(\d{2})-(\d{2})$/, {
         message: Error_Registro.FECHA_VENCIMIENTO,
     })
-    usuario_Tarjeta_Fecha_Vencimiento: string;
+    tarjeta_Fecha_Vencimiento: string;
 
 }

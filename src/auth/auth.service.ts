@@ -16,9 +16,14 @@ import { Exito_USUARIO, Errores_USUARIO } from 'src/common/helpers/usuario.helpe
 import { RegisterDto } from './dto/registro.dto';
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 import { Cuenta } from 'src/resource/cuentas/entities/cuenta.entity';
+import { CreateTarjetaDto } from 'src/resource/tarjeta/dto/create-tarjeta.dto';
 
 import { TransaccionService } from 'src/common/transaction/transaccion.service';
 import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
+import { CreateUsuarioDto } from 'src/resource/usuario/dto/create-usuario.dto';
+import { Tarjeta } from 'src/resource/tarjeta/entities/tarjeta.entity';
+import { Error_Tarjeta } from 'src/common/helpers/tarjetas.helpers';
+import { CreateCuentaDto } from 'src/resource/cuentas/dto/create-cuenta.dto';
 
 @Injectable()
 export class AuthService {
@@ -58,13 +63,17 @@ export class AuthService {
     // Hashear la contraseña antes de almacenarla en la base de datos
     const hashedPassword = await bcrypt.hash(contraseña, 10);
 
-    const usuario_Data: any = {
+    const usuario_Data: CreateUsuarioDto = {
       usuario_Nombre: usuario_Nombre,
       usuario_Apellidos: usuario_Apellidos,
       usuario_Edad: usuario_Edad,
     }
 
     let nuevo_Usuario: any;
+    
+    let nueva_Tarjeta: any;
+
+    let crear_Cuenta: any;
 
     try {
       // Guardar el nuevo usuario en la base de datos
@@ -74,6 +83,23 @@ export class AuthService {
           status: 400, // Código de estado de error
           message: Errores_USUARIO.USUARIO_NOT_CREATED // Mensaje de error personalizado
         };
+      }
+
+      const tarjeta_Data: CreateTarjetaDto = {
+        tarjeta_Titular: usuario_Tarjeta_Titular,
+        tarjeta_Direccion: usuario_Tarjeta_Direccion,
+        tarjeta_Numero_Tarjeta: usuario_Tarjeta_Numero_Tarjeta,
+        tarjeta_Fecha_Vencimiento: usuario_Tarjeta_Fecha_Vencimiento
+      }
+
+      // Guardar la tarjeta en la base de datos
+      nueva_Tarjeta = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Tarjeta, tarjeta_Data);
+
+      if (nueva_Tarjeta.mensaje == 'Error') {
+        return {
+          status: 400, // Código de estado de error
+          message: Error_Tarjeta.ERROR_CREAR_TARJETA // Mensaje de error personalizado
+        }
       }
 
       // Enviar correo de confirmación para activar la cuenta registrada
@@ -102,7 +128,7 @@ export class AuthService {
       const fecha_formateada: string = `${dia}-${mes}-${año}`;
 
       // Crear una nueva cuenta asociada al usuario
-      const cuenta = {
+      const cuenta: CreateCuentaDto = {
         cuenta_Identificador: identificador,
         cuenta_Contraseña: hashedPassword,
         id_Usuario: nuevo_Usuario.resultado.id_Usuario,
@@ -111,8 +137,8 @@ export class AuthService {
       }
 
       // Guardar la nueva cuenta en la base de datos
-      let crearCuenta: any = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Cuenta, cuenta);
-      if (crearCuenta.mensaje != 'Éxito') {
+      crear_Cuenta  = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Cuenta, cuenta);
+      if (crear_Cuenta.mensaje != 'Éxito') {
         await this.transaccionService.transaction(Tipo_Transaccion.Eliminar_Con_Parametros, Usuario, '', 'id_Usuario', nuevo_Usuario.resultado.id_Usuario);
         return {
           status: 400, // Código de estado de error

@@ -12,12 +12,12 @@ export class Tarjeta {
     @Column({nullable: false})
     tarjeta_Direccion: string;
 
-    @Column({nullable: false})
+    @Column({nullable: false, unique: true})
     tarjeta_Numero_Tarjeta: string;
 
     @Column({nullable: false})
     tarjeta_Fecha_Vencimiento: string;
 
-    @Column({nullable: false, type: 'enum', enum: Tarjeta_Estado })
+    @Column({nullable: true, type: 'enum', enum: Tarjeta_Estado, default: Tarjeta_Estado.ACTIVO})
     tarjeta_Status: string;
 }
