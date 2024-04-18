@@ -140,6 +140,7 @@ export class AuthService {
       crear_Cuenta  = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Cuenta, cuenta);
       if (crear_Cuenta.mensaje != 'Éxito') {
         await this.transaccionService.transaction(Tipo_Transaccion.Eliminar_Con_Parametros, Usuario, '', 'id_Usuario', nuevo_Usuario.resultado.id_Usuario);
+        await this.transaccionService.transaction(Tipo_Transaccion.Eliminar_Con_Parametros, Tarjeta, '', 'id_Tarjeta', nueva_Tarjeta.resultado.id_Tarjeta);
         return {
           status: 400, // Código de estado de error
           message: Errores_Cuentas.CUENTA_NOT_CREATED // Mensaje de error personalizado

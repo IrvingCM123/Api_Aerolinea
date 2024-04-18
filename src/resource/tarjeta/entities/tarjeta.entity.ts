@@ -1,6 +1,7 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { Tarjeta_Estado } from "src/common/enums/tarjeta.enum";
 
+@Entity()
 export class Tarjeta {
 
     @PrimaryGeneratedColumn()
