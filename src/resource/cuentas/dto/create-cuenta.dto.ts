@@ -8,6 +8,7 @@ import {
     IsNumber,
     IsOptional
 } from 'class-validator';
+import { Tarjeta } from 'src/resource/tarjeta/entities/tarjeta.entity';
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 
 export class CreateCuentaDto {
@@ -35,4 +36,8 @@ export class CreateCuentaDto {
     @IsOptional()
     @IsString()
     cuenta_Fecha_Registro: string;
+
+    @IsOptional()
+    @IsNumber()
+    id_Tarjeta: Tarjeta;
 }

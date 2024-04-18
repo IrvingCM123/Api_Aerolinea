@@ -48,7 +48,7 @@ export class RegisterDto {
     @IsOptional()
     usuario_Tarjeta_Direccion: string;
 
-    @IsNumber()
+    @IsString()
     @IsOptional()
     usuario_Tarjeta_Numero_Tarjeta: string;
 

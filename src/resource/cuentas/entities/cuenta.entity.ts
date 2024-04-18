@@ -9,6 +9,7 @@ import {
 
 import { Estado } from 'src/common/enums/cuentas.enum'
 import { Roles } from 'src/common/enums/roles.enum';
+import { Tarjeta } from 'src/resource/tarjeta/entities/tarjeta.entity';
 
 @Entity()
 export class Cuenta {
@@ -41,4 +42,9 @@ export class Cuenta {
 
     @Column({ nullable: true })
     cuenta_Fecha_Registro: string;
+
+    @Column({ nullable: true })
+    @OneToOne(() => Tarjeta, { eager: true })
+    @JoinColumn({ name: 'id_Tarjeta' })
+    id_Tarjeta: Tarjeta;
 }

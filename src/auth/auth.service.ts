@@ -134,6 +134,7 @@ export class AuthService {
         id_Usuario: nuevo_Usuario.resultado.id_Usuario,
         cuenta_Numero_Activacion: hashedActivacion,
         cuenta_Fecha_Registro: fecha_formateada,
+        id_Tarjeta: nueva_Tarjeta.resultado.id_Tarjeta
       }
 
       // Guardar la nueva cuenta en la base de datos

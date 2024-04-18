@@ -8,7 +8,7 @@ export class CreateTarjetaDto {
     @IsString()
     tarjeta_Direccion: string;
 
-    @IsNumber()
+    @IsString()
     tarjeta_Numero_Tarjeta: string;
 
     @IsString()
