@@ -8,6 +8,7 @@ import {
     IsNumber,
     IsOptional
 } from 'class-validator';
+import { Tarjeta } from 'src/resource/tarjeta/entities/tarjeta.entity';
 import { Usuario } from 'src/resource/usuario/entities/usuario.entity';
 
 export class CreateCuentaDto {
@@ -24,9 +25,6 @@ export class CreateCuentaDto {
     @Transform(({ value }) => value.trim())
     cuenta_Contraseña : string;
 
-    @IsOptional()
-    cuenta_Estado_Cuenta: string;
-
     @IsNumber()
     id_Usuario: Usuario;
 
@@ -34,4 +32,12 @@ export class CreateCuentaDto {
     @Matches(/^(?:[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3})$/) // Expresión regular del identificador
     @Transform(({ value }) => value.trim())
     cuenta_Numero_Activacion: string;
+
+    @IsOptional()
+    @IsString()
+    cuenta_Fecha_Registro: string;
+
+    @IsOptional()
+    @IsNumber()
+    id_Tarjeta: Tarjeta;
 }
