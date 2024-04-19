@@ -3,6 +3,7 @@ import { enviar_Email } from './methods/sendEmail.function';
 import { activar_Cuenta } from './methods/validateAccount.function';
 import { actualizar_Contraseña } from './methods/password.function';
 import { CuentasService } from 'src/resource/cuentas/cuentas.service';
+import { Errores_Cuentas, Exito_Cuentas } from 'src/common/helpers/cuentas.helpers';
 
 @Injectable()
 export class ClientService {
@@ -28,11 +29,22 @@ export class ClientService {
     template_email = actualizacion.template_email;
     await enviar_Email(Destinatario, template_email);
 
-    await this.cuentasService.registrar_codigo(actualizacion.numero_Activacion, Destinatario);
+    console.log(actualizacion.numero_Activacion)
+
+    let registro = await this.cuentasService.registrar_codigo(actualizacion.numero_Activacion, Destinatario);
   
-    return {
-      status: 201,
-    };
+    if (registro.status == 201) {
+      return {
+        status: 201,
+        message: Exito_Cuentas.CORREO_ENVIADO
+      }
+    } else {
+      return {
+        status: 400,
+        message: Errores_Cuentas.CODIGO_NO_GENERADO
+      }
+    }
+
   }
 
 }

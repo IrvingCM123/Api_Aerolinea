@@ -16,6 +16,7 @@ export enum Errores_Cuentas {
     CONTRASEÑA_NO_ACTUALIZADA = 'La contraseña no fue actualizada',
     NUMERO_ACTIVACION_NO_VALIDO = 'El numero de activacion no es valido',
     CODIGO_NO_REGISTRADO = 'El codigo no fue registrado',
+    CODIGO_NO_GENERADO = 'El codigo no se ha podido generar'
 }
 
 export enum Exito_Cuentas {
@@ -30,4 +31,5 @@ export enum Exito_Cuentas {
     CUENTA_REACTIVADA = 'Cuenta reactivada con exito',
     CONTRASEÑA_ACTUALIZADA = 'Contraseña actualizada con exito',
     CODIGO_REGISTRADO = 'Codigo registrado con exito',
+    CORREO_ENVIADO = 'El correo con el código ha sido enviado!'
 }
