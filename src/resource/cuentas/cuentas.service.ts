@@ -66,7 +66,10 @@ export class CuentasService {
     try {
       return this.cuentaRepository.findOneById(id);
     } catch (error) {
-      return Errores_Cuentas.CUENTA_NOT_FOUND;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
   }
 
@@ -81,18 +84,26 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
-      return;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
 
-    const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_Cuenta;
 
-    let resultato = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, estado_cuenta, 'estado_cuenta', cuenta_ID);
+    let resultato = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, estado_cuenta, 'cuenta_Estado_Cuenta', cuenta_ID);
 
     if (resultato == 'Éxito') {
-      return Exito_Cuentas.CUENTA_ACTUALIZADA;
+      return {
+        status: 201,
+        message: Exito_Cuentas.CUENTA_ACTUALIZADA
+      }
     } else {
-      return Errores_Cuentas.CUENTA_NOT_UPDATED;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_UPDATED
+      }
     }
   }
 
@@ -103,21 +114,33 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
+      };
     }
 
-    if (!(await bcrypt.compare(numero_activacion, cuentaUsuario.numero_activacion))) {
-      throw new Error(Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO);
+    if (!(await bcrypt.compare(numero_activacion, cuentaUsuario.cuenta_Numero_Activacion))) {
+      return {
+        status: 400,
+        message: Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO
+      }
     }
 
-    const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_Cuenta;
 
-    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, Estado.ACTIVO, 'estado_cuenta', cuenta_ID);
+    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, Estado.ACTIVO, 'cuenta_Estado_Cuenta', cuenta_ID);
 
     if (resultado == 'Éxito') {
-      return Exito_Cuentas.CUENTA_ACTUALIZADA;
+      return {
+        status: 201,
+        message: Exito_Cuentas.CUENTA_ACTUALIZADA
+      }
     } else {
-      return Errores_Cuentas.CUENTA_NOT_UPDATED;
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_UPDATED
+      }
     }
   }
 
@@ -128,12 +151,15 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return {
+        status : 400,
+        message : Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
 
-    const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_Cuenta;
 
-    if (!(await bcrypt.compare(codigo, cuentaUsuario.codigo_recuperacion))) {
+    if (!(await bcrypt.compare(codigo, cuentaUsuario.cuenta_Codigo_Recuperacion))) {
       return {
         status : 400,
         message : Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO
@@ -142,7 +168,7 @@ export class CuentasService {
 
     const hashedPassword = await bcrypt.hash(contraseña, 10);
 
-    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, hashedPassword, 'contraseña', cuenta_ID);
+    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, hashedPassword, 'cuenta_Contraseña', cuenta_ID);
 
     if (resultado == 'Éxito') {
       return {
@@ -164,19 +190,28 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return {
+        status : 400,
+        message : Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
 
-    const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_Cuenta;
 
     const codigo_encriptado = await bcrypt.hash(codigo, 10);
 
-    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, codigo_encriptado, 'codigo_recuperacion', cuenta_ID);
+    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, codigo_encriptado, 'cuenta_Codigo_Recuperacion', cuenta_ID);
 
     if (resultado == 'Éxito') {
-      return Exito_Cuentas.CODIGO_REGISTRADO;
+      return {
+        status: 201,
+        message: Exito_Cuentas.CODIGO_REGISTRADO
+      }
     } else {
-      throw new Error(Errores_Cuentas.CODIGO_NO_REGISTRADO);
+      return {
+        status: 400,
+        message: Errores_Cuentas.CODIGO_NO_REGISTRADO
+      }
     }
   }
 
@@ -192,7 +227,7 @@ export class CuentasService {
       }
     }
 
-    if (!(await bcrypt.compare(codigo, cuentaUsuario.codigo_recuperacion))) {
+    if (!(await bcrypt.compare(codigo, cuentaUsuario.cuenta_Codigo_Recuperacion))) {
       return {
         status : 400,
         message : Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO
@@ -212,12 +247,15 @@ export class CuentasService {
     });
 
     if (!cuentaUsuario) {
-      throw new Error(Errores_Cuentas.CUENTA_NOT_FOUND);
+      return {
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
+      }
     }
 
-    const cuenta_ID = cuentaUsuario.id_cuenta;
+    const cuenta_ID = cuentaUsuario.id_Cuenta;
 
-    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, Estado.ELIMINADO, 'estado_cuenta', cuenta_ID);
+    let resultado = await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Cuenta, Estado.ELIMINADO, 'cuenta_Estado_Cuenta', cuenta_ID);
 
     if (resultado == 'Éxito') {
       return {

@@ -13,4 +13,5 @@ export enum Error_Registro {
     FORMATO_DIRECCION = 'La dirección no puede estar vacía',
     EDAD_MINIMA = 'La edad mínima es 18 años',
     EDAD_MAXIMA = 'La edad máxima es 120 años',
+    FECHA_VENCIMIENTO = 'El formato de la fecha de vencimiento es erroneo'
 }

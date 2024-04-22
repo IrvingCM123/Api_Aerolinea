@@ -1,0 +1,48 @@
+
+CREATE OR REPLACE FUNCTION evitar_eliminar_con_registros()
+RETURNS TRIGGER AS $$
+DECLARE
+    tiene_registros BOOLEAN;
+BEGIN
+    IF TG_OP = 'DROP' THEN
+        SELECT EXISTS (
+            SELECT 1 FROM pg_catalog.pg_tables
+            WHERE schemaname = TG_TABLE_SCHEMA
+            AND tablename = TG_TABLE_NAME
+        ) INTO tiene_registros;
+        IF tiene_registros THEN
+            RAISE EXCEPTION 'No se puede eliminar la tabla % porque hay registros en ella', TG_TABLE_NAME;
+        END IF;
+    ELSIF TG_OP = 'ALTER' THEN
+        SELECT EXISTS (
+            SELECT 1 FROM pg_catalog.pg_tables
+            WHERE schemaname = TG_TABLE_SCHEMA
+            AND tablename = TG_TABLE_NAME
+        ) INTO tiene_registros;
+        IF tiene_registros THEN
+            RAISE EXCEPTION 'No se puede alterar la tabla %, restricción de registros presentes', TG_TABLE_NAME;
+        END IF;
+    END IF;
+    RETURN NULL; 
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE EVENT TRIGGER trig_detectar_alter_table
+ON ddl_command_end
+WHEN TAG IN ('BEFORE TABLE')
+EXECUTE FUNCTION detectar_alter_table();
+
+
+
+DO $$
+DECLARE
+    tabla_record RECORD;
+    trigger_name VARCHAR;
+BEGIN
+    FOR tabla_record IN SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE' LOOP
+        trigger_name := 'trigger_evitar_eliminar_' || tabla_record.table_name;
+        EXECUTE 'CREATE TRIGGER ' || trigger_name || '
+        BEFORE DELETE OR UPDATE ON ' || tabla_record.table_name || '
+        FOR EACH ROW EXECUTE FUNCTION evitar_eliminar_con_registros()';
+    END LOOP;
+END $$;

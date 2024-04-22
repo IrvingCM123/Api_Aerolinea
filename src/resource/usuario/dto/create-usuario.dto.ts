@@ -18,10 +18,4 @@ export class CreateUsuarioDto {
     @MinLength(2)
     usuario_Edad: number;
 
-    @Matches(/^(\d{3})-(\d{3})-(\d{4})$/, {
-        message: Error_Registro.FORMATO_TELEFONO,
-    })
-    @MaxLength(12)
-    usuario_Telefono: string;
-
 }
