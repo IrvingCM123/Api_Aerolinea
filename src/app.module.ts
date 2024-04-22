@@ -10,6 +10,17 @@ import { ClientModule } from './client/client.module';
 import { TransaccionModule } from './common/transaction/transaccion.module';
 import { ClienteModule } from './resource/cliente/cliente.module';
 import { TarjetaModule } from './resource/tarjeta/tarjeta.module';
+import { AeropuertosModule } from './resource/aeropuertos/aeropuertos.module';
+import { AvionesModule } from './resource/aviones/aviones.module';
+import { FabricantesModule } from './resource/fabricantes/fabricantes.module';
+import { ModelosModule } from './resource/modelos/modelos.module';
+import { PilotosModule } from './resource/pilotos/pilotos.module';
+import { TarifasModule } from './resource/tarifas/tarifas.module';
+import { TrabajadoresModule } from './resource/trabajadores/trabajadores.module';
+import { TripulacionesModule } from './resource/tripulaciones/tripulaciones.module';
+import { UbicacionesModule } from './resource/ubicaciones/ubicaciones.module';
+import { ViajesModule } from './resource/viajes/viajes.module';
+import { VuelosModule } from './resource/vuelos/vuelos.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -21,24 +32,24 @@ const user_develop = dotenv_Config.parsed.PG_USER_DEVELOP;
 const password = dotenv_Config.parsed.PG_PASSWORD;
 const password_develop = dotenv_Config.parsed.PG_PASSWORD_DEVELOP;
 
-const host_local = secret.PG_HOST_LOCAL
-const database_local = secret.PG_DATABASE_LOCAL
-const user_local = secret.PG_USER_LOCAL
-const password_local = secret.PG_PASSWORD_LOCAL
+const host_local = secret.PG_HOST_LOCAL;
+const database_local = secret.PG_DATABASE_LOCAL;
+const user_local = secret.PG_USER_LOCAL;
+const password_local = secret.PG_PASSWORD_LOCAL;
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: host_develop,
+      host: host_local,
       port: 5432,
-      username: user,
-      password: password,
-      database: database,
+      username: user_local,
+      password: password_local,
+      database: database_local,
       autoLoadEntities: true,
       synchronize: true,
       extra: {
-        ssl: true,
+        ssl: false,
         sslmode: 'require',
       },
     }),
@@ -48,11 +59,20 @@ const password_local = secret.PG_PASSWORD_LOCAL
     ClientModule,
     TransaccionModule,
     ClienteModule,
-    TarjetaModule
+    TarjetaModule,
+    AeropuertosModule,
+    AvionesModule,
+    FabricantesModule,
+    ModelosModule,
+    PilotosModule,
+    TarifasModule,
+    TrabajadoresModule,
+    TripulacionesModule,
+    UbicacionesModule,
+    ViajesModule,
+    VuelosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-
-}
+export class AppModule {}

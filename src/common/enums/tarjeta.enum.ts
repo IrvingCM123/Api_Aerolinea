@@ -1,4 +1,4 @@
 export enum Tarjeta_Estado {
-    ACTIVO = "activo",
-    ELIMINADO = 'eliminado',
+  ACTIVO = 'activo',
+  ELIMINADO = 'eliminado',
 }
