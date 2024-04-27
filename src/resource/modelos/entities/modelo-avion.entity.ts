@@ -1,27 +1,22 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Avion } from '../../aviones/entities/avion.entity';
-import { Fabricante } from '../../fabricantes/entities/fabricante.entity';
+import { ESTADO_OPERATIVO } from 'src/common/enums/estado-operativo.enum';
+import { CategoriaModelo } from 'src/common/enums/categoria-modelo.enum';
 
 @Entity()
 export class ModeloAvion {
   @PrimaryGeneratedColumn()
-  id: number;
+  modelo_Avion_Id: number;
 
   @Column({ nullable: false, length: 25 })
-  nombre: string;
+  modelo_Avion_Nombre: string;
 
-  @Column({ nullable: false, length: 15 })
-  categoria: string;
+  @Column({ nullable: false, type: 'enum', enum: ESTADO_OPERATIVO })
+  modelo_Avion_Estado: ESTADO_OPERATIVO;
 
-  @ManyToOne(() => Fabricante, (fabricante) => fabricante.modelosAvion)
-  fabricante: Fabricante;
+  @Column({ nullable: false, type: 'enum', enum: CategoriaModelo })
+  modelo_Avion_Categoria: CategoriaModelo;
 
-  @OneToMany(() => Avion, (avion) => avion.modeloAvion)
-  aviones: Avion[];
+  @OneToMany(() => Avion, (avion) => avion.modeloAvionId)
+  avion_Id: Avion[];
 }

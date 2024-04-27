@@ -5,5 +5,5 @@ export class CreateUbicacionDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  nombre: string;
+  ubicacion_Nombre: string;
 }

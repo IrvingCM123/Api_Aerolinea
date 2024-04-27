@@ -7,17 +7,22 @@ import {
 } from 'class-validator';
 import { ESTADO_OPERATIVO } from '../../../common/enums/estado-operativo.enum';
 import { ApiProperty } from '@nestjs/swagger';
-import { ModeloAvion } from '../../modelos/entities/modelo-avion.entity';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 export class CreateAvionDto {
   @ApiProperty({
-    type: () => ModeloAvion,
-    description: 'Modelo de avión',
+    description: 'ID del modelo de avión del avión',
     nullable: false,
   })
-  @IsObject()
   @IsNotEmpty()
-  modeloAvion: ModeloAvion;
+  modeloAvionId: number;
+
+  @ApiProperty({
+    description: 'ID del fabricante del avión',
+    nullable: false,
+  })
+  @IsNotEmpty()
+  fabricanteId: number;
 
   @ApiProperty({
     description: 'Capacidad de pasajeros del avión',
@@ -25,7 +30,7 @@ export class CreateAvionDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  capacidadPasajero: number;
+  avion_Capacidad_Pasajeros: number;
 
   @ApiProperty({
     description: 'Capacidad de carga del avión',
@@ -33,7 +38,7 @@ export class CreateAvionDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  capacidadCarga: number;
+  avion_Capacidad_Carga: number;
 
   @ApiProperty({
     description: 'Velocidad máxima del avión',
@@ -41,7 +46,7 @@ export class CreateAvionDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  velocidadMaxima: number;
+  avion_Velocidad_Maxima: number;
 
   @ApiProperty({
     description: 'Año de fabricación del avión',
@@ -49,23 +54,7 @@ export class CreateAvionDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  anioFabricacion: number;
-
-  @ApiProperty({
-    description: 'Tipo de motor del avión',
-    nullable: false,
-  })
-  @IsString()
-  @IsNotEmpty()
-  tipoMotor: string;
-
-  @ApiProperty({
-    description: 'Autonomía del avión',
-    nullable: false,
-  })
-  @IsString()
-  @IsNotEmpty()
-  autonomia: string;
+  avion_Anio_Fabricacion: number;
 
   @ApiProperty({
     enum: ESTADO_OPERATIVO,
@@ -79,5 +68,34 @@ export class CreateAvionDto {
   })
   @IsEnum(ESTADO_OPERATIVO)
   @IsNotEmpty()
-  estadoOperativo: string;
+  avion_Estado_Operativo: ESTADO_OPERATIVO;
+
+  @ApiProperty({
+    description: 'Estado lógico del avión',
+    nullable: false,
+    example: [
+      Estado_Logico.ACTIVO,
+      Estado_Logico.INACTIVO,
+      Estado_Logico.ELIMINADO,
+    ],
+  })
+  @IsEnum(ESTADO_OPERATIVO)
+  @IsNotEmpty()
+  avion_Estado_Logico: Estado_Logico;
+
+  @ApiProperty({
+    description: 'Tipo de motor del avión',
+    nullable: false,
+  })
+  @IsString()
+  @IsNotEmpty()
+  avion_Tipo_Motor: string;
+
+  @ApiProperty({
+    description: 'Autonomía del avión',
+    nullable: false,
+  })
+  @IsString()
+  @IsNotEmpty()
+  avion_Autonomia: string;
 }

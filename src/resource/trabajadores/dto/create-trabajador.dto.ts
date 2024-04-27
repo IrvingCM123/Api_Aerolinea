@@ -5,6 +5,7 @@ import {
   IsEmail,
   IsDate,
   IsNumber,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateTrabajadorDto {
@@ -49,7 +50,7 @@ export class CreateTrabajadorDto {
     nullable: false,
   })
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   fechaNacimiento: Date;
 
   @ApiProperty({

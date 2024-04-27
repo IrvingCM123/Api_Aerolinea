@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  OneToMany,
+} from 'typeorm';
 import { Tripulacion } from '../../tripulaciones/entities/tripulacion.entity';
 
 @Entity()
@@ -27,9 +33,6 @@ export class Trabajador {
   @Column({ nullable: false })
   horasVuelo: number;
 
-  @ManyToMany(
-    () => Tripulacion,
-    (tripulacion) => tripulacion.tripulacionTrabajadores,
-  )
+  @OneToMany(() => Tripulacion, (tripulacion) => tripulacion.trabajadorId)
   tripulaciones: Tripulacion[];
 }

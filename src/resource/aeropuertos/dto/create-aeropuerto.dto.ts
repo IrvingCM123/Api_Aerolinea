@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString, IsEnum, IsInt } from 'class-validator';
 import { TipoAeropuerto } from 'src/common/enums/tipo_aeropuerto.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -10,7 +10,7 @@ export class CreateAeropuertoDto {
   })
   @IsString()
   @IsNotEmpty()
-  nombre: string;
+  aeropuerto_Nombre: string;
 
   @ApiProperty({
     enum: TipoAeropuerto,
@@ -23,5 +23,12 @@ export class CreateAeropuertoDto {
     ],
   })
   @IsEnum(TipoAeropuerto)
-  tipo: TipoAeropuerto;
+  aeropuerto_Tipo: TipoAeropuerto;
+
+  @ApiProperty({
+    description: 'ID de la ubicación del aeropuerto',
+    nullable: false,
+  })
+  @IsInt()
+  aeropuerto_Ubicacion: number;
 }

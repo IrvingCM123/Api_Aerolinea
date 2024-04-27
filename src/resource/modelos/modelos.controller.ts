@@ -28,9 +28,8 @@ export class ModelosController {
   }
 
   @Get('buscarModelo/:nombre')
-  asyncfindByName(@Param('nombre') nombre: any) {
-    console.log(nombre);
-    return this.modelosService.findByName(nombre.nombre);
+  async findByName(@Param('nombre') nombre: string) {
+    return this.modelosService.findByName(nombre);
   }
 
   @Patch(':id')

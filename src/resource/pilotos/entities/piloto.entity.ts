@@ -1,44 +1,46 @@
-import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Piloto {
   @PrimaryGeneratedColumn()
-  id: number;
+  piloto_Id: number;
 
   @Column({ nullable: false, length: 30 })
-  nombre: string;
+  piloto_Nombre: string;
 
   @Column({ nullable: false, length: 30 })
-  apellidos: string;
+  piloto_Apellidos: string;
 
   @Column({ nullable: false })
-  telefono: number;
+  piloto_Telefono: string;
 
   @Column({ nullable: false, length: 30 })
-  correoElectronico: string;
+  piloto_Correo_Electronico: string;
 
   @Column({ nullable: false, length: 30 })
-  licenciaPiloto: string;
+  piloto_Licencia_Piloto: string;
 
   @Column({ nullable: false, type: 'date' })
-  fechaNacimiento: Date;
+  piloto_Fecha_Nacimiento: Date;
 
   @Column({ nullable: false, length: 30 })
-  nacionalidad: string;
+  piloto_Nacionalidad: string;
 
   @Column({ nullable: false })
-  horasVuelo: number;
+  piloto_Horas_Vuelo: number;
 
-  @Column({ nullable: false, type: 'simple-array' })
-  certificaciones: string[];
+  @Column({ nullable: false, array: true, type: 'text' })
+  piloto_Certificaciones: string[];
 
-  @OneToMany(() => Vuelo, (vuelo) => vuelo.piloto)
-  vuelosPiloto: Vuelo[];
+  @Column({ nullable: false, type: 'date' })
+  piloto_Fecha_Expedicion_Licencia: Date;
 
-  @OneToMany(() => Vuelo, (vuelo) => vuelo.coopiloto)
-  vuelosCopiloto: Vuelo[];
-
-  @Column({ nullable: false, type: 'timestamp' })
-  fechaExpedicionLicencia: Date;
+  @Column({
+    nullable: false,
+    type: 'enum',
+    enum: Estado_Logico,
+    default: Estado_Logico.ACTIVO,
+  })
+  piloto_Estado_Logico: Estado_Logico;
 }

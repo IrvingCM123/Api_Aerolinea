@@ -18,7 +18,7 @@ import { PilotosModule } from './resource/pilotos/pilotos.module';
 import { TrabajadoresModule } from './resource/trabajadores/trabajadores.module';
 import { TripulacionesModule } from './resource/tripulaciones/tripulaciones.module';
 import { UbicacionesModule } from './resource/ubicaciones/ubicaciones.module';
-import { ViajesModule } from './resource/viajes/viajes.module';
+//import { ViajesModule } from './resource/viajes/viajes.module';
 import { VuelosModule } from './resource/vuelos/vuelos.module';
 import { TarifasModule } from './resource/tarifas/tarifas.module';
 
@@ -68,7 +68,7 @@ const password_local = secret.PG_PASSWORD_LOCAL;
     TrabajadoresModule,
     TripulacionesModule,
     UbicacionesModule,
-    ViajesModule,
+    //ViajesModule,
     VuelosModule,
     TarifasModule,
   ],

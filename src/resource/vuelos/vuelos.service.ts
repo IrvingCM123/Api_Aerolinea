@@ -30,12 +30,11 @@ export class VuelosService {
 
   async findOne(id: number | FindOneOptions<Vuelo>) {
     const options: FindOneOptions<Vuelo> =
-      typeof id === 'number' ? { where: { id } } : id;
+      typeof id === 'number' ? { where: { Vuelo_ID: id } } : id;
     const vuelo = await this.vueloRepository.findOne(options);
     if (!vuelo) {
       if (typeof id === 'number') {
-        throw new NotFoundException(`Vuelo
-         with ID ${id} not found`);
+        throw new NotFoundException(`Vuelo with ID ${id} not found`);
       } else {
         throw new NotFoundException(`Vuelo not found`);
       }
@@ -43,9 +42,9 @@ export class VuelosService {
     return vuelo;
   }
 
-  async update(id: number, updateUbicacionDto: UpdateVueloDto) {
+  async update(id: number, updateVueloDto: UpdateVueloDto) {
     const vuelo = await this.findOne(id);
-    this.vueloRepository.merge(vuelo, updateUbicacionDto);
+    this.vueloRepository.merge(vuelo, updateVueloDto);
     return await this.vueloRepository.save(vuelo);
   }
 

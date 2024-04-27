@@ -28,8 +28,8 @@ export class PilotosController {
   }
 
   @Get('buscarPiloto/:nombre')
-  async findbyName(@Param('nombre') nombre: any) {
-    return this.pilotosService.findbyName(nombre.nombre);
+  async findbyName(@Param('nombre') nombre: string) {
+    return this.pilotosService.findbyName(nombre);
   }
 
   @Patch(':id')

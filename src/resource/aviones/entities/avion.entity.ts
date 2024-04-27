@@ -3,40 +3,41 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { ESTADO_OPERATIVO } from '../../../common/enums/estado-operativo.enum';
 import { ModeloAvion } from '../../modelos/entities/modelo-avion.entity';
-import { Vuelo } from '../../vuelos/entities/vuelo.entity';
+import { Fabricante } from 'src/resource/fabricantes/entities/fabricante.entity';
+import { Estado_Logico } from '../../../common/enums/estado_logico.enum';
 
 @Entity()
 export class Avion {
   @PrimaryGeneratedColumn()
-  id: number;
+  avion_Id: number;
 
-  @ManyToOne(() => ModeloAvion, (modeloAvion) => modeloAvion.aviones)
-  modeloAvion: ModeloAvion;
+  @ManyToOne(() => ModeloAvion, (modeloAvion) => modeloAvion.avion_Id, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'modeloAvionId' })
+  modeloAvionId: ModeloAvion;
 
-  @OneToMany(() => Vuelo, (vuelo) => vuelo.avion)
-  vuelos: Vuelo[];
-
-  @Column({ nullable: false })
-  capacidadPasajero: number;
-
-  @Column({ nullable: false })
-  capacidadCarga: number;
-
-  @Column({ nullable: false })
-  velocidadMaxima: number;
+  @ManyToOne(() => Fabricante, (fabricante) => fabricante.avion_Id, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'fabricanteId' })
+  fabricanteId: Fabricante;
 
   @Column({ nullable: false })
-  anioFabricacion: number;
+  avion_Capacidad_Pasajeros: number;
 
   @Column({ nullable: false })
-  tipoMotor: string;
+  avion_Capacidad_Carga: number;
 
   @Column({ nullable: false })
-  autonomia: string;
+  avion_Velocidad_Maxima: number;
+
+  @Column({ nullable: false })
+  avion_Anio_Fabricacion: number;
 
   @Column({
     nullable: false,
@@ -44,5 +45,19 @@ export class Avion {
     enum: ESTADO_OPERATIVO,
     type: 'enum',
   })
-  estadoOperativo: string;
+  avion_Estado_Operativo: string;
+
+  @Column({
+    nullable: false,
+    type: 'enum',
+    enum: Estado_Logico,
+    default: Estado_Logico.ACTIVO,
+  })
+  avion_Estado_Logico: Estado_Logico;
+
+  @Column({ nullable: false })
+  avion_Tipo_Motor: string;
+
+  @Column({ nullable: false })
+  avion_Autonomia: string;
 }

@@ -2,16 +2,22 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTarifaDistanciaDto {
   @ApiProperty({
+    description: 'Nombre de la tarifa de distancia',
+    nullable: false,
+  })
+  tarifa_distancia_Nombre: string;
+
+  @ApiProperty({
     description: 'Ubicación de origen para la tarifa de distancia',
     nullable: false,
   })
-  origen: string;
+  origenId: number;
 
   @ApiProperty({
     description: 'Ubicación de destino para la tarifa de distancia',
     nullable: false,
   })
-  destino: string;
+  destinoId: number;
 
   @ApiProperty({
     description: 'Distancia en kilómetros entre el origen y el destino',

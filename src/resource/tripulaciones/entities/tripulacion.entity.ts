@@ -1,29 +1,30 @@
+import { Trabajador } from 'src/resource/trabajadores/entities/trabajador.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
-  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Trabajador } from '../../trabajadores/entities/trabajador.entity';
-import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
 
 @Entity()
 export class Tripulacion {
   @PrimaryGeneratedColumn()
-  id: number;
+  tripulacion_ID: number;
 
   @Column({ nullable: false, length: 20 })
-  nombreEquipo: string;
+  nombre_Equipo: string;
 
-  @Column()
+  @Column({ nullable: false })
+  cantidad_Tripulantes: number;
+
+  @Column({ nullable: false, length: 20 })
+  clase_Viaje: string;
+
+  @Column({ nullable: false })
   valoracion: number;
 
-  @ManyToMany(() => Trabajador, (trabajador) => trabajador.tripulaciones)
-  @JoinTable()
-  tripulacionTrabajadores: Trabajador[];
-
-  @OneToMany(() => Vuelo, (vuelo) => vuelo.tripulacion)
-  vuelosTripulacion: Vuelo[];
+  @ManyToOne(() => Trabajador, (trabajador) => trabajador.id)
+  @JoinColumn({ name: 'id' })
+  trabajadorId: number;
 }

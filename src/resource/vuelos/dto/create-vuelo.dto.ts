@@ -1,53 +1,71 @@
-import {
-  IsNumber,
-  IsDate,
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-} from 'class-validator';
-import { Type } from 'class-transformer';
-import { CreateAvionDto } from '../../aviones/dto/create-avion.dto';
-import { CreatePilotoDto } from '../../pilotos/dto/create-piloto.dto';
-import { CreateTripulacionDto } from '../../tripulaciones/dto/create-tripulacion.dto';
+import { IsNotEmpty, IsInt, IsDateString, IsEnum } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 
 export class CreateVueloDto {
-  @IsOptional()
-  id?: number;
-
+  @ApiProperty({ description: 'ID del avión', nullable: false })
   @IsNotEmpty()
-  @Type(() => Date)
-  @IsDate()
+  @IsInt()
+  avion_Id: number;
+
+  @ApiProperty({
+    description: 'Fecha del vuelo',
+    nullable: false,
+  })
+  @IsNotEmpty()
+  @IsDateString()
   fecha: Date;
 
+  @ApiProperty({ description: 'ID del piloto', nullable: false })
   @IsNotEmpty()
-  @Type(() => CreateAvionDto)
-  avion: CreateAvionDto;
+  @IsInt()
+  piloto_Id: number;
 
+  @ApiProperty({ description: 'ID del copiloto', nullable: false })
   @IsNotEmpty()
-  @Type(() => CreatePilotoDto)
-  piloto: CreatePilotoDto;
+  @IsInt()
+  copiloto_Id: number;
 
+  @ApiProperty({ description: 'ID de la tripulación', nullable: false })
   @IsNotEmpty()
-  @Type(() => CreatePilotoDto)
-  copiloto: CreatePilotoDto;
+  @IsInt()
+  tripulacion_ID: number;
 
+  @ApiProperty({ description: 'Hora de salida del vuelo', nullable: false })
   @IsNotEmpty()
-  @Type(() => CreateTripulacionDto)
-  tripulacion: CreateTripulacionDto;
-
-  @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   horaSalida: number;
 
+  @ApiProperty({ description: 'Cantidad total de pasajeros', nullable: false })
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   pasajerosTotales: number;
 
+  @ApiProperty({
+    description: 'Cantidad de pasajeros apartados',
+    nullable: false,
+  })
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   pasajerosApartados: number;
 
+  @ApiProperty({
+    description: 'Estado del vuelo',
+    enum: Estado_Viaje,
+    nullable: false,
+    enumName: 'EstadoVuelo',
+  })
+  @IsEnum(Estado_Viaje)
   @IsNotEmpty()
-  @IsString()
-  estado: string;
+  estado: Estado_Viaje;
+
+  @ApiProperty({ description: 'ID de la tarifa de clase', nullable: false })
+  @IsNotEmpty()
+  @IsInt()
+  tarifa_Clase_Id: number;
+
+  @ApiProperty({ description: 'ID de la tarifa de distancia', nullable: false })
+  @IsNotEmpty()
+  @IsInt()
+  tarifa_distancia_Id: number;
 }

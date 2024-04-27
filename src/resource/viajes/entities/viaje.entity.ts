@@ -1,28 +1,34 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Avion } from '../../aviones/entities/avion.entity';
-import { Estado_Viaje } from '../../../common/enums/estado-viaje.enum';
-import { Aeropuerto } from '../../aeropuertos/entities/aeropuerto.entity';
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
+import { Aeropuerto } from 'src/resource/aeropuertos/entities/aeropuerto.entity';
+import { Avion } from 'src/resource/aviones/entities/avion.entity';
+import { Ubicacion } from '../../ubicaciones/entities/ubicacion.entity'; // Importa la entidad Ubicacion
 
 @Entity()
 export class Viaje {
   @PrimaryGeneratedColumn()
-  id: number;
+  Viaje_ID: number;
 
-  @ManyToOne(() => Aeropuerto)
-  origen: Aeropuerto;
+  @Column({ type: 'date', nullable: false })
+  Fecha_Salida: Date;
 
-  @ManyToOne(() => Aeropuerto)
-  destino: Aeropuerto;
+  @Column({ type: 'date', nullable: false })
+  Fecha_Llegada: Date;
 
-  @Column({ nullable: false, type: 'date' })
-  fechaSalida: Date;
+  @Column({
+    type: 'enum',
+    enum: Estado_Viaje,
+    nullable: false,
+    default: Estado_Viaje.POR_INICIAR,
+  })
+  Estado_Viaje: Estado_Viaje;
 
-  @Column({ nullable: false, type: 'date' })
-  fechaLlegada: Date;
+  @ManyToOne(() => Avion, { nullable: false })
+  Numero_Avion: Avion;
 
-  @Column({ nullable: false, default: Estado_Viaje.EN_CURSO })
-  estadoViaje: string;
+  @ManyToOne(() => Aeropuerto, { nullable: false })
+  Aeropuerto_Destino: Aeropuerto;
 
-  @ManyToOne(() => Avion, { eager: true })
-  avion: Avion;
+  @ManyToOne(() => Aeropuerto, { nullable: false })
+  Aeropuerto_Origen: Aeropuerto;
 }

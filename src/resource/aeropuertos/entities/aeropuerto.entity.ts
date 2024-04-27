@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Ubicacion } from '../../ubicaciones/entities/ubicacion.entity';
 import { TipoAeropuerto } from 'src/common/enums/tipo_aeropuerto.enum';
 
@@ -8,11 +14,12 @@ export class Aeropuerto {
   id: number;
 
   @Column({ nullable: false, length: 50 })
-  nombre: string;
+  aeropuerto_Nombre: string;
 
   @Column({ nullable: false, default: TipoAeropuerto.NACIONAL })
-  tipo: TipoAeropuerto;
+  aeropuerto_Tipo: TipoAeropuerto;
 
-  @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.aeropuertos)
-  ubicacion: Ubicacion;
+  @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.aeropuertosId)
+  @JoinColumn({ name: 'ubicacion_id' })
+  aeropuerto_Ubicacion: number;
 }

@@ -30,7 +30,7 @@ export class UbicacionesService {
 
   async findOne(id: number | FindOneOptions<Ubicacion>) {
     const options: FindOneOptions<Ubicacion> =
-      typeof id === 'number' ? { where: { id } } : id;
+      typeof id === 'number' ? { where: { ubicacion_Id: id } } : id;
     const ubicacion = await this.ubicacionRepository.findOne(options);
     if (!ubicacion) {
       if (typeof id === 'number') {

@@ -25,7 +25,9 @@ export class AeropuertosService {
   }
 
   async findAll() {
-    return await this.aeropuertoRepository.find();
+    return await this.aeropuertoRepository.find({
+      relations: ['aeropuerto_Ubicacion'],
+    });
   }
 
   async findOne(id: number | FindOneOptions<Aeropuerto>) {

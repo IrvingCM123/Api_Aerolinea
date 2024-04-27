@@ -1,23 +1,24 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { ModeloAvion } from '../../modelos/entities/modelo-avion.entity';
+import { Avion } from '../../aviones/entities/avion.entity';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 @Entity()
 export class Fabricante {
   @PrimaryGeneratedColumn()
-  id: number;
+  fabricante_Id: number;
 
   @Column({ nullable: false, length: 50 })
-  nombre: string;
+  fabricante_Nombre: string;
 
   @Column({ nullable: false, length: 50 })
-  descripcion: string;
+  fabricante_Descripcion: string;
 
   @Column({ nullable: false, length: 12 })
-  telefono: string;
+  fabricante_Telefono: string;
 
   @Column({ nullable: false })
-  email: string;
+  fabricante_Email: string;
 
-  @OneToMany(() => ModeloAvion, (modeloAvion) => modeloAvion.fabricante)
-  modelosAvion: ModeloAvion[];
+  @OneToMany(() => Avion, (avion) => avion.fabricanteId)
+  avion_Id: Avion[];
 }

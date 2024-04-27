@@ -9,7 +9,7 @@ export class CreateFabricanteDto {
   })
   @IsString()
   @IsNotEmpty()
-  nombre: string;
+  fabricante_Nombre: string;
 
   @ApiProperty({
     description: 'Descripción del fabricante',
@@ -18,7 +18,7 @@ export class CreateFabricanteDto {
   })
   @IsString()
   @IsNotEmpty()
-  descripcion: string;
+  fabricante_Descripcion: string;
 
   @ApiProperty({
     description: 'Dirección del fabricante',
@@ -27,7 +27,7 @@ export class CreateFabricanteDto {
   })
   @IsString()
   @IsNotEmpty()
-  telefono: string;
+  fabricante_Telefono: string;
 
   @ApiProperty({
     description: 'Correo electrónico del fabricante',
@@ -37,5 +37,5 @@ export class CreateFabricanteDto {
   @IsString()
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  fabricante_Email: string;
 }
