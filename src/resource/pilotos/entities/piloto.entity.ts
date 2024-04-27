@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class Piloto {
@@ -29,8 +30,14 @@ export class Piloto {
   @Column({ nullable: false })
   horasVuelo: number;
 
-  @Column({ nullable: false, length: 30 })
-  certificaciones: string;
+  @Column({ nullable: false, type: 'simple-array' })
+  certificaciones: string[];
+
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.piloto)
+  vuelosPiloto: Vuelo[];
+
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.coopiloto)
+  vuelosCopiloto: Vuelo[];
 
   @Column({ nullable: false, type: 'timestamp' })
   fechaExpedicionLicencia: Date;

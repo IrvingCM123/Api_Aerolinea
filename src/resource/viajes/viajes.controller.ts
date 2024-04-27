@@ -16,27 +16,30 @@ export class ViajesController {
   constructor(private readonly viajesService: ViajesService) {}
 
   @Post()
-  create(@Body() createViajeDto: CreateViajeDto) {
+  async create(@Body() createViajeDto: CreateViajeDto) {
     return this.viajesService.create(createViajeDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.viajesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.viajesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateViajeDto: UpdateViajeDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateViajeDto: UpdateViajeDto,
+  ) {
     return this.viajesService.update(+id, updateViajeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.viajesService.remove(+id);
   }
 }

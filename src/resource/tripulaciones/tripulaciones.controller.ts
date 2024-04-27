@@ -10,28 +10,30 @@ import {
 import { TripulacionesService } from './tripulaciones.service';
 import { CreateTripulacionDto } from './dto/create-tripulacion.dto';
 import { UpdateTripulacionDto } from './dto/update-tripulacion.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Tripulaciones')
 @Controller('tripulaciones')
 export class TripulacionesController {
   constructor(private readonly tripulacionesService: TripulacionesService) {}
 
   @Post()
-  create(@Body() createTripulacioneDto: CreateTripulacionDto) {
+  async create(@Body() createTripulacioneDto: CreateTripulacionDto) {
     return this.tripulacionesService.create(createTripulacioneDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.tripulacionesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.tripulacionesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateTripulacioneDto: UpdateTripulacionDto,
   ) {
@@ -39,7 +41,7 @@ export class TripulacionesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.tripulacionesService.remove(+id);
   }
 }

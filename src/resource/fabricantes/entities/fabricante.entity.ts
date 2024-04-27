@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { ModeloAvion } from '../../modelos/entities/modelo.entity';
+import { ModeloAvion } from '../../modelos/entities/modelo-avion.entity';
 
 @Entity()
 export class Fabricante {

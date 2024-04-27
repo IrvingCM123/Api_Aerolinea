@@ -10,33 +10,38 @@ import {
 import { VuelosService } from './vuelos.service';
 import { CreateVueloDto } from './dto/create-vuelo.dto';
 import { UpdateVueloDto } from './dto/update-vuelo.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Vuelos')
 @Controller('vuelos')
 export class VuelosController {
   constructor(private readonly vuelosService: VuelosService) {}
 
   @Post()
-  create(@Body() createVueloDto: CreateVueloDto) {
+  async create(@Body() createVueloDto: CreateVueloDto) {
     return this.vuelosService.create(createVueloDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.vuelosService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.vuelosService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVueloDto: UpdateVueloDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateVueloDto: UpdateVueloDto,
+  ) {
     return this.vuelosService.update(+id, updateVueloDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.vuelosService.remove(+id);
   }
 }

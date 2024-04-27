@@ -10,33 +10,38 @@ import {
 import { PilotosService } from './pilotos.service';
 import { CreatePilotoDto } from './dto/create-piloto.dto';
 import { UpdatePilotoDto } from './dto/update-piloto.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Pilotos')
 @Controller('pilotos')
 export class PilotosController {
   constructor(private readonly pilotosService: PilotosService) {}
 
   @Post()
-  create(@Body() createPilotoDto: CreatePilotoDto) {
+  async create(@Body() createPilotoDto: CreatePilotoDto) {
     return this.pilotosService.create(createPilotoDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.pilotosService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pilotosService.findOne(+id);
+  @Get('buscarPiloto/:nombre')
+  async findbyName(@Param('nombre') nombre: any) {
+    return this.pilotosService.findbyName(nombre.nombre);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePilotoDto: UpdatePilotoDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updatePilotoDto: UpdatePilotoDto,
+  ) {
     return this.pilotosService.update(+id, updatePilotoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.pilotosService.remove(+id);
   }
 }

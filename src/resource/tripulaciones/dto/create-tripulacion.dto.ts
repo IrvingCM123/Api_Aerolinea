@@ -5,14 +5,6 @@ export class CreateTripulacionDto {
   @IsString()
   nombreEquipo: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  cantidadTripulantes: number;
-
-  @IsNotEmpty()
-  @IsString()
-  claseViaje: string;
-
   @IsNumber()
   valoracion?: number;
 }

@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { ESTADO_OPERATIVO } from '../../../common/enums/estado-operativo.enum';
-import { ModeloAvion } from '../../modelos/entities/modelo.entity';
+import { ModeloAvion } from '../../modelos/entities/modelo-avion.entity';
+import { Vuelo } from '../../vuelos/entities/vuelo.entity';
 
 @Entity()
 export class Avion {
@@ -9,6 +16,9 @@ export class Avion {
 
   @ManyToOne(() => ModeloAvion, (modeloAvion) => modeloAvion.aviones)
   modeloAvion: ModeloAvion;
+
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.avion)
+  vuelos: Vuelo[];
 
   @Column({ nullable: false })
   capacidadPasajero: number;
@@ -20,7 +30,7 @@ export class Avion {
   velocidadMaxima: number;
 
   @Column({ nullable: false })
-  anoFabricacion: number;
+  anioFabricacion: number;
 
   @Column({ nullable: false })
   tipoMotor: string;

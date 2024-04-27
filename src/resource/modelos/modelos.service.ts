@@ -1,9 +1,16 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
-import { CreateModeloAvionDto } from './dto/create-modelo.dto';
-import { UpdateModeloAvionDto } from './dto/update-modelo.dto';
-import { ModeloAvion } from './entities/modelo.entity';
+import { Repository } from 'typeorm';
+import { TransaccionService } from '../../common/transaction/transaccion.service';
+import { Tipo_Transaccion } from '../../common/enums/tipo_Transaccion.enum';
+import {
+  Errores_Operaciones,
+  Exito_Operaciones,
+} from '../../common/helpers/operaciones.helpers';
+import { Estado_Logico } from '../../common/enums/estado_logico.enum';
+import { CreateModeloAvionDto } from './dto/create-modelo-avion.dto';
+import { UpdateModeloAvionDto } from './dto/update-modelo-avion.dto';
+import { ModeloAvion } from './entities/modelo-avion.entity';
 
 @Injectable()
 export class ModelosService {
@@ -12,15 +19,27 @@ export class ModelosService {
   constructor(
     @InjectRepository(ModeloAvion)
     private readonly modelosRepository: Repository<ModeloAvion>,
+    private transaccionService: TransaccionService,
   ) {}
 
   async create(createModelosDto: CreateModeloAvionDto) {
-    try {
-      const modelo = this.modelosRepository.create(createModelosDto);
-      await this.modelosRepository.save(modelo);
-      return modelo;
-    } catch (error) {
-      this.handleDBExceptions(error);
+    const modelo_Creado = await this.transaccionService.transaction(
+      Tipo_Transaccion.Guardar,
+      ModeloAvion,
+      createModelosDto,
+    );
+
+    if (modelo_Creado == 'Error') {
+      return {
+        status: 400,
+        message: 'Error al crear el modelo',
+      };
+    } else {
+      return {
+        status: 200,
+        message: 'Modelo creado con éxito',
+        modelo: modelo_Creado,
+      };
     }
   }
 
@@ -28,29 +47,70 @@ export class ModelosService {
     return await this.modelosRepository.find();
   }
 
-  async findOne(id: number | FindOneOptions<ModeloAvion>) {
-    const options: FindOneOptions<ModeloAvion> =
-      typeof id === 'number' ? { where: { id } } : id;
-    const modelo = await this.modelosRepository.findOne(options);
-    if (!modelo) {
-      if (typeof id === 'number') {
-        throw new NotFoundException(`Modelo with ID ${id} not found`);
-      } else {
-        throw new NotFoundException(`Modelo not found`);
-      }
+  async findByName(name: string) {
+    const modelo_Consultado = await this.transaccionService.transaction(
+      Tipo_Transaccion.Consultar_Con_Parametros,
+      ModeloAvion,
+      '',
+      'modelo_Avion_Nombre',
+      name,
+    );
+
+    if (modelo_Consultado == 'Error') {
+      return {
+        status: 400,
+        message: 'Error al consultar el modelo',
+      };
+    } else {
+      return {
+        status: 200,
+        message: modelo_Consultado,
+      };
     }
-    return modelo;
   }
 
   async update(id: number, updateModeloDto: UpdateModeloAvionDto) {
-    const modelo = await this.findOne(id);
-    this.modelosRepository.merge(modelo, updateModeloDto);
-    return await this.modelosRepository.save(modelo);
+    const modelo_Actualizar = await this.transaccionService.transaction(
+      Tipo_Transaccion.Actualizar_Con_Parametros,
+      ModeloAvion,
+      updateModeloDto,
+      'modelo_Avion_Id',
+      id.toString(),
+    );
+
+    if (modelo_Actualizar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_ACTUALIZAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Actualizar,
+      };
+    }
   }
 
   async remove(id: number) {
-    const modelo = await this.findOne(id);
-    return await this.modelosRepository.remove(modelo);
+    const modelo_Eliminar = await this.transaccionService.transaction(
+      Tipo_Transaccion.Actualizar_Con_Parametros,
+      ModeloAvion,
+      Estado_Logico.ELIMINADO,
+      'modelo_Avion_Estado',
+      id.toString(),
+    );
+
+    if (modelo_Eliminar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_ELIMINAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Eliminar,
+      };
+    }
   }
 
   private handleDBExceptions(error: any) {

@@ -11,7 +11,7 @@ export class Aeropuerto {
   nombre: string;
 
   @Column({ nullable: false, default: TipoAeropuerto.NACIONAL })
-  tipo: number;
+  tipo: TipoAeropuerto;
 
   @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.aeropuertos)
   ubicacion: Ubicacion;

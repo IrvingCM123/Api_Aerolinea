@@ -8,7 +8,6 @@ import {
 import { Type } from 'class-transformer';
 import { CreateAvionDto } from '../../aviones/dto/create-avion.dto';
 import { CreatePilotoDto } from '../../pilotos/dto/create-piloto.dto';
-import { CreateTarifaDto } from '../../tarifas/dto/create-tarifa.dto';
 import { CreateTripulacionDto } from '../../tripulaciones/dto/create-tripulacion.dto';
 
 export class CreateVueloDto {
@@ -51,8 +50,4 @@ export class CreateVueloDto {
   @IsNotEmpty()
   @IsString()
   estado: string;
-
-  @IsOptional()
-  @Type(() => CreateTarifaDto)
-  tarifa?: CreateTarifaDto;
 }

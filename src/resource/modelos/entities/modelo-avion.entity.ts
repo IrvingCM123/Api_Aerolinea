@@ -1,6 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Avion } from '../../aviones/entities/avion.entity';
-import { CreateFabricanteDto } from '../../fabricantes/dto/create-fabricante.dto';
+import { Fabricante } from '../../fabricantes/entities/fabricante.entity';
 
 @Entity()
 export class ModeloAvion {
@@ -13,11 +19,8 @@ export class ModeloAvion {
   @Column({ nullable: false, length: 15 })
   categoria: string;
 
-  @Column({ nullable: true, type: 'int' })
-  fabricanteId: number;
-
-  @Column({ type: 'json', nullable: false })
-  fabricante: CreateFabricanteDto;
+  @ManyToOne(() => Fabricante, (fabricante) => fabricante.modelosAvion)
+  fabricante: Fabricante;
 
   @OneToMany(() => Avion, (avion) => avion.modeloAvion)
   aviones: Avion[];

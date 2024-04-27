@@ -8,30 +8,33 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ModelosService } from './modelos.service';
-import { CreateModeloAvionDto } from './dto/create-modelo.dto';
-import { UpdateModeloAvionDto } from './dto/update-modelo.dto';
+import { CreateModeloAvionDto } from './dto/create-modelo-avion.dto';
+import { UpdateModeloAvionDto } from './dto/update-modelo-avion.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Modelos')
 @Controller('modelos')
 export class ModelosController {
   constructor(private readonly modelosService: ModelosService) {}
 
   @Post()
-  create(@Body() createModeloDto: CreateModeloAvionDto) {
+  async create(@Body() createModeloDto: CreateModeloAvionDto) {
     return this.modelosService.create(createModeloDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.modelosService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.modelosService.findOne(+id);
+  @Get('buscarModelo/:nombre')
+  asyncfindByName(@Param('nombre') nombre: any) {
+    console.log(nombre);
+    return this.modelosService.findByName(nombre.nombre);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateModeloDto: UpdateModeloAvionDto,
   ) {
@@ -39,7 +42,7 @@ export class ModelosController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.modelosService.remove(+id);
   }
 }

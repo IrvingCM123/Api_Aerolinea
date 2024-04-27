@@ -1,9 +1,17 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreatePilotoDto } from './dto/create-piloto.dto';
 import { UpdatePilotoDto } from './dto/update-piloto.dto';
 import { Piloto } from './entities/piloto.entity';
+
+import { TransaccionService } from '../../common/transaction/transaccion.service';
+import { Tipo_Transaccion } from '../../common/enums/tipo_Transaccion.enum';
+import {
+  Errores_Operaciones,
+  Exito_Operaciones,
+} from '../../common/helpers/operaciones.helpers';
+import { Estado_Logico } from '../../common/enums/estado_logico.enum';
 
 @Injectable()
 export class PilotosService {
@@ -12,15 +20,26 @@ export class PilotosService {
   constructor(
     @InjectRepository(Piloto)
     private readonly pilotosRepository: Repository<Piloto>,
+    private transaccionservice: TransaccionService,
   ) {}
 
   async create(createPilotosDto: CreatePilotoDto) {
-    try {
-      const piloto = this.pilotosRepository.create(createPilotosDto);
-      await this.pilotosRepository.save(piloto);
-      return piloto;
-    } catch (error) {
-      this.handleDBExceptions(error);
+    const piloto_Crear = await this.transaccionservice.transaction(
+      Tipo_Transaccion.Guardar,
+      Piloto,
+      createPilotosDto,
+    );
+
+    if (piloto_Crear == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.EROR_CREAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Crear,
+      };
     }
   }
 
@@ -28,29 +47,70 @@ export class PilotosService {
     return await this.pilotosRepository.find();
   }
 
-  async findOne(id: number | FindOneOptions<Piloto>) {
-    const options: FindOneOptions<Piloto> =
-      typeof id === 'number' ? { where: { id } } : id;
-    const piloto = await this.pilotosRepository.findOne(options);
-    if (!piloto) {
-      if (typeof id === 'number') {
-        throw new NotFoundException(`Piloto with ID ${id} not found`);
-      } else {
-        throw new NotFoundException(`Piloto not found`);
-      }
+  async findbyName(nombre: string) {
+    const piloto_Buscar = await this.transaccionservice.transaction(
+      Tipo_Transaccion.Consultar_Con_Parametros,
+      Piloto,
+      '',
+      'piloto_Nombre',
+      nombre,
+    );
+
+    if (piloto_Buscar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_CONSULTAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Consultar,
+      };
     }
-    return piloto;
   }
 
   async update(id: number, updatePilotoDto: UpdatePilotoDto) {
-    const piloto = await this.findOne(id);
-    this.pilotosRepository.merge(piloto, updatePilotoDto);
-    return await this.pilotosRepository.save(piloto);
+    const piloto_Actualizar = await this.transaccionservice.transaction(
+      Tipo_Transaccion.Actualizar,
+      Piloto,
+      updatePilotoDto,
+      '',
+      id.toString(),
+    );
+
+    if (piloto_Actualizar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_ACTUALIZAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Actualizar,
+      };
+    }
   }
 
   async remove(id: number) {
-    const piloto = await this.findOne(id);
-    return await this.pilotosRepository.remove(piloto);
+    const piloto_Eliminar = await this.transaccionservice.transaction(
+      Tipo_Transaccion.Actualizar_Con_Parametros,
+      Piloto,
+      Estado_Logico.ELIMINADO,
+      'piloto_Id',
+      id.toString(),
+    );
+
+    if (piloto_Eliminar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_ELIMINAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Eliminar,
+      };
+    }
   }
 
   private handleDBExceptions(error: any) {

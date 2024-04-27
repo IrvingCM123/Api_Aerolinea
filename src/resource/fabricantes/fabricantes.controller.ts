@@ -10,28 +10,30 @@ import {
 import { FabricantesService } from './fabricantes.service';
 import { CreateFabricanteDto } from './dto/create-fabricante.dto';
 import { UpdateFabricanteDto } from './dto/update-fabricante.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Fabricantes')
 @Controller('fabricantes')
 export class FabricantesController {
   constructor(private readonly fabricantesService: FabricantesService) {}
 
   @Post()
-  create(@Body() createFabricanteDto: CreateFabricanteDto) {
+  async create(@Body() createFabricanteDto: CreateFabricanteDto) {
     return this.fabricantesService.create(createFabricanteDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.fabricantesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fabricantesService.findOne(+id);
+  @Get('buscarFabricante/:nombre')
+  async findByName(@Param('nombre') nombre: string) {
+    return this.fabricantesService.findByName(nombre);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateFabricanteDto: UpdateFabricanteDto,
   ) {
@@ -39,7 +41,7 @@ export class FabricantesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.fabricantesService.remove(+id);
   }
 }

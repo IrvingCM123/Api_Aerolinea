@@ -1,18 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Avion } from '../../aviones/entities/avion.entity';
-import { Ubicacion } from '../../ubicaciones/entities/ubicacion.entity';
 import { Estado_Viaje } from '../../../common/enums/estado-viaje.enum';
+import { Aeropuerto } from '../../aeropuertos/entities/aeropuerto.entity';
 
 @Entity()
 export class Viaje {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Ubicacion)
-  origen: Ubicacion;
+  @ManyToOne(() => Aeropuerto)
+  origen: Aeropuerto;
 
-  @ManyToOne(() => Ubicacion)
-  destino: Ubicacion;
+  @ManyToOne(() => Aeropuerto)
+  destino: Aeropuerto;
 
   @Column({ nullable: false, type: 'date' })
   fechaSalida: Date;

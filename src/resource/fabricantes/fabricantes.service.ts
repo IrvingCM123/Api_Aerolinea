@@ -1,26 +1,44 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateFabricanteDto } from './dto/create-fabricante.dto';
 import { UpdateFabricanteDto } from './dto/update-fabricante.dto';
 import { Fabricante } from './entities/fabricante.entity';
+import { TransaccionService } from '../../common/transaction/transaccion.service';
+import { Tipo_Transaccion } from '../../common/enums/tipo_Transaccion.enum';
+import {
+  Errores_Operaciones,
+  Exito_Operaciones,
+} from 'src/common/helpers/operaciones.helpers';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 @Injectable()
 export class FabricantesService {
   private readonly logger = new Logger('FabricantesService');
 
   constructor(
+    private transaccionService: TransaccionService,
     @InjectRepository(Fabricante)
     private readonly fabricanteRepository: Repository<Fabricante>,
   ) {}
 
   async create(createFabricanteDto: CreateFabricanteDto) {
-    try {
-      const fabricante = this.fabricanteRepository.create(createFabricanteDto);
-      await this.fabricanteRepository.save(fabricante);
-      return fabricante;
-    } catch (error) {
-      this.handleDBExceptions(error);
+    const fabricante_Creado = await this.transaccionService.transaction(
+      Tipo_Transaccion.Guardar,
+      Fabricante,
+      createFabricanteDto,
+    );
+
+    if (fabricante_Creado == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.EROR_CREAR,
+      };
+    } else {
+      return {
+        status: 201,
+        message: Exito_Operaciones.Crear,
+      };
     }
   }
 
@@ -28,29 +46,70 @@ export class FabricantesService {
     return await this.fabricanteRepository.find();
   }
 
-  async findOne(id: number | FindOneOptions<Fabricante>) {
-    const options: FindOneOptions<Fabricante> =
-      typeof id === 'number' ? { where: { id } } : id;
-    const fabricante = await this.fabricanteRepository.findOne(options);
-    if (!fabricante) {
-      if (typeof id === 'number') {
-        throw new NotFoundException(`Fabricante with ID ${id} not found`);
-      } else {
-        throw new NotFoundException(`Fabricante not found`);
-      }
+  async findByName(nombres: string) {
+    const fabricante_Buscar = await this.transaccionService.transaction(
+      Tipo_Transaccion.Consultar_Con_Parametros,
+      Fabricante,
+      '',
+      'fabricante_Nombre',
+      nombres,
+    );
+
+    if (fabricante_Buscar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_CONSULTAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: fabricante_Buscar,
+      };
     }
-    return fabricante;
   }
 
   async update(id: number, updateFabricanteDto: UpdateFabricanteDto) {
-    const fabricante = await this.findOne(id);
-    this.fabricanteRepository.merge(fabricante, updateFabricanteDto);
-    return await this.fabricanteRepository.save(fabricante);
+    const fabricante_Actualizar = await this.transaccionService.transaction(
+      Tipo_Transaccion.Actualizar,
+      Fabricante,
+      updateFabricanteDto,
+      '',
+      id.toString(),
+    );
+
+    if (fabricante_Actualizar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_ACTUALIZAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Actualizar,
+      };
+    }
   }
 
   async remove(id: number) {
-    const fabricante = await this.findOne(id);
-    return await this.fabricanteRepository.remove(fabricante);
+    const fabricante_Eliminar = await this.transaccionService.transaction(
+      Tipo_Transaccion.Actualizar_Con_Parametros,
+      Fabricante,
+      Estado_Logico.ELIMINADO,
+      'fabricante_Estado',
+      id.toString(),
+    );
+
+    if (fabricante_Eliminar == 'Error') {
+      return {
+        status: 400,
+        message: Errores_Operaciones.ERROR_ELIMINAR,
+      };
+    } else {
+      return {
+        status: 200,
+        message: Exito_Operaciones.Eliminar,
+      };
+    }
   }
 
   private handleDBExceptions(error: any) {

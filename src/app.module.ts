@@ -15,12 +15,12 @@ import { AvionesModule } from './resource/aviones/aviones.module';
 import { FabricantesModule } from './resource/fabricantes/fabricantes.module';
 import { ModelosModule } from './resource/modelos/modelos.module';
 import { PilotosModule } from './resource/pilotos/pilotos.module';
-import { TarifasModule } from './resource/tarifas/tarifas.module';
 import { TrabajadoresModule } from './resource/trabajadores/trabajadores.module';
 import { TripulacionesModule } from './resource/tripulaciones/tripulaciones.module';
 import { UbicacionesModule } from './resource/ubicaciones/ubicaciones.module';
 import { ViajesModule } from './resource/viajes/viajes.module';
 import { VuelosModule } from './resource/vuelos/vuelos.module';
+import { TarifasModule } from './resource/tarifas/tarifas.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -65,12 +65,12 @@ const password_local = secret.PG_PASSWORD_LOCAL;
     FabricantesModule,
     ModelosModule,
     PilotosModule,
-    TarifasModule,
     TrabajadoresModule,
     TripulacionesModule,
     UbicacionesModule,
     ViajesModule,
     VuelosModule,
+    TarifasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

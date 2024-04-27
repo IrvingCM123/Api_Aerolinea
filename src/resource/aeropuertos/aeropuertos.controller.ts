@@ -10,28 +10,30 @@ import {
 import { AeropuertosService } from './aeropuertos.service';
 import { CreateAeropuertoDto } from './dto/create-aeropuerto.dto';
 import { UpdateAeropuertoDto } from './dto/update-aeropuerto.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Aeropuertos')
 @Controller('aeropuertos')
 export class AeropuertosController {
   constructor(private readonly aeropuertosService: AeropuertosService) {}
 
   @Post()
-  create(@Body() createAeropuertoDto: CreateAeropuertoDto) {
+  async create(@Body() createAeropuertoDto: CreateAeropuertoDto) {
     return this.aeropuertosService.create(createAeropuertoDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.aeropuertosService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.aeropuertosService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateAeropuertoDto: UpdateAeropuertoDto,
   ) {
@@ -39,7 +41,7 @@ export class AeropuertosController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.aeropuertosService.remove(+id);
   }
 }

@@ -1,50 +1,45 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Avion } from '../../aviones/entities/avion.entity';
 import { Piloto } from '../../pilotos/entities/piloto.entity';
-import { Tarifa } from '../../tarifas/entities/tarifa.entity';
 import { Tripulacion } from '../../tripulaciones/entities/tripulacion.entity';
-import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
+import { TarifaClase } from '../../tarifas/entities/tarifa-clase.entity';
+import { TarifaDistancia } from '../../tarifas/entities/tarifa-distancia.entity';
 
 @Entity()
 export class Vuelo {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Avion)
+  @ManyToOne(() => Avion, (avion) => avion.vuelos)
   avion: Avion;
 
   @Column({ type: 'date' })
   fecha: Date;
 
-  @ManyToOne(() => Piloto)
+  @ManyToOne(() => Piloto, (piloto) => piloto.vuelosPiloto)
   piloto: Piloto;
 
-  @ManyToOne(() => Piloto)
-  copiloto: Piloto;
+  @ManyToOne(() => Piloto, (coopiloto) => coopiloto.vuelosCopiloto)
+  coopiloto: Piloto;
 
-  @ManyToOne(() => Tripulacion)
+  @ManyToOne(() => Tripulacion, (tripulacion) => tripulacion.vuelosTripulacion)
   tripulacion: Tripulacion;
 
-  @Column()
+  @Column({ type: 'int' })
   horaSalida: number;
 
-  @Column()
+  @Column({ type: 'int' })
   pasajerosTotales: number;
 
-  @Column()
+  @Column({ type: 'int' })
   pasajerosApartados: number;
 
-  @Column({ nullable: false, default: Estado_Viaje.POR_INICIAR })
+  @Column({ type: 'varchar', length: 20 })
   estado: string;
 
-  @OneToOne(() => Tarifa, { cascade: true })
-  @JoinColumn()
-  tarifa: Tarifa;
+  @ManyToOne(() => TarifaClase, (tarifa) => tarifa.tarifaClase)
+  tarifaClase: TarifaClase;
+
+  @ManyToOne(() => TarifaDistancia, (tarifa) => tarifa.vuelosTarifaDistancia)
+  tarifaDistancia: TarifaDistancia;
 }

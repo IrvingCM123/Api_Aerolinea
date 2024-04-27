@@ -10,28 +10,30 @@ import {
 import { UbicacionesService } from './ubicaciones.service';
 import { CreateUbicacionDto } from './dto/create-ubicacion.dto';
 import { UpdateUbicacionDto } from './dto/update-ubicacion.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Ubicaciones')
 @Controller('ubicaciones')
 export class UbicacionesController {
   constructor(private readonly ubicacionesService: UbicacionesService) {}
 
   @Post()
-  create(@Body() createUbicacioneDto: CreateUbicacionDto) {
+  async create(@Body() createUbicacioneDto: CreateUbicacionDto) {
     return this.ubicacionesService.create(createUbicacioneDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.ubicacionesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.ubicacionesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateUbicacioneDto: UpdateUbicacionDto,
   ) {
@@ -39,7 +41,7 @@ export class UbicacionesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.ubicacionesService.remove(+id);
   }
 }

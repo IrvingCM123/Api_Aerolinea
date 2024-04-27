@@ -10,7 +10,9 @@ import {
 import { TrabajadoresService } from './trabajadores.service';
 import { CreateTrabajadorDto } from './dto/create-trabajador.dto';
 import { UpdateTrabajadorDto } from './dto/update-trabajador.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Trabajadores')
 @Controller('trabajadores')
 export class TrabajadoresController {
   constructor(private readonly trabajadoresService: TrabajadoresService) {}
@@ -21,17 +23,17 @@ export class TrabajadoresController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.trabajadoresService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.trabajadoresService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateTrabajadoreDto: UpdateTrabajadorDto,
   ) {
@@ -39,7 +41,7 @@ export class TrabajadoresController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.trabajadoresService.remove(+id);
   }
 }
