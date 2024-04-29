@@ -9,7 +9,11 @@ import { UsuarioModule } from '../usuario/usuario.module';
 import { TransaccionModule } from 'src/common/transaction/transaccion.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Cuenta, Usuario]), UsuarioModule, TransaccionModule],
+  imports: [
+    TypeOrmModule.forFeature([Cuenta, Usuario]),
+    UsuarioModule,
+    TransaccionModule,
+  ],
   controllers: [CuentasController],
   providers: [CuentasService],
   exports: [CuentasService],
