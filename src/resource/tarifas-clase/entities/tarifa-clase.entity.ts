@@ -1,4 +1,4 @@
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
 
@@ -13,10 +13,10 @@ export class TarifaClase {
   @Column({
     type: 'enum',
     nullable: false,
-    enum: EstadoLogico,
-    default: EstadoLogico.ACTIVO,
+    enum: Estado_Logico,
+    default: Estado_Logico.ACTIVO,
   })
-  tarifa_Clase_Estado: EstadoLogico;
+  tarifa_Clase_Estado: Estado_Logico;
 
   @Column({ nullable: false })
   precioTarifa: number;

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { EstadoViaje } from 'src/common/enums/estado-viaje.enum';
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 import { Aeropuerto } from 'src/resource/aeropuertos/entities/aeropuerto.entity';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';
 import { Ubicacion } from '../../ubicaciones/entities/ubicacion.entity'; // Importa la entidad Ubicacion
@@ -17,11 +17,11 @@ export class Viaje {
 
   @Column({
     type: 'enum',
-    enum: EstadoViaje,
+    enum: Estado_Viaje,
     nullable: false,
-    default: EstadoViaje.POR_INICIAR,
+    default: Estado_Viaje.POR_INICIAR,
   })
-  Estado_Viaje: EstadoViaje;
+  Estado_Viaje: Estado_Viaje;
 
   @ManyToOne(() => Avion, { nullable: false })
   Numero_Avion: Avion;

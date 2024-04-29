@@ -1,4 +1,4 @@
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Estado_Logico } from "src/common/enums/estado_logico.enum";
 
 interface Piloto {
   piloto_Nombre: string;
@@ -14,7 +14,7 @@ interface Piloto {
   piloto_Estado_Logico: EstadoLogicoPiloto;
 }
 
-type EstadoLogicoPiloto = EstadoLogico;
+type EstadoLogicoPiloto = Estado_Logico;
 
 interface SeedPilotos {
   pilotos: Piloto[];
@@ -33,7 +33,7 @@ export const initialPilotos: SeedPilotos = {
       piloto_Horas_Vuelo: 1000,
       piloto_Certificaciones: ['Certificacion1', 'Certificacion2'],
       piloto_Fecha_Expedicion_Licencia: new Date('2010-01-01'),
-      piloto_Estado_Logico: EstadoLogico.ACTIVO,
+      piloto_Estado_Logico: Estado_Logico.ACTIVO,
     },
     {
       piloto_Nombre: 'Nombre Piloto 2',
@@ -46,7 +46,7 @@ export const initialPilotos: SeedPilotos = {
       piloto_Horas_Vuelo: 1500,
       piloto_Certificaciones: ['Certificacion3'],
       piloto_Fecha_Expedicion_Licencia: new Date('2008-05-05'),
-      piloto_Estado_Logico: EstadoLogico.ACTIVO,
+      piloto_Estado_Logico: Estado_Logico.ACTIVO,
     },
     {
       piloto_Nombre: 'Nombre Piloto 3',
@@ -59,7 +59,7 @@ export const initialPilotos: SeedPilotos = {
       piloto_Horas_Vuelo: 500,
       piloto_Certificaciones: ['Certificacion4'],
       piloto_Fecha_Expedicion_Licencia: new Date('2015-12-25'),
-      piloto_Estado_Logico: EstadoLogico.INACTIVO,
+      piloto_Estado_Logico: Estado_Logico.INACTIVO,
     },
   ],
 };

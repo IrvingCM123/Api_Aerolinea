@@ -8,7 +8,7 @@ import {
   Errores_Operaciones,
   Exito_Operaciones,
 } from 'src/common/helpers/operaciones.helpers';
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 import { CreateTarifaClaseDto } from './dto/create-tarifa-clase.dto';
 import { TarifaClase } from './entities/tarifa-clase.entity';
 import { UpdateTarifaClaseDto } from './dto/update-tarifas-clase.dto';
@@ -93,7 +93,7 @@ export class TarifaClaseService {
     const tarifaClase_Eliminar: any = await this.transaccionservice.transaction(
       Tipo_Transaccion.Actualizar_Con_Parametros,
       TarifaClase,
-      EstadoLogico.ELIMINADO,
+      Estado_Logico.ELIMINADO,
       'tarifa_Clase_Estado',
       id.toString(),
     );

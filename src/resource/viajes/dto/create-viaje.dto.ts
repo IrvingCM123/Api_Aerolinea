@@ -5,7 +5,7 @@ import {
   IsEnum,
   IsNumber,
 } from 'class-validator';
-import { EstadoViaje } from 'src/common/enums/estado-viaje.enum';
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 
 export class CreateViajeDto {
   @IsNotEmpty()
@@ -16,8 +16,8 @@ export class CreateViajeDto {
   @IsDate()
   fechaLlegada: Date;
 
-  @IsEnum(EstadoViaje)
-  estadoViaje: EstadoViaje;
+  @IsEnum(Estado_Viaje)
+  estadoViaje: Estado_Viaje;
 
   @IsNotEmpty()
   @IsNumber()

@@ -10,7 +10,7 @@ import {
   Errores_Operaciones,
   Exito_Operaciones,
 } from 'src/common/helpers/operaciones.helpers';
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 @Injectable()
 export class ViajesService {
@@ -82,7 +82,7 @@ export class ViajesService {
     const viaje_Eliminar = await this.transaccionService.transaction(
       Tipo_Transaccion.Actualizar_Con_Parametros,
       Viaje,
-      EstadoLogico.ELIMINADO,
+      Estado_Logico.ELIMINADO,
       'Viaje_Estado',
       id.toString(),
     );

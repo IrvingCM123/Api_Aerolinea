@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 export class CreateTarifaClaseDto {
   @ApiProperty({
@@ -15,14 +15,14 @@ export class CreateTarifaClaseDto {
     description: 'Estado de la tarifa de clase',
     nullable: false,
     example: [
-      EstadoLogico.ACTIVO,
-      EstadoLogico.INACTIVO,
-      EstadoLogico.ELIMINADO,
+      Estado_Logico.ACTIVO,
+      Estado_Logico.INACTIVO,
+      Estado_Logico.ELIMINADO,
     ],
   })
   @IsNotEmpty()
   @IsString()
-  tarifa_Clase_Estado: EstadoLogico;
+  tarifa_Clase_Estado: Estado_Logico;
 
   @ApiProperty({
     description: 'Precio de la tarifa de clase',

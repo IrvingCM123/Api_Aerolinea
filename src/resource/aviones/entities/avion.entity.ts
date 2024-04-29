@@ -6,10 +6,10 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { EstadoOperativo } from '../../../common/enums/estado-operativo.enum';
+import { ESTADO_OPERATIVO } from '../../../common/enums/estado-operativo.enum';
 import { ModeloAvion } from '../../modelos/entities/modelo-avion.entity';
 import { Fabricante } from 'src/resource/fabricantes/entities/fabricante.entity';
-import { EstadoLogico } from '../../../common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
 
 @Entity()
@@ -43,8 +43,8 @@ export class Avion {
 
   @Column({
     nullable: false,
-    default: EstadoOperativo.OPERATIVO,
-    enum: EstadoOperativo,
+    default: ESTADO_OPERATIVO.OPERATIVO,
+    enum: ESTADO_OPERATIVO,
     type: 'enum',
   })
   avion_Estado_Operativo: string;
@@ -52,10 +52,10 @@ export class Avion {
   @Column({
     nullable: false,
     type: 'enum',
-    enum: EstadoLogico,
-    default: EstadoLogico.ACTIVO,
+    enum: Estado_Logico,
+    default: Estado_Logico.ACTIVO,
   })
-  avion_Estado_Logico: EstadoLogico;
+  avion_Estado_Logico: Estado_Logico;
 
   @Column({ nullable: false })
   avion_Tipo_Motor: string;

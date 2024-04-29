@@ -11,7 +11,7 @@ import {
   Errores_Operaciones,
   Exito_Operaciones,
 } from '../../common/helpers/operaciones.helpers';
-import { EstadoLogico } from '../../common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 @Injectable()
 export class PilotosService {
@@ -95,7 +95,7 @@ export class PilotosService {
     const piloto_Eliminar = await this.transaccionservice.transaction(
       Tipo_Transaccion.Actualizar_Con_Parametros,
       Piloto,
-      EstadoLogico.ELIMINADO,
+      Estado_Logico.ELIMINADO,
       'piloto_Id',
       id.toString(),
     );

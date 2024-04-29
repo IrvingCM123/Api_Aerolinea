@@ -1,4 +1,4 @@
-import { EstadoViaje } from 'src/common/enums/estado-viaje.enum';
+import { Estado_Viaje } from "src/common/enums/estado-viaje.enum";
 
 interface Vuelo {
   avion_Id: number;
@@ -14,7 +14,7 @@ interface Vuelo {
   tarifa_distancia_Id: number;
 }
 
-type Estado_Viaje = EstadoViaje;
+type EstadoViaje = Estado_Viaje;
 
 interface SeedVuelos {
   vuelos: Vuelo[];
@@ -31,7 +31,7 @@ export const initialVuelos: SeedVuelos = {
       horaSalida: '08:00',
       pasajerosTotales: 150,
       pasajerosApartados: 100,
-      estado: EstadoViaje.POR_INICIAR,
+      estado: Estado_Viaje.POR_INICIAR,
       tarifa_Clase_Id: 1,
       tarifa_distancia_Id: 1,
     },
@@ -44,7 +44,7 @@ export const initialVuelos: SeedVuelos = {
       horaSalida: '10:30',
       pasajerosTotales: 200,
       pasajerosApartados: 150,
-      estado: EstadoViaje.POR_INICIAR,
+      estado: Estado_Viaje.POR_INICIAR,
       tarifa_Clase_Id: 2,
       tarifa_distancia_Id: 2,
     },
@@ -57,7 +57,7 @@ export const initialVuelos: SeedVuelos = {
       horaSalida: '12:45',
       pasajerosTotales: 180,
       pasajerosApartados: 120,
-      estado: EstadoViaje.POR_INICIAR,
+      estado: Estado_Viaje.POR_INICIAR,
       tarifa_Clase_Id: 3,
       tarifa_distancia_Id: 3,
     },
@@ -70,7 +70,7 @@ export const initialVuelos: SeedVuelos = {
       horaSalida: '15:20',
       pasajerosTotales: 220,
       pasajerosApartados: 180,
-      estado: EstadoViaje.POR_INICIAR,
+      estado: Estado_Viaje.POR_INICIAR,
       tarifa_Clase_Id: 1,
       tarifa_distancia_Id: 1,
     },
@@ -83,7 +83,7 @@ export const initialVuelos: SeedVuelos = {
       horaSalida: '18:10',
       pasajerosTotales: 190,
       pasajerosApartados: 130,
-      estado: EstadoViaje.POR_INICIAR,
+      estado: Estado_Viaje.POR_INICIAR,
       tarifa_Clase_Id: 2,
       tarifa_distancia_Id: 2,
     },

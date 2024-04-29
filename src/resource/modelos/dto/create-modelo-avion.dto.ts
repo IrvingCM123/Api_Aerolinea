@@ -1,7 +1,7 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CategoriaModelo } from '../../../common/enums/categoria-modelo.enum';
-import { EstadoOperativo } from 'src/common/enums/estado-operativo.enum';
+import { ESTADO_OPERATIVO } from 'src/common/enums/estado-operativo.enum';
 
 export class CreateModeloAvionDto {
   @ApiProperty({
@@ -17,14 +17,14 @@ export class CreateModeloAvionDto {
     description: 'Nombre del modelo de avión',
     nullable: false,
     example: [
-      EstadoOperativo.OPERATIVO,
-      EstadoOperativo.MANTENIMIENTO,
-      EstadoOperativo.FUERA_DE_SERVICIO,
+      ESTADO_OPERATIVO.OPERATIVO,
+      ESTADO_OPERATIVO.MANTENIMIENTO,
+      ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
     ],
   })
-  @IsEnum(EstadoOperativo)
+  @IsEnum(ESTADO_OPERATIVO)
   @IsNotEmpty()
-  modelo_Avion_Estado: EstadoOperativo;
+  modelo_Avion_Estado: ESTADO_OPERATIVO;
 
   @ApiProperty({
     enum: CategoriaModelo,

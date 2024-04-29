@@ -8,7 +8,7 @@ import {
   IsDateString,
   IsArray,
 } from 'class-validator';
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 export class CreatePilotoDto {
   @ApiProperty({
@@ -106,12 +106,12 @@ export class CreatePilotoDto {
     nullable: false,
     default: 'ACTIVO',
     example: [
-      EstadoLogico.ACTIVO,
-      EstadoLogico.INACTIVO,
-      EstadoLogico.ELIMINADO,
+      Estado_Logico.ACTIVO,
+      Estado_Logico.INACTIVO,
+      Estado_Logico.ELIMINADO,
     ],
   })
-  @IsEnum(EstadoLogico)
+  @IsEnum(Estado_Logico)
   @IsNotEmpty()
-  piloto_Estado_Logico: EstadoLogico;
+  piloto_Estado_Logico: Estado_Logico;
 }

@@ -1,5 +1,5 @@
-import { EstadoOperativo } from 'src/common/enums/estado-operativo.enum';
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { ESTADO_OPERATIVO } from "src/common/enums/estado-operativo.enum";
+import { Estado_Logico } from "src/common/enums/estado_logico.enum";
 
 interface Avion {
   modeloAvionId: number;
@@ -14,8 +14,8 @@ interface Avion {
   avion_Autonomia: string;
 }
 
-type Estado_Operativo = EstadoOperativo;
-type Estado_Logico = EstadoLogico;
+type Estado_Operativo = ESTADO_OPERATIVO;
+type EstadoLogico = Estado_Logico;
 
 interface SeedAviones {
   aviones: Avion[];
@@ -30,8 +30,8 @@ export const initialAviones: SeedAviones = {
       avion_Capacidad_Carga: 2000,
       avion_Velocidad_Maxima: 900,
       avion_Anio_Fabricacion: 2018,
-      avion_Estado_Operativo: EstadoOperativo.OPERATIVO,
-      avion_Estado_Logico: EstadoLogico.ACTIVO,
+      avion_Estado_Operativo: ESTADO_OPERATIVO.OPERATIVO,
+      avion_Estado_Logico: Estado_Logico.ACTIVO,
       avion_Tipo_Motor: 'Turbina',
       avion_Autonomia: '1000 km',
     },
@@ -42,8 +42,8 @@ export const initialAviones: SeedAviones = {
       avion_Capacidad_Carga: 2500,
       avion_Velocidad_Maxima: 850,
       avion_Anio_Fabricacion: 2019,
-      avion_Estado_Operativo: EstadoOperativo.MANTENIMIENTO,
-      avion_Estado_Logico: EstadoLogico.INACTIVO,
+      avion_Estado_Operativo: ESTADO_OPERATIVO.MANTENIMIENTO,
+      avion_Estado_Logico: Estado_Logico.INACTIVO,
       avion_Tipo_Motor: 'Turbina',
       avion_Autonomia: '1200 km',
     },
@@ -54,8 +54,8 @@ export const initialAviones: SeedAviones = {
       avion_Capacidad_Carga: 2200,
       avion_Velocidad_Maxima: 920,
       avion_Anio_Fabricacion: 2020,
-      avion_Estado_Operativo: EstadoOperativo.MANTENIMIENTO,
-      avion_Estado_Logico: EstadoLogico.ACTIVO,
+      avion_Estado_Operativo: ESTADO_OPERATIVO.MANTENIMIENTO,
+      avion_Estado_Logico: Estado_Logico.ACTIVO,
       avion_Tipo_Motor: 'Turbina',
       avion_Autonomia: '1100 km',
     },

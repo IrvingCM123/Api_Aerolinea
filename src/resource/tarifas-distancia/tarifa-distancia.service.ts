@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
 import {
   Errores_Operaciones,
@@ -94,7 +94,7 @@ export class TarifaDistanciaService {
       await this.transaccionservice.transaction(
         Tipo_Transaccion.Actualizar_Con_Parametros,
         TarifaDistancia,
-        EstadoLogico.ELIMINADO,
+        Estado_Logico.ELIMINADO,
         'tarifa_Clase_Estado',
         id.toString(),
       );

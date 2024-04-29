@@ -20,7 +20,6 @@ import { TripulacionesModule } from './resource/tripulaciones/tripulaciones.modu
 import { UbicacionesModule } from './resource/ubicaciones/ubicaciones.module';
 //import { ViajesModule } from './resource/viajes/viajes.module';
 import { VuelosModule } from './resource/vuelos/vuelos.module';
-import { TarifasModule } from './resource/tarifas/tarifas.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -48,6 +47,7 @@ const password_local = secret.PG_PASSWORD_LOCAL;
       database: database_local,
       autoLoadEntities: true,
       synchronize: true,
+      
       //extra: {
       //  ssl: true,
       //  sslmode: 'require',
@@ -70,9 +70,9 @@ const password_local = secret.PG_PASSWORD_LOCAL;
     UbicacionesModule,
     //ViajesModule,
     VuelosModule,
-    TarifasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
+  
 })
 export class AppModule {}

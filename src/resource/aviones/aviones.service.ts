@@ -9,7 +9,7 @@ import { TransaccionService } from 'src/common/transaction/transaccion.service';
 import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
 
 import { ModeloAvion } from '../../resource/modelos/entities/modelo-avion.entity';
-import { EstadoLogico } from '../../common/enums/estado-logico.enum';
+import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 import {
   Errores_Operaciones,
   Exito_Operaciones,
@@ -115,7 +115,7 @@ export class AvionesService {
     const avion_Eliminar = await this.transaccionService.transaction(
       Tipo_Transaccion.Actualizar_Con_Parametros,
       Avion,
-      EstadoLogico.ELIMINADO,
+      Estado_Logico.ELIMINADO,
       'avion_Estado_Logico',
       id.toString(),
     );

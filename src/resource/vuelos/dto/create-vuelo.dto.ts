@@ -6,7 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { EstadoViaje } from 'src/common/enums/estado-viaje.enum';
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 
 export class CreateVueloDto {
   @ApiProperty({ description: 'ID del avión', nullable: false })
@@ -57,13 +57,13 @@ export class CreateVueloDto {
 
   @ApiProperty({
     description: 'Estado del vuelo',
-    enum: EstadoViaje,
+    enum: Estado_Viaje,
     nullable: false,
     enumName: 'EstadoVuelo',
   })
-  @IsEnum(EstadoViaje)
+  @IsEnum(Estado_Viaje)
   @IsNotEmpty()
-  estado: EstadoViaje;
+  estado: Estado_Viaje;
 
   @ApiProperty({ description: 'ID de la tarifa de clase', nullable: false })
   @IsNotEmpty()

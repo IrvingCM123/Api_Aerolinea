@@ -1,4 +1,4 @@
-import { EstadoViaje } from 'src/common/enums/estado-viaje.enum';
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';
 import { Piloto } from 'src/resource/pilotos/entities/piloto.entity';
 import { TarifaClase } from 'src/resource/tarifas-clase/entities/tarifa-clase.entity';
@@ -58,11 +58,11 @@ export class Vuelo {
 
   @Column({
     type: 'enum',
-    enum: EstadoViaje,
+    enum: Estado_Viaje,
     nullable: false,
-    default: EstadoViaje.POR_INICIAR,
+    default: Estado_Viaje.POR_INICIAR,
   })
-  estado: EstadoViaje;
+  estado: Estado_Viaje;
 
   @ManyToOne(() => TarifaClase, (tarifaClase) => tarifaClase.vuelo_Id, {
     nullable: false,
