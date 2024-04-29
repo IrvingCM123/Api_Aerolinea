@@ -9,6 +9,9 @@ import { VuelosService } from '../vuelos/vuelos.service';
 import {
   initialAeropuertos,
   initialAviones,
+  initialFabricantes,
+  initialModelosAvion,
+  initialPilotos,
   initialTarifasClase,
   initialTarifasDistancia,
   initialTrabajadores,
@@ -18,6 +21,9 @@ import {
 } from './data/seeds';
 import { TarifaClaseService } from '../tarifas-clase/tarifas-clase.service';
 import { TarifaDistanciaService } from '../tarifas-distancia/tarifa-distancia.service';
+import { FabricantesService } from '../fabricantes/fabricantes.service';
+import { PilotosService } from '../pilotos/pilotos.service';
+import { ModelosService } from '../modelos/modelos.service';
 
 @Injectable()
 export class SeedService {
@@ -29,7 +35,10 @@ export class SeedService {
     private readonly tripulacionesService: TripulacionesService,
     private readonly tarifasClaseService: TarifaClaseService,
     private readonly tarifasDistanciaService: TarifaDistanciaService,
+    private readonly fabricanteService: FabricantesService,
     private readonly vuelosService: VuelosService,
+    private readonly pilotosService: PilotosService,
+    private readonly modelosService: ModelosService,
   ) {}
 
   async runSeed() {
@@ -40,6 +49,9 @@ export class SeedService {
     await this.insertTripulaciones();
     await this.insertTarifasClase();
     await this.insertTarifasDistancia();
+    await this.insertFabricantes();
+    await this.insertPilotos();
+    await this.insertModelos();
     await this.insertVuelos();
     return 'SEED EXECUTED';
   }
@@ -61,6 +73,26 @@ export class SeedService {
 
     ubicaciones.forEach((ubicacion) => {
       insertPromises.push(this.ubicacionesService.create(ubicacion));
+    });
+  }
+
+  private async insertFabricantes() {
+    const fabricantes = initialFabricantes.fabricantes;
+
+    const insertPromises = [];
+
+    fabricantes.forEach((fabricante) => {
+      insertPromises.push(this.fabricanteService.create(fabricante));
+    });
+  }
+
+  private async insertPilotos() {
+    const pilotos = initialPilotos.pilotos;
+
+    const insertPromises = [];
+
+    pilotos.forEach((piloto) => {
+      insertPromises.push(this.pilotosService.create(piloto));
     });
   }
 
@@ -111,6 +143,16 @@ export class SeedService {
 
     tarifasDistancia.forEach((tarifaDistancia) => {
       insertPromises.push(this.tarifasDistanciaService.create(tarifaDistancia));
+    });
+  }
+
+  private async insertModelos() {
+    const modelos = initialModelosAvion.modelosAvion;
+
+    const insertPromises = [];
+
+    modelos.forEach((modelo) => {
+      insertPromises.push(this.modelosService.create(modelo));
     });
   }
 

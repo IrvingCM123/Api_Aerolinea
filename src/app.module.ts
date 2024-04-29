@@ -20,6 +20,8 @@ import { TripulacionesModule } from './resource/tripulaciones/tripulaciones.modu
 import { UbicacionesModule } from './resource/ubicaciones/ubicaciones.module';
 //import { ViajesModule } from './resource/viajes/viajes.module';
 import { VuelosModule } from './resource/vuelos/vuelos.module';
+import { TarifasClaseModule } from './resource/tarifas-clase/tarifas-clase.module';
+import { TarifasDistanciaModule } from './resource/tarifas-distancia/tarifa-distancia.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -68,8 +70,9 @@ const password_local = secret.PG_PASSWORD_LOCAL;
     TrabajadoresModule,
     TripulacionesModule,
     UbicacionesModule,
-    //ViajesModule,
     VuelosModule,
+    TarifasClaseModule,
+    TarifasDistanciaModule
   ],
   controllers: [AppController],
   providers: [AppService],
