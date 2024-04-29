@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Aeropuerto } from '../../aeropuertos/entities/aeropuerto.entity';
-import { TarifaClase } from 'src/resource/tarifas/entities/tarifa-clase.entity';
-import { TarifaDistancia } from 'src/resource/tarifas/entities/tarifa-distancia.entity';
+import { TarifaDistancia } from 'src/resource/tarifas-distancia/entities/tarifa-distancia.entity';
 
 @Entity()
 export class Ubicacion {

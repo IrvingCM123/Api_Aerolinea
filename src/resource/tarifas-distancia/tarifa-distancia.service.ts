@@ -1,17 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-import { TransaccionService } from '../../../common/transaction/transaccion.service';
-import { Tipo_Transaccion } from '../../../common/enums/tipo_Transaccion.enum';
+import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
 import {
   Errores_Operaciones,
   Exito_Operaciones,
-} from '../../../common/helpers/operaciones.helpers';
-import { Estado_Logico } from '../../../common/enums/estado_logico.enum';
-import { TarifaDistancia } from '../entities/tarifa-distancia.entity';
-import { CreateTarifaDistanciaDto } from '../dto/create/create-tarifa-distancia.dto';
-import { UpdateTarifaDistanciaDto } from '../dto/update/update-tarifa-distancia.dto';
+} from 'src/common/helpers/operaciones.helpers';
+import { TransaccionService } from 'src/common/transaction/transaccion.service';
+import { Repository } from 'typeorm';
+import { CreateTarifaDistanciaDto } from './dto/create-tarifa-distancia.dto';
+import { TarifaDistancia } from './entities/tarifa-distancia.entity';
+import { UpdateTarifaDistanciaDto } from './dto/update-tarifa-distancia.dto';
 
 @Injectable()
 export class TarifaDistanciaService {
@@ -95,7 +94,7 @@ export class TarifaDistanciaService {
       await this.transaccionservice.transaction(
         Tipo_Transaccion.Actualizar_Con_Parametros,
         TarifaDistancia,
-        Estado_Logico.ELIMINADO,
+        EstadoLogico.ELIMINADO,
         'tarifa_Clase_Estado',
         id.toString(),
       );

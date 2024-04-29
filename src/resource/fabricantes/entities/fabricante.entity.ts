@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Avion } from '../../aviones/entities/avion.entity';
-import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
 
 @Entity()
 export class Fabricante {

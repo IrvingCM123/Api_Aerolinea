@@ -10,7 +10,7 @@ import {
   Errores_Operaciones,
   Exito_Operaciones,
 } from 'src/common/helpers/operaciones.helpers';
-import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
+import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
 
 @Injectable()
 export class FabricantesService {
@@ -94,7 +94,7 @@ export class FabricantesService {
     const fabricante_Eliminar = await this.transaccionService.transaction(
       Tipo_Transaccion.Actualizar_Con_Parametros,
       Fabricante,
-      Estado_Logico.ELIMINADO,
+      EstadoLogico.ELIMINADO,
       'fabricante_Estado',
       id.toString(),
     );

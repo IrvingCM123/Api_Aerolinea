@@ -8,9 +8,9 @@ import {
   Delete,
   NotFoundException,
 } from '@nestjs/common';
-import { TarifaClaseService } from '../services/tarifa-clase.service';
-import { CreateTarifaClaseDto } from '../dto/create/create-tarifa-clase.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateTarifaClaseDto } from './dto/create-tarifa-clase.dto';
+import { TarifaClaseService } from './tarifas-clase.service';
 
 @ApiTags('Tarifas Clase')
 @Controller('tarifas-clase')
@@ -27,7 +27,7 @@ export class TarifaClaseController {
     return this.tarifaClaseService.findAll();
   }
 
-  @Get('buscarTarfiaClase/:nombre')
+  @Get('buscarTarifaClase/:nombre')
   async findByClassName(@Param('nombre') nombre: string) {
     try {
       const tarifaClase = await this.tarifaClaseService.findbyName(nombre);

@@ -1,8 +1,8 @@
-import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
+import { EstadoViaje } from 'src/common/enums/estado-viaje.enum';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';
 import { Piloto } from 'src/resource/pilotos/entities/piloto.entity';
-import { TarifaClase } from 'src/resource/tarifas/entities/tarifa-clase.entity';
-import { TarifaDistancia } from 'src/resource/tarifas/entities/tarifa-distancia.entity';
+import { TarifaClase } from 'src/resource/tarifas-clase/entities/tarifa-clase.entity';
+import { TarifaDistancia } from 'src/resource/tarifas-distancia/entities/tarifa-distancia.entity';
 import { Tripulacion } from 'src/resource/tripulaciones/entities/tripulacion.entity';
 import {
   Entity,
@@ -17,27 +17,38 @@ export class Vuelo {
   @PrimaryGeneratedColumn()
   Vuelo_ID: number;
 
-  @ManyToOne(() => Avion, { nullable: false })
+  @ManyToOne(() => Avion, (avion) => avion.vuelo_Id, {
+    eager: true,
+  })
   @JoinColumn({ name: 'avion_Id' })
-  avion: Avion;
+  avion_Id: Avion;
 
   @Column({ type: 'date', nullable: false })
   fecha: Date;
 
-  @ManyToOne(() => Piloto, { nullable: false })
+  @ManyToOne(() => Piloto, (piloto) => piloto.vuelo_Id, {
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn({ name: 'piloto_Id' })
-  piloto: Piloto;
+  piloto_Id: Piloto;
 
-  @ManyToOne(() => Piloto, { nullable: false })
+  @ManyToOne(() => Piloto, (copiloto) => copiloto.copiloto_Id, {
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn({ name: 'copiloto_Id' })
-  copiloto: Piloto;
+  copiloto_Id: Piloto;
 
-  @ManyToOne(() => Tripulacion, { nullable: false })
+  @ManyToOne(() => Tripulacion, (tripulacion) => tripulacion.vuelo_Id, {
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn({ name: 'tripulacion_ID' })
-  tripulacion: Tripulacion;
+  tripulacion_ID: Tripulacion;
 
-  @Column({ type: 'int', nullable: false })
-  horaSalida: number;
+  @Column({ type: 'text', nullable: false })
+  horaSalida: string;
 
   @Column({ type: 'int', nullable: false })
   pasajerosTotales: number;
@@ -47,17 +58,27 @@ export class Vuelo {
 
   @Column({
     type: 'enum',
-    enum: Estado_Viaje,
+    enum: EstadoViaje,
     nullable: false,
-    default: Estado_Viaje.POR_INICIAR,
+    default: EstadoViaje.POR_INICIAR,
   })
-  estado: Estado_Viaje;
+  estado: EstadoViaje;
 
-  @ManyToOne(() => TarifaClase, { nullable: false })
+  @ManyToOne(() => TarifaClase, (tarifaClase) => tarifaClase.vuelo_Id, {
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn({ name: 'tarifa_Clase_Id' })
-  tarifaClase: TarifaClase;
+  tarifa_Clase_Id: TarifaClase;
 
-  @ManyToOne(() => TarifaDistancia, { nullable: false })
+  @ManyToOne(
+    () => TarifaDistancia,
+    (tarifaDistancia) => tarifaDistancia.vuelo_Id,
+    {
+      nullable: false,
+      eager: true,
+    },
+  )
   @JoinColumn({ name: 'tarifa_distancia_Id' })
-  tarifaDistancia: TarifaDistancia;
+  tarifa_distancia_Id: TarifaDistancia;
 }

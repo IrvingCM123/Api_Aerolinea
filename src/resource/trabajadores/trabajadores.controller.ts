@@ -18,7 +18,7 @@ export class TrabajadoresController {
   constructor(private readonly trabajadoresService: TrabajadoresService) {}
 
   @Post()
-  create(@Body() createTrabajadoreDto: CreateTrabajadorDto) {
+  async create(@Body() createTrabajadoreDto: CreateTrabajadorDto) {
     return this.trabajadoresService.create(createTrabajadoreDto);
   }
 

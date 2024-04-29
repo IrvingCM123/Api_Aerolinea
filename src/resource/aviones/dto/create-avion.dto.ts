@@ -1,13 +1,7 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsEnum,
-  IsObject,
-} from 'class-validator';
-import { ESTADO_OPERATIVO } from '../../../common/enums/estado-operativo.enum';
+import { IsNotEmpty, IsNumber, IsString, IsEnum } from 'class-validator';
+import { EstadoOperativo } from '../../../common/enums/estado-operativo.enum';
 import { ApiProperty } from '@nestjs/swagger';
-import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
+import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
 
 export class CreateAvionDto {
   @ApiProperty({
@@ -57,31 +51,31 @@ export class CreateAvionDto {
   avion_Anio_Fabricacion: number;
 
   @ApiProperty({
-    enum: ESTADO_OPERATIVO,
+    enum: EstadoOperativo,
     description: 'Estado operativo del avión',
     nullable: false,
     example: [
-      ESTADO_OPERATIVO.OPERATIVO,
-      ESTADO_OPERATIVO.MANTENIMIENTO,
-      ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
+      EstadoOperativo.OPERATIVO,
+      EstadoOperativo.MANTENIMIENTO,
+      EstadoOperativo.FUERA_DE_SERVICIO,
     ],
   })
-  @IsEnum(ESTADO_OPERATIVO)
+  @IsEnum(EstadoOperativo)
   @IsNotEmpty()
-  avion_Estado_Operativo: ESTADO_OPERATIVO;
+  avion_Estado_Operativo: EstadoOperativo;
 
   @ApiProperty({
     description: 'Estado lógico del avión',
     nullable: false,
     example: [
-      Estado_Logico.ACTIVO,
-      Estado_Logico.INACTIVO,
-      Estado_Logico.ELIMINADO,
+      EstadoLogico.ACTIVO,
+      EstadoLogico.INACTIVO,
+      EstadoLogico.ELIMINADO,
     ],
   })
-  @IsEnum(ESTADO_OPERATIVO)
+  @IsEnum(EstadoOperativo)
   @IsNotEmpty()
-  avion_Estado_Logico: Estado_Logico;
+  avion_Estado_Logico: EstadoLogico;
 
   @ApiProperty({
     description: 'Tipo de motor del avión',

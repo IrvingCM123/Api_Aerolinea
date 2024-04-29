@@ -1,5 +1,6 @@
-import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class Piloto {
@@ -39,8 +40,14 @@ export class Piloto {
   @Column({
     nullable: false,
     type: 'enum',
-    enum: Estado_Logico,
-    default: Estado_Logico.ACTIVO,
+    enum: EstadoLogico,
+    default: EstadoLogico.ACTIVO,
   })
-  piloto_Estado_Logico: Estado_Logico;
+  piloto_Estado_Logico: EstadoLogico;
+
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.piloto_Id)
+  vuelo_Id: Vuelo;
+
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.copiloto_Id)
+  copiloto_Id: Vuelo;
 }

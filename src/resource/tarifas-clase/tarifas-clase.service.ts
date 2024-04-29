@@ -8,10 +8,10 @@ import {
   Errores_Operaciones,
   Exito_Operaciones,
 } from 'src/common/helpers/operaciones.helpers';
-import { Estado_Logico } from '../../../common/enums/estado_logico.enum';
-import { TarifaClase } from '../entities/tarifa-clase.entity';
-import { CreateTarifaClaseDto } from '../dto/create/create-tarifa-clase.dto';
-import { UpdateTarifaClaseDto } from '../dto/update/update-tarifa-clase.dto';
+import { EstadoLogico } from 'src/common/enums/estado-logico.enum';
+import { CreateTarifaClaseDto } from './dto/create-tarifa-clase.dto';
+import { TarifaClase } from './entities/tarifa-clase.entity';
+import { UpdateTarifaClaseDto } from './dto/update-tarifas-clase.dto';
 
 @Injectable()
 export class TarifaClaseService {
@@ -21,8 +21,8 @@ export class TarifaClaseService {
     private readonly tarifaClaseRepository: Repository<TarifaClase>,
   ) {}
 
-  create(createTarifaClaseDto: CreateTarifaClaseDto) {
-    const tarifaClase_Creado: any = this.transaccionservice.transaction(
+  async create(createTarifaClaseDto: CreateTarifaClaseDto) {
+    const tarifaClase_Creado = await this.transaccionservice.transaction(
       Tipo_Transaccion.Guardar,
       TarifaClase,
       createTarifaClaseDto,
@@ -41,7 +41,7 @@ export class TarifaClaseService {
     }
   }
 
-  findAll() {
+  async findAll() {
     return this.tarifaClaseRepository.find();
   }
 
@@ -93,7 +93,7 @@ export class TarifaClaseService {
     const tarifaClase_Eliminar: any = await this.transaccionservice.transaction(
       Tipo_Transaccion.Actualizar_Con_Parametros,
       TarifaClase,
-      Estado_Logico.ELIMINADO,
+      EstadoLogico.ELIMINADO,
       'tarifa_Clase_Estado',
       id.toString(),
     );

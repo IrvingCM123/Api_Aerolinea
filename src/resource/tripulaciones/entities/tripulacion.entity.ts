@@ -1,10 +1,12 @@
 import { Trabajador } from 'src/resource/trabajadores/entities/trabajador.entity';
+import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -27,4 +29,7 @@ export class Tripulacion {
   @ManyToOne(() => Trabajador, (trabajador) => trabajador.id)
   @JoinColumn({ name: 'id' })
   trabajadorId: number;
+
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.tripulacion_ID)
+  vuelo_Id: Vuelo;
 }

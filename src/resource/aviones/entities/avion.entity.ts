@@ -4,11 +4,13 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import { ESTADO_OPERATIVO } from '../../../common/enums/estado-operativo.enum';
+import { EstadoOperativo } from '../../../common/enums/estado-operativo.enum';
 import { ModeloAvion } from '../../modelos/entities/modelo-avion.entity';
 import { Fabricante } from 'src/resource/fabricantes/entities/fabricante.entity';
-import { Estado_Logico } from '../../../common/enums/estado_logico.enum';
+import { EstadoLogico } from '../../../common/enums/estado-logico.enum';
+import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
 
 @Entity()
 export class Avion {
@@ -41,8 +43,8 @@ export class Avion {
 
   @Column({
     nullable: false,
-    default: ESTADO_OPERATIVO.OPERATIVO,
-    enum: ESTADO_OPERATIVO,
+    default: EstadoOperativo.OPERATIVO,
+    enum: EstadoOperativo,
     type: 'enum',
   })
   avion_Estado_Operativo: string;
@@ -50,14 +52,17 @@ export class Avion {
   @Column({
     nullable: false,
     type: 'enum',
-    enum: Estado_Logico,
-    default: Estado_Logico.ACTIVO,
+    enum: EstadoLogico,
+    default: EstadoLogico.ACTIVO,
   })
-  avion_Estado_Logico: Estado_Logico;
+  avion_Estado_Logico: EstadoLogico;
 
   @Column({ nullable: false })
   avion_Tipo_Motor: string;
 
   @Column({ nullable: false })
   avion_Autonomia: string;
+
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.avion_Id)
+  vuelo_Id: Vuelo;
 }

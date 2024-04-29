@@ -8,9 +8,10 @@ import {
   Delete,
   NotFoundException,
 } from '@nestjs/common';
-import { TarifaDistanciaService } from '../services/tarifa-distancia.service';
-import { CreateTarifaDistanciaDto } from '../dto/create/create-tarifa-distancia.dto';
 import { ApiTags } from '@nestjs/swagger';
+
+import { CreateTarifaDistanciaDto } from './dto/create-tarifa-distancia.dto';
+import { TarifaDistanciaService } from './tarifa-distancia.service';
 
 @ApiTags('Tarifas Distancia')
 @Controller('tarifas-distancia')

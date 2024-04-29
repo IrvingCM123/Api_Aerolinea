@@ -6,6 +6,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -17,11 +18,11 @@ export class TarifaDistancia {
   tarifa_distancia_Nombre: string;
 
   @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.tarifaDistanciaOrigen)
-  @JoinColumn({ name: 'ubicacion_id' })
+  @JoinColumn({ name: 'origen_id' })
   origen: number;
 
   @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.tarifaDistanciaDestino)
-  @JoinColumn({ name: 'ubicacion_id' })
+  @JoinColumn({ name: 'destino_id' })
   destino: number;
 
   @Column()
@@ -30,6 +31,6 @@ export class TarifaDistancia {
   @Column()
   precioTarifa: number;
 
-  @ManyToOne(() => Vuelo, (vuelo) => vuelo.tarifaDistancia)
-  vuelo: Vuelo;
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.tarifa_distancia_Id)
+  vuelo_Id: Vuelo;
 }
