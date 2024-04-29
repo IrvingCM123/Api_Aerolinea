@@ -86,10 +86,10 @@ export class AuthService {
       }
 
       const tarjeta_Data: CreateTarjetaDto = {
-        tarjeta_Titular: usuario_Tarjeta_Titular,
-        tarjeta_Direccion: usuario_Tarjeta_Direccion,
-        tarjeta_Numero_Tarjeta: usuario_Tarjeta_Numero_Tarjeta,
-        tarjeta_Fecha_Vencimiento: usuario_Tarjeta_Fecha_Vencimiento
+        tarjeta_Titular: usuario_Tarjeta_Titular ? ' ': usuario_Tarjeta_Titular,
+        tarjeta_Direccion: usuario_Tarjeta_Direccion ? ' ': usuario_Tarjeta_Direccion,
+        tarjeta_Numero_Tarjeta: usuario_Tarjeta_Numero_Tarjeta ? ' ': usuario_Tarjeta_Numero_Tarjeta,
+        tarjeta_Fecha_Vencimiento: usuario_Tarjeta_Fecha_Vencimiento ? ' ': usuario_Tarjeta_Fecha_Vencimiento,
       }
 
       // Guardar la tarjeta en la base de datos

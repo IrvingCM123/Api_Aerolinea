@@ -54,9 +54,6 @@ export class RegisterDto {
 
     @IsString()
     @IsOptional()
-    @Matches(/^(\d{2})-(\d{2})$/, {
-        message: Error_Registro.FECHA_VENCIMIENTO,
-    })
     usuario_Tarjeta_Fecha_Vencimiento: string;
 
 }
