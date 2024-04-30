@@ -85,12 +85,16 @@ export class AuthService {
         };
       }
 
+      console.log(nuevo_Usuario.resultado)
+
       const tarjeta_Data: CreateTarjetaDto = {
         tarjeta_Titular: usuario_Tarjeta_Titular ? ' ': usuario_Tarjeta_Titular,
         tarjeta_Direccion: usuario_Tarjeta_Direccion ? ' ': usuario_Tarjeta_Direccion,
         tarjeta_Numero_Tarjeta: usuario_Tarjeta_Numero_Tarjeta ? ' ': usuario_Tarjeta_Numero_Tarjeta,
         tarjeta_Fecha_Vencimiento: usuario_Tarjeta_Fecha_Vencimiento ? ' ': usuario_Tarjeta_Fecha_Vencimiento,
       }
+
+      console.log(tarjeta_Data, "tarjeta_Data")
 
       // Guardar la tarjeta en la base de datos
       nueva_Tarjeta = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Tarjeta, tarjeta_Data);

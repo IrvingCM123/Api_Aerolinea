@@ -13,7 +13,7 @@ export class Tarjeta {
     @Column({nullable: false})
     tarjeta_Direccion: string;
 
-    @Column({nullable: false, unique: true})
+    @Column({nullable: false})
     tarjeta_Numero_Tarjeta: string;
 
     @Column({nullable: false})
