@@ -30,7 +30,7 @@ async function bootstrap() {
   );
 
   // Cambiar el puerto de escucha por el secret port del .env
-  await app.listen(3000);
+  await app.listen(80);
   logger.log(`App running on port 3000`);
 }
 bootstrap();

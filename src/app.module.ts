@@ -37,6 +37,12 @@ const host_local = secret.PG_HOST_LOCAL;
 const database_local = secret.PG_DATABASE_LOCAL;
 const user_local = secret.PG_USER_LOCAL;
 const password_local = secret.PG_PASSWORD_LOCAL;
+
+const host_azure = secret.PG_HOST_AZURE;
+const database_azure = secret.PG_DATABASE_AZURE;
+const user_azure = secret.PG_USER_AZURE;
+const password_azure = secret.PG_PASSWORD_AZURE;
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -44,12 +50,11 @@ const password_local = secret.PG_PASSWORD_LOCAL;
       type: 'postgres',
       host: host_local,
       port: 5432,
-      username: user_local,
-      password: password_local,
-      database: database_local,
+      username: user_azure,
+      password: password_azure,
+      database: database_azure,
       autoLoadEntities: true,
       synchronize: true,
-      
       //extra: {
       //  ssl: true,
       //  sslmode: 'require',
