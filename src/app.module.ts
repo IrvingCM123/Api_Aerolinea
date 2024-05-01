@@ -22,6 +22,7 @@ import { UbicacionesModule } from './resource/ubicaciones/ubicaciones.module';
 import { VuelosModule } from './resource/vuelos/vuelos.module';
 import { TarifasClaseModule } from './resource/tarifas-clase/tarifas-clase.module';
 import { TarifasDistanciaModule } from './resource/tarifas-distancia/tarifa-distancia.module';
+import { UsuarioAdminModule } from './resource/usuario_admin/usuario_admin.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -55,14 +56,15 @@ const password_azure = secret.PG_PASSWORD_AZURE;
       database: database_azure,
       autoLoadEntities: true,
       synchronize: true,
-      extra: {
-        ssl: true,
-        sslmode: 'require',
-      },
+      //extra: {
+      //  ssl: true,
+      //  sslmode: 'require',
+      //},
     }),
     AuthModule,
     CuentasModule,
     UsuarioModule,
+    UsuarioAdminModule,
     ClientModule,
     TransaccionModule,
     ClienteModule,

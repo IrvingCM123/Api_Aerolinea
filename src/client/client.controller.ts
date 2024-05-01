@@ -11,6 +11,12 @@ export class ClientController {
     return this.clientService.validar_cuenta(Destinatario);
   }
 
+  @Post('solicitarCodigo')
+  CodigoVerificacion(@Body() Data: any) {
+    let Destinatario = Data.Destinatario;
+    return this.clientService.solicitar_Codigo_activacion(Destinatario);
+  }
+
   @Post('passwordupdate')
   actualizar_contraseña(@Body() Data: any) {
     let Destinatario = Data.Destinatario;
