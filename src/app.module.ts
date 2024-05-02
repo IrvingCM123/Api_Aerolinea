@@ -23,6 +23,7 @@ import { VuelosModule } from './resource/vuelos/vuelos.module';
 import { TarifasClaseModule } from './resource/tarifas-clase/tarifas-clase.module';
 import { TarifasDistanciaModule } from './resource/tarifas-distancia/tarifa-distancia.module';
 import { UsuarioAdminModule } from './resource/usuario_admin/usuario_admin.module';
+import { SeedModule } from './resource/seed/seed.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -79,7 +80,8 @@ const password_azure = secret.PG_PASSWORD_AZURE;
     UbicacionesModule,
     VuelosModule,
     TarifasClaseModule,
-    TarifasDistanciaModule
+    TarifasDistanciaModule,
+    SeedModule
   ],
   controllers: [AppController],
   providers: [AppService],
