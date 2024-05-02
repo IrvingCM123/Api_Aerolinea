@@ -12,4 +12,9 @@ export class SeedController {
   async executeSeed() {
     return this.seedService.runSeed();
   }
+
+  @Get('trabajadores')
+  async consulta() {
+    return this.seedService.insertAeropuertos();
+  }
 }

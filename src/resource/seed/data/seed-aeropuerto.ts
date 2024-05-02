@@ -12,57 +12,38 @@ interface SeedAeropuertos {
   aeropuertos: Aeropuerto[];
 }
 
-export const initialAeropuertos: SeedAeropuertos = {
-  aeropuertos: [
-    {
-      aeropuerto_Nombre: 'Aeropuerto Internacional John F. Kennedy',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 1,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto Internacional de Heathrow',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 2,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto Nacional de Brasilia',
-      aeropuerto_Tipo: TipoAeropuerto.NACIONAL,
-      aeropuerto_Ubicacion: 3,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto Internacional de Narita',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 4,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto de Tegel',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 5,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto El Dorado',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 6,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto Internacional de Los Ángeles',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 7,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto de Congonhas',
-      aeropuerto_Tipo: TipoAeropuerto.NACIONAL,
-      aeropuerto_Ubicacion: 8,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto de Barajas',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 9,
-    },
-    {
-      aeropuerto_Nombre: 'Aeropuerto de Gatwick',
-      aeropuerto_Tipo: TipoAeropuerto.INTERNACIONAL,
-      aeropuerto_Ubicacion: 10,
-    },
-  ],
-};
+let nombres_Aeropuertos = [
+  'Aeropuerto Internacional John F. Kennedy',
+  'Aeropuerto Internacional de Heathrow',
+  'Aeropuerto Nacional de Brasilia',
+  'Aeropuerto Internacional de Narita',
+  'Aeropuerto de Tegel',
+  'Aeropuerto El Dorado',
+  'Aeropuerto Internacional de Los Ángeles',
+  'Aeropuerto de Congonhas',
+  'Aeropuerto de Barajas',
+  'Aeropuerto de Gatwick',
+];
+
+
+export function registrarAeropuertos(ubicaciones: any) {
+
+  const array_Ubicaciones = ubicaciones;
+
+  const tipos_Aeropuertos = [TipoAeropuerto.INTERNACIONAL, TipoAeropuerto.NACIONAL, TipoAeropuerto.PRIVADO];
+
+  const aeropuertos_Nombres = nombres_Aeropuertos;
+
+  let aeropuertos_generados = [];
+
+  for (let i = 0; i < 10; i++) {
+    const aeropuerto: Aeropuerto = {
+      aeropuerto_Nombre: aeropuertos_Nombres[i],
+      aeropuerto_Tipo: tipos_Aeropuertos[Math.floor(Math.random() * tipos_Aeropuertos.length)],
+      aeropuerto_Ubicacion: array_Ubicaciones[Math.floor(Math.random() * array_Ubicaciones.length)],
+    };
+    aeropuertos_generados.push(aeropuerto);
+  }
+
+  return aeropuertos_generados;
+}

@@ -1,4 +1,3 @@
-export { initialAeropuertos } from '../data/seed-aeropuerto';
 export { initialAviones } from '../data/seed-aviones';
 export { initialFabricantes } from '../data/seed-fabricante';
 export { initialModelosAvion } from '../data/seed-modelo';

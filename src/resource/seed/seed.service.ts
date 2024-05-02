@@ -1,3 +1,4 @@
+import { Connection, DataSourceOptions } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { TrabajadoresService } from '../trabajadores/trabajadores.service';
 import { UbicacionesService } from '../ubicaciones/ubicaciones.service';
@@ -6,8 +7,11 @@ import { AeropuertosService } from '../aeropuertos/aeropuertos.service';
 import { TripulacionesService } from '../tripulaciones/tripulaciones.service';
 import { VuelosService } from '../vuelos/vuelos.service';
 
+import { TransaccionService } from 'src/common/transaction/transaccion.service';
+import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
+import { registrarAeropuertos } from './data/seed-aeropuerto';
+
 import {
-  initialAeropuertos,
   initialAviones,
   initialFabricantes,
   initialModelosAvion,
@@ -24,6 +28,8 @@ import { TarifaDistanciaService } from '../tarifas-distancia/tarifa-distancia.se
 import { FabricantesService } from '../fabricantes/fabricantes.service';
 import { PilotosService } from '../pilotos/pilotos.service';
 import { ModelosService } from '../modelos/modelos.service';
+import { Ubicacion } from '../ubicaciones/entities/ubicacion.entity';
+import { Aeropuerto } from '../aeropuertos/entities/aeropuerto.entity';
 
 @Injectable()
 export class SeedService {
@@ -39,7 +45,8 @@ export class SeedService {
     private readonly vuelosService: VuelosService,
     private readonly pilotosService: PilotosService,
     private readonly modelosService: ModelosService,
-  ) {}
+    public transaccionService: TransaccionService,
+  ) { }
 
   async runSeed() {
     await this.insertTrabajadores();
@@ -52,7 +59,7 @@ export class SeedService {
     await this.insertFabricantes();
     await this.insertPilotos();
     await this.insertModelos();
-    await this.insertVuelos();
+    //await this.insertVuelos();
     return 'SEED EXECUTED';
   }
 
@@ -106,14 +113,16 @@ export class SeedService {
     });
   }
 
-  private async insertAeropuertos() {
-    const aeropuertos = initialAeropuertos.aeropuertos;
+  async insertAeropuertos() {
 
-    const insertPromises = [];
+    const ubicaciones_Array = await this.consultar_Ubicaciones();
 
-    aeropuertos.forEach((aeropuerto) => {
-      insertPromises.push(this.aeropuertosService.create(aeropuerto));
+    const aeropuertos: any = registrarAeropuertos(ubicaciones_Array);
+
+    aeropuertos.forEach(async (aeropuerto) => {
+      await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Aeropuerto, aeropuerto);
     });
+
   }
 
   private async insertTripulaciones() {
@@ -156,13 +165,28 @@ export class SeedService {
     });
   }
 
-  private async insertVuelos() {
-    const vuelos = initialVuelos.vuelos;
+  //private async insertVuelos() {
+  //  const vuelos = initialVuelos.vuelos;
+  //
+  //  const insertPromises = [];
+  //
+  //  vuelos.forEach((vuelo) => {
+  //    insertPromises.push(this.vuelosService.create(vuelo));
+  //  });
+  //}
 
-    const insertPromises = [];
+  async consultar_Ubicaciones() {
 
-    vuelos.forEach((vuelo) => {
-      insertPromises.push(this.vuelosService.create(vuelo));
-    });
+    const ubicaciones: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, Ubicacion, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < ubicaciones.length; i++) {
+      array_ID.push(ubicaciones[i].ubicacion_Id);
+    }
+
+    return array_ID;
   }
+
+
 }
