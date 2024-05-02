@@ -6,27 +6,38 @@ interface SeedUbicaciones {
   ubicaciones: Ubicacion[];
 }
 
+export function registrarUbicaciones() {
+  const nombresUbicaciones = [
+    'Nueva York, EE. UU.',
+    'París, Francia',
+    'Tokio, Japón',
+    'Londres, Reino Unido',
+    'Sídney, Australia',
+    'Roma, Italia',
+    'Pekín, China',
+    'Ciudad de México, México',
+    'El Cairo, Egipto',
+    'Río de Janeiro, Brasil',
+    'Nueva Delhi, India',
+    'Ciudad del Cabo, Sudáfrica',
+    'Moscú, Rusia',
+    'Dubái, Emiratos Árabes Unidos',
+    'Toronto, Canadá',
+    'Buenos Aires, Argentina',
+    'Seúl, Corea del Sur',
+    'Berlín, Alemania',
+    'Bangkok, Tailandia',
+    'Los Ángeles, EE. UU.',
+  ];
+
+  const ubicacionesGeneradas = nombresUbicaciones.map((nombre) => ({
+    ubicacion_Nombre: nombre,
+  }));
+
+  console.log(ubicacionesGeneradas);
+  return ubicacionesGeneradas;
+}
+
 export const initialUbicaciones: SeedUbicaciones = {
-  ubicaciones: [
-    { ubicacion_Nombre: 'Nueva York, EE. UU.' },
-    { ubicacion_Nombre: 'París, Francia' },
-    { ubicacion_Nombre: 'Tokio, Japón' },
-    { ubicacion_Nombre: 'Londres, Reino Unido' },
-    { ubicacion_Nombre: 'Sídney, Australia' },
-    { ubicacion_Nombre: 'Roma, Italia' },
-    { ubicacion_Nombre: 'Pekín, China' },
-    { ubicacion_Nombre: 'Ciudad de México, México' },
-    { ubicacion_Nombre: 'El Cairo, Egipto' },
-    { ubicacion_Nombre: 'Río de Janeiro, Brasil' },
-    { ubicacion_Nombre: 'Nueva Delhi, India' },
-    { ubicacion_Nombre: 'Ciudad del Cabo, Sudáfrica' },
-    { ubicacion_Nombre: 'Moscú, Rusia' },
-    { ubicacion_Nombre: 'Dubái, Emiratos Árabes Unidos' },
-    { ubicacion_Nombre: 'Toronto, Canadá' },
-    { ubicacion_Nombre: 'Buenos Aires, Argentina' },
-    { ubicacion_Nombre: 'Seúl, Corea del Sur' },
-    { ubicacion_Nombre: 'Berlín, Alemania' },
-    { ubicacion_Nombre: 'Bangkok, Tailandia' },
-    { ubicacion_Nombre: 'Los Ángeles, EE. UU.' },
-  ],
+  ubicaciones: registrarUbicaciones(),
 };

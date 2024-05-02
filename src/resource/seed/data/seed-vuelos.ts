@@ -20,7 +20,7 @@ interface SeedVuelos {
   vuelos: Vuelo[];
 }
 
-export const initialVuelos: SeedVuelos  = {
+export const initialVuelos: SeedVuelos = {
   vuelos: [
     {
       avion_Id: 1,

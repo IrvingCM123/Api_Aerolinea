@@ -13,21 +13,30 @@ interface SeedTarifasClase {
 }
 
 export function registrar_Tarifa_Clase() {
+  const clase_Nombre = [
+    'Económica',
+    'Primera Clase',
+    'Business',
+    'Premium Economy',
+    'Premium Business',
+    'Deluxe Class',
+    'Standard ',
+  ];
 
-  const clase_Nombre = [ 'Económica', 'Primera Clase', 'Business', 'Premium Economy', 'Premium Business', 'Deluxe Class', 'Standard '];
+  const clase_Estado = [Estado_Logico.ACTIVO, Estado_Logico.INACTIVO];
 
-  const clase_Estado = [ Estado_Logico.ACTIVO, Estado_Logico.INACTIVO ];
-
-  let tarifas_generadas = [];
+  const tarifas_generadas = [];
 
   for (let i = 0; i < 10; i++) {
-    const tarifa = generar_Tarifas_Clase(clase_Nombre[Math.floor(Math.random() * clase_Nombre.length)], clase_Estado[Math.floor(Math.random() * clase_Estado.length)]);
+    const tarifa = generar_Tarifas_Clase(
+      clase_Nombre[Math.floor(Math.random() * clase_Nombre.length)],
+      clase_Estado[Math.floor(Math.random() * clase_Estado.length)],
+    );
     tarifas_generadas.push(tarifa);
   }
 
   console.log(tarifas_generadas);
   return tarifas_generadas;
-
 }
 
 function generar_Tarifas_Clase(nombre: string, estado: EstadoTarifa) {
