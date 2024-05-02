@@ -56,10 +56,10 @@ const password_azure = secret.PG_PASSWORD_AZURE;
       database: database_azure,
       autoLoadEntities: true,
       synchronize: true,
-      //extra: {
-      //  ssl: true,
-      //  sslmode: 'require',
-      //},
+      extra: {
+        ssl: true,
+        sslmode: 'require',
+      },
     }),
     AuthModule,
     CuentasModule,
