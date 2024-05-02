@@ -1,4 +1,4 @@
-import { Estado_Viaje } from "src/common/enums/estado-viaje.enum";
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 
 interface Vuelo {
   avion_Id: number;
@@ -24,11 +24,11 @@ export const initialVuelos: SeedVuelos = {
   vuelos: [
     {
       avion_Id: 1,
-      fecha: new Date('2024-05-01'), // Use Date constructor to create Date object
+      fecha: new Date('2024-05-01'),
       piloto_Id: 1,
-      copiloto_Id: 2,
+      copiloto_Id: 1,
       tripulacion_ID: 1,
-      horaSalida: '08:00',
+      horaSalida: '07:00',
       pasajerosTotales: 150,
       pasajerosApartados: 100,
       estado: Estado_Viaje.POR_INICIAR,

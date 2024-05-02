@@ -31,5 +31,41 @@ export const initialModelosAvion: SeedModelosAvion = {
       modelo_Avion_Estado: ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
       modelo_Avion_Categoria: CategoriaModelo.MILITAR,
     },
+    // New models
+    {
+      modelo_Avion_Nombre: 'Modelo 4',
+      modelo_Avion_Estado: ESTADO_OPERATIVO.OPERATIVO,
+      modelo_Avion_Categoria: CategoriaModelo.COMERCIAL,
+    },
+    {
+      modelo_Avion_Nombre: 'Modelo 5',
+      modelo_Avion_Estado: ESTADO_OPERATIVO.MANTENIMIENTO,
+      modelo_Avion_Categoria: CategoriaModelo.PRIVADO,
+    },
+    {
+      modelo_Avion_Nombre: 'Modelo 6',
+      modelo_Avion_Estado: ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
+      modelo_Avion_Categoria: CategoriaModelo.MILITAR,
+    },
+    {
+      modelo_Avion_Nombre: 'Modelo 7',
+      modelo_Avion_Estado: ESTADO_OPERATIVO.OPERATIVO,
+      modelo_Avion_Categoria: CategoriaModelo.COMERCIAL,
+    },
+    {
+      modelo_Avion_Nombre: 'Modelo 8',
+      modelo_Avion_Estado: ESTADO_OPERATIVO.MANTENIMIENTO,
+      modelo_Avion_Categoria: CategoriaModelo.PRIVADO,
+    },
+    {
+      modelo_Avion_Nombre: 'Modelo 9',
+      modelo_Avion_Estado: ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
+      modelo_Avion_Categoria: CategoriaModelo.MILITAR,
+    },
+    {
+      modelo_Avion_Nombre: 'Modelo 10',
+      modelo_Avion_Estado: ESTADO_OPERATIVO.OPERATIVO,
+      modelo_Avion_Categoria: CategoriaModelo.COMERCIAL,
+    },
   ],
 };

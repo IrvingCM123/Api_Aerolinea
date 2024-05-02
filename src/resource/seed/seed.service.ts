@@ -52,7 +52,7 @@ export class SeedService {
     await this.insertFabricantes();
     await this.insertPilotos();
     await this.insertModelos();
-    //await this.insertVuelos();
+    await this.insertVuelos();
     return 'SEED EXECUTED';
   }
 
@@ -156,13 +156,13 @@ export class SeedService {
     });
   }
 
-  //private async insertVuelos() {
-  //  const vuelos = initialVuelos.vuelos;
-//
-  //  const insertPromises = [];
-//
-  //  vuelos.forEach((vuelo) => {
-  //    insertPromises.push(this.vuelosService.create(vuelo));
-  //  });
-  //}
+  private async insertVuelos() {
+    const vuelos = initialVuelos.vuelos;
+
+    const insertPromises = [];
+
+    vuelos.forEach((vuelo) => {
+      insertPromises.push(this.vuelosService.create(vuelo));
+    });
+  }
 }
