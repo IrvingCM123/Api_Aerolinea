@@ -14,58 +14,41 @@ interface SeedModelosAvion {
   modelosAvion: ModeloAvion[];
 }
 
-export const initialModelosAvion: SeedModelosAvion = {
-  modelosAvion: [
-    {
-      modelo_Avion_Nombre: 'Modelo 1',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.OPERATIVO,
-      modelo_Avion_Categoria: CategoriaModelo.COMERCIAL,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 2',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.MANTENIMIENTO,
-      modelo_Avion_Categoria: CategoriaModelo.PRIVADO,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 3',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
-      modelo_Avion_Categoria: CategoriaModelo.MILITAR,
-    },
-    // New models
-    {
-      modelo_Avion_Nombre: 'Modelo 4',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.OPERATIVO,
-      modelo_Avion_Categoria: CategoriaModelo.COMERCIAL,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 5',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.MANTENIMIENTO,
-      modelo_Avion_Categoria: CategoriaModelo.PRIVADO,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 6',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
-      modelo_Avion_Categoria: CategoriaModelo.MILITAR,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 7',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.OPERATIVO,
-      modelo_Avion_Categoria: CategoriaModelo.COMERCIAL,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 8',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.MANTENIMIENTO,
-      modelo_Avion_Categoria: CategoriaModelo.PRIVADO,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 9',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
-      modelo_Avion_Categoria: CategoriaModelo.MILITAR,
-    },
-    {
-      modelo_Avion_Nombre: 'Modelo 10',
-      modelo_Avion_Estado: ESTADO_OPERATIVO.OPERATIVO,
-      modelo_Avion_Categoria: CategoriaModelo.COMERCIAL,
-    },
-  ],
-};
+export function registrarModelosAvion() {
+
+  const modelos_Avion: string[] = [
+    "SkyRanger X210",
+    "AeroMaster G5",
+    "JetStream 4000",
+    "CloudChaser M2",
+    "Horizon S150",
+    "EagleEye A320",
+    "StratoCruiser 750",
+    "HawkSpirit Z300",
+    "Vortex T120",
+    "FalconFlyer D880"
+];
+
+  const categorias_Avion = [CategoriaModelo.COMERCIAL, CategoriaModelo.PRIVADO, CategoriaModelo.MILITAR];
+
+  const estados_Avion = [ESTADO_OPERATIVO.OPERATIVO, ESTADO_OPERATIVO.MANTENIMIENTO, ESTADO_OPERATIVO.FUERA_DE_SERVICIO];
+
+  let modelos_generados = [];
+
+  for (let i = 0; i < 10; i++) {
+    const modelo = generar_ModelosAvion(modelos_Avion[Math.floor(Math.random() * modelos_Avion.length)], estados_Avion[Math.floor(Math.random() * estados_Avion.length)], categorias_Avion[Math.floor(Math.random() * categorias_Avion.length)]);
+    modelos_generados.push(modelo);
+  }
+  console.log(modelos_generados);
+  return modelos_generados;
+
+}
+
+function generar_ModelosAvion(nombre: string, estado: Estado_Avion, categoria: Categoria_Avion): ModeloAvion {
+  const modelo: ModeloAvion = {
+    modelo_Avion_Nombre: nombre,
+    modelo_Avion_Estado: estado,
+    modelo_Avion_Categoria: categoria,
+  };
+  return modelo;
+}

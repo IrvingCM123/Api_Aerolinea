@@ -1,8 +1,3 @@
-export { initialAviones } from '../data/seed-aviones';
-export { initialFabricantes } from '../data/seed-fabricante';
-export { initialModelosAvion } from '../data/seed-modelo';
-export { initialPilotos } from './seed-pilotos';
-export { initialTarifasClase } from './seed-tarifaClase';
 export { initialTarifasDistancia } from './seed-tarifaDistancia';
 export { initialTrabajadores } from './seed-trabajadores';
 export { initialTripulaciones } from './seed-tripulaciones';

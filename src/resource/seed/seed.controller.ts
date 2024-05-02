@@ -15,6 +15,6 @@ export class SeedController {
 
   @Get('trabajadores')
   async consulta() {
-    return this.seedService.insertAeropuertos();
+    return this.seedService.insertTarifasClase();
   }
 }

@@ -12,57 +12,33 @@ interface SeedTarifasClase {
   tarifasClase: TarifaClase[];
 }
 
-export const initialTarifasClase: SeedTarifasClase = {
-  tarifasClase: [
-    {
-      tarifa_Clase_Nombre: 'Económica',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 100,
-    },
-    {
-      tarifa_Clase_Nombre: 'Primera Clase',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 500,
-    },
-    {
-      tarifa_Clase_Nombre: 'Business',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 300,
-    },
-    {
-      tarifa_Clase_Nombre: 'Premium Economy',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 250,
-    },
-    {
-      tarifa_Clase_Nombre: 'Premium Business',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 600,
-    },
-    {
-      tarifa_Clase_Nombre: 'Deluxe Class',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 700,
-    },
-    {
-      tarifa_Clase_Nombre: 'Standard Class',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 80,
-    },
-    {
-      tarifa_Clase_Nombre: 'Executive Class',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 400,
-    },
-    {
-      tarifa_Clase_Nombre: 'Economy Plus',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 150,
-    },
-    {
-      tarifa_Clase_Nombre: 'Luxury Class',
-      tarifa_Clase_Estado: Estado_Logico.ACTIVO,
-      precioTarifa: 1000,
-    },
-  ],
-};
+export function registrar_Tarifa_Clase() {
+
+  const clase_Nombre = [ 'Económica', 'Primera Clase', 'Business', 'Premium Economy', 'Premium Business', 'Deluxe Class', 'Standard '];
+
+  const clase_Estado = [ Estado_Logico.ACTIVO, Estado_Logico.INACTIVO ];
+
+  let tarifas_generadas = [];
+
+  for (let i = 0; i < 10; i++) {
+    const tarifa = generar_Tarifas_Clase(clase_Nombre[Math.floor(Math.random() * clase_Nombre.length)], clase_Estado[Math.floor(Math.random() * clase_Estado.length)]);
+    tarifas_generadas.push(tarifa);
+  }
+
+  console.log(tarifas_generadas);
+  return tarifas_generadas;
+
+}
+
+function generar_Tarifas_Clase(nombre: string, estado: EstadoTarifa) {
+  const tarifa: TarifaClase = {
+    tarifa_Clase_Nombre: nombre,
+    tarifa_Clase_Estado: estado,
+    precioTarifa: generar_Precios_Tarifa(),
+  };
+  return tarifa;
+}
+
+function generar_Precios_Tarifa() {
+  return Math.floor(Math.random() * 900) + 100;
+}

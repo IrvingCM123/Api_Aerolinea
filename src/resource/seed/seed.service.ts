@@ -12,11 +12,6 @@ import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
 import { registrarAeropuertos } from './data/seed-aeropuerto';
 
 import {
-  initialAviones,
-  initialFabricantes,
-  initialModelosAvion,
-  initialPilotos,
-  initialTarifasClase,
   initialTarifasDistancia,
   initialTrabajadores,
   initialTripulaciones,
@@ -30,35 +25,39 @@ import { PilotosService } from '../pilotos/pilotos.service';
 import { ModelosService } from '../modelos/modelos.service';
 import { Ubicacion } from '../ubicaciones/entities/ubicacion.entity';
 import { Aeropuerto } from '../aeropuertos/entities/aeropuerto.entity';
+import { Fabricante } from '../fabricantes/entities/fabricante.entity';
+import { ModeloAvion } from '../modelos/entities/modelo-avion.entity';
+import { registrarAviones } from './data/seed-aviones';
+import { Avion } from '../aviones/entities/avion.entity';
+import { registrarFabricantes } from './data/seed-fabricante';
+import { registrarModelosAvion } from './data/seed-modelo';
+import { registrar_Pilotos } from './data/seed-pilotos';
+import { Piloto } from '../pilotos/entities/piloto.entity';
+import { registrar_Tarifa_Clase } from './data/seed-tarifaClase';
+import { TarifaClase } from '../tarifas-clase/entities/tarifa-clase.entity';
 
 @Injectable()
 export class SeedService {
   constructor(
     private readonly trabajadoresService: TrabajadoresService,
     private readonly ubicacionesService: UbicacionesService,
-    private readonly avionesService: AvionesService,
-    private readonly aeropuertosService: AeropuertosService,
     private readonly tripulacionesService: TripulacionesService,
-    private readonly tarifasClaseService: TarifaClaseService,
     private readonly tarifasDistanciaService: TarifaDistanciaService,
-    private readonly fabricanteService: FabricantesService,
-    private readonly vuelosService: VuelosService,
-    private readonly pilotosService: PilotosService,
-    private readonly modelosService: ModelosService,
     public transaccionService: TransaccionService,
   ) { }
 
   async runSeed() {
     await this.insertTrabajadores();
     await this.insertUbicaciones();
+    await this.insertFabricantes();
+    await this.insertModelos();
+
+    await this.insertPilotos();
     await this.insertAviones();
     await this.insertAeropuertos();
     await this.insertTripulaciones();
     await this.insertTarifasClase();
     await this.insertTarifasDistancia();
-    await this.insertFabricantes();
-    await this.insertPilotos();
-    await this.insertModelos();
     //await this.insertVuelos();
     return 'SEED EXECUTED';
   }
@@ -83,34 +82,35 @@ export class SeedService {
     });
   }
 
-  private async insertFabricantes() {
-    const fabricantes = initialFabricantes.fabricantes;
+  async insertFabricantes() {
+    const fabricantes_Creados = registrarFabricantes();
 
-    const insertPromises = [];
-
-    fabricantes.forEach((fabricante) => {
-      insertPromises.push(this.fabricanteService.create(fabricante));
+    fabricantes_Creados.forEach(async (fabricante) => {
+      await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Fabricante, fabricante);
     });
   }
 
-  private async insertPilotos() {
-    const pilotos = initialPilotos.pilotos;
+  async insertPilotos() {
+    const pilotos = registrar_Pilotos();
 
-    const insertPromises = [];
-
-    pilotos.forEach((piloto) => {
-      insertPromises.push(this.pilotosService.create(piloto));
+    pilotos.forEach(async (piloto) => {
+      await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Piloto, piloto);
     });
+
   }
 
-  private async insertAviones() {
-    const aviones = initialAviones.aviones;
+  async insertAviones() {
 
-    const insertPromises = [];
+    const fabricantes_Array = await this.consultar_Fabricantes();
 
-    aviones.forEach((avion) => {
-      insertPromises.push(this.avionesService.create(avion));
+    const modelos_Array = await this.consultar_Modelos();
+
+    const aviones_Creados = registrarAviones(fabricantes_Array, modelos_Array);
+
+    aviones_Creados.forEach(async (avion) => {
+      await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Avion, avion);
     });
+
   }
 
   async insertAeropuertos() {
@@ -135,14 +135,13 @@ export class SeedService {
     });
   }
 
-  private async insertTarifasClase() {
-    const tarifasClase = initialTarifasClase.tarifasClase;
+  async insertTarifasClase() {
+    const tarifasClase = registrar_Tarifa_Clase();
 
-    const insertPromises = [];
-
-    tarifasClase.forEach((tarifaClase) => {
-      insertPromises.push(this.tarifasClaseService.create(tarifaClase));
-    });
+    tarifasClase.forEach(async (tarifaClase) =>
+      await this.transaccionService.transaction(Tipo_Transaccion.Guardar, TarifaClase, tarifaClase)
+    );
+    
   }
 
   private async insertTarifasDistancia() {
@@ -155,14 +154,12 @@ export class SeedService {
     });
   }
 
-  private async insertModelos() {
-    const modelos = initialModelosAvion.modelosAvion;
+  async insertModelos() {
+    const modelos = registrarModelosAvion();
 
-    const insertPromises = [];
-
-    modelos.forEach((modelo) => {
-      insertPromises.push(this.modelosService.create(modelo));
-    });
+    modelos.forEach(async (modelo) =>
+      await this.transaccionService.transaction(Tipo_Transaccion.Guardar, ModeloAvion, modelo)
+    );
   }
 
   //private async insertVuelos() {
@@ -175,7 +172,7 @@ export class SeedService {
   //  });
   //}
 
-  async consultar_Ubicaciones() {
+  private async consultar_Ubicaciones() {
 
     const ubicaciones: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, Ubicacion, '');
 
@@ -183,6 +180,32 @@ export class SeedService {
 
     for (let i = 0; i < ubicaciones.length; i++) {
       array_ID.push(ubicaciones[i].ubicacion_Id);
+    }
+
+    return array_ID;
+  }
+
+  private async consultar_Fabricantes() {
+
+    const fabricantes: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, Fabricante, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < fabricantes.length; i++) {
+      array_ID.push(fabricantes[i].fabricante_Id);
+    }
+
+    return array_ID;
+  }
+
+  private async consultar_Modelos() {
+
+    const modelos: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, ModeloAvion, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < modelos.length; i++) {
+      array_ID.push(modelos[i].modelo_Avion_Id);
     }
 
     return array_ID;

@@ -9,67 +9,65 @@ interface SeedFabricante {
   fabricantes: Fabricante[];
 }
 
-export const initialFabricantes: SeedFabricante = {
-  fabricantes: [
-    {
-      fabricante_Nombre: 'Fabricante 1',
-      fabricante_Descripcion: 'Descripción del fabricante 1',
-      fabricante_Telefono: '1234567890',
-      fabricante_Email: 'email1@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 2',
-      fabricante_Descripcion: 'Descripción del fabricante 2',
-      fabricante_Telefono: '0987654321',
-      fabricante_Email: 'email2@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 3',
-      fabricante_Descripcion: 'Descripción del fabricante 3',
-      fabricante_Telefono: '5555555555',
-      fabricante_Email: 'email3@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 4',
-      fabricante_Descripcion: 'Descripción del fabricante 4',
-      fabricante_Telefono: '6666666666',
-      fabricante_Email: 'email4@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 5',
-      fabricante_Descripcion: 'Descripción del fabricante 5',
-      fabricante_Telefono: '7777777777',
-      fabricante_Email: 'email5@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 6',
-      fabricante_Descripcion: 'Descripción del fabricante 6',
-      fabricante_Telefono: '8888888888',
-      fabricante_Email: 'email6@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 7',
-      fabricante_Descripcion: 'Descripción del fabricante 7',
-      fabricante_Telefono: '9999999999',
-      fabricante_Email: 'email7@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 8',
-      fabricante_Descripcion: 'Descripción del fabricante 8',
-      fabricante_Telefono: '1010101010',
-      fabricante_Email: 'email8@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 9',
-      fabricante_Descripcion: 'Descripción del fabricante 9',
-      fabricante_Telefono: '1111111111',
-      fabricante_Email: 'email9@example.com',
-    },
-    {
-      fabricante_Nombre: 'Fabricante 10',
-      fabricante_Descripcion: 'Descripción del fabricante 10',
-      fabricante_Telefono: '1212121212',
-      fabricante_Email: 'email10@example.com',
-    },
-  ],
-};
+export function registrarFabricantes() {
+
+  const fabricantes_Nombres: string[] = [
+    "AeroSky Dynamics",
+    "Global Jets Industries",
+    "Skyline Aviation Manufacturing",
+    "Horizon Aerospace",
+    "Pioneer Plane Corp",
+    "Nova Wing Technologies",
+    "Eagle Aeronautics",
+    "Orion Aircraft Corporation",
+    "Phantom Aviation",
+    "Meridian Airframes",
+    "VistaJet Engineering",
+    "Celestial Craftworks",
+    "Aether Aviation",
+    "Nimbus Aircraft Systems",
+    "StratoFlyer Inc"
+  ];
+
+  let fabricantes_generados = [];
+
+  for (let i = 0; i < 10; i++) {
+    // Tomar fabricante random 
+    const fabricante = generar_Fabricantes(fabricantes_Nombres[Math.floor(Math.random() * fabricantes_Nombres.length)]);
+    fabricantes_generados.push(fabricante);
+  }
+
+  return fabricantes_generados;
+}
+
+function generar_Fabricantes( fabricante: string ) {
+
+  const fabricante_Nombre = fabricante;
+  const fabricante_Descripcion = fabricante_Nombre + ' es un fabricante de aviones que se especializa en la fabricación de aviones de pasajeros y carga.';
+  const fabricante_Telefono = generar_Numeros_Telefono();
+  const fabricante_Email = generar_Correos_Electronicos(fabricante_Nombre);
+
+  return {
+    fabricante_Nombre,
+    fabricante_Descripcion,
+    fabricante_Telefono,
+    fabricante_Email
+  };
+
+}
+
+function generar_Correos_Electronicos(fabricantes_Nombre: string) {
+
+  const correos_Array = [ '@gmail.com', '@yahoo.com', '@outlook.com', '@hotmail.com', '@protonmail.com', '@aol.com', '@mail.com', '@icloud.com', '@zoho.com', '@yandex.com']
+
+  return fabricantes_Nombre.toLowerCase().replace(/ /g, '') + correos_Array[Math.floor(Math.random() * correos_Array.length)];
+
+}
+
+function generar_Numeros_Telefono() {
+  let numeros = [];
+  for (let i = 0; i < 10; i++) {
+    numeros.push(Math.floor(Math.random() * 10));
+  }
+  return numeros.join('');
+}
