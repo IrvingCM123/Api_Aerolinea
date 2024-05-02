@@ -9,7 +9,7 @@ interface Vuelo {
   horaSalida: string;
   pasajerosTotales: number;
   pasajerosApartados: number;
-  estado: Estado_Viaje;
+  estado: EstadoViaje;
   tarifa_Clase_Id: number;
   tarifa_distancia_Id: number;
 }

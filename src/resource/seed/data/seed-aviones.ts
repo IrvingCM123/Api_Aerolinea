@@ -9,7 +9,7 @@ interface Avion {
   avion_Velocidad_Maxima: number;
   avion_Anio_Fabricacion: number;
   avion_Estado_Operativo: Estado_Operativo;
-  avion_Estado_Logico: Estado_Logico;
+  avion_Estado_Logico: EstadoLogico;
   avion_Tipo_Motor: string;
   avion_Autonomia: string;
 }
