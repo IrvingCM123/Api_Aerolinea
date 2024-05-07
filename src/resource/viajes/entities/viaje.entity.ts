@@ -1,8 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToOne,
+} from 'typeorm';
 import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 import { Aeropuerto } from 'src/resource/aeropuertos/entities/aeropuerto.entity';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';
-import { Ubicacion } from '../../ubicaciones/entities/ubicacion.entity'; // Importa la entidad Ubicacion
+import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
 
 @Entity()
 export class Viaje {
@@ -31,4 +37,10 @@ export class Viaje {
 
   @ManyToOne(() => Aeropuerto, { nullable: false })
   Aeropuerto_Origen: Aeropuerto;
+
+  @OneToOne(() => Vuelo, (vuelo) => vuelo.vuelo_Id, {
+    nullable: false,
+    eager: true,
+  })
+  Vuelo: Vuelo;
 }

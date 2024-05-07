@@ -1,10 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsDate,
-  IsEnum,
-  IsNumber,
-} from 'class-validator';
+import { IsNotEmpty, IsDate, IsEnum, IsNumber } from 'class-validator';
 import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 
 export class CreateViajeDto {
@@ -30,4 +24,8 @@ export class CreateViajeDto {
   @IsNotEmpty()
   @IsNumber()
   aeropuertoOrigen: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  vueloId: number;
 }

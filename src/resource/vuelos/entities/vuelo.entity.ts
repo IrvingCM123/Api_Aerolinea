@@ -10,6 +10,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 
 @Entity('vuelos')
@@ -81,4 +82,8 @@ export class Vuelo {
   )
   @JoinColumn({ name: 'tarifa_distancia_Id' })
   tarifa_distancia_Id: TarifaDistancia;
+
+  @OneToOne(() => Vuelo, (vuelo) => vuelo.Vuelo_ID)
+  @JoinColumn({ name: 'vuelo_Id' })
+  vuelo_Id: Vuelo;
 }
