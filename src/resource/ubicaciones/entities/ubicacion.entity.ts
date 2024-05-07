@@ -13,12 +13,12 @@ export class Ubicacion {
   @OneToMany(() => Aeropuerto, (aeropuerto) => aeropuerto.aeropuerto_Ubicacion)
   aeropuertosId: Aeropuerto[];
 
-  @OneToMany(() => TarifaDistancia, (tarifaDistancia) => tarifaDistancia.origen)
+  @OneToMany(() => TarifaDistancia, (tarifaDistancia) => tarifaDistancia.origenId)
   tarifaDistanciaOrigen: TarifaDistancia;
 
   @OneToMany(
     () => TarifaDistancia,
-    (tarifaDistancia) => tarifaDistancia.destino,
+    (tarifaDistancia) => tarifaDistancia.destinoId,
   )
   tarifaDistanciaDestino: TarifaDistancia;
 }

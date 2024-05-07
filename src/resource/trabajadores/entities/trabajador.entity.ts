@@ -13,26 +13,26 @@ export class Trabajador {
   id: number;
 
   @Column({ nullable: false, length: 30 })
-  nombre: string;
+  trabajador_Nombre: string;
 
   @Column({ nullable: false, length: 30 })
-  apellidos: string;
+  trabajador_Apellidos: string;
 
   @Column({ nullable: false, length: 20 })
-  telefono: string;
+  trabajador_Telefono: string;
 
   @Column({ nullable: false })
-  correoElectronico: string;
+  trabajador_CorreoElectronico: string;
 
   @Column({ nullable: false, type: 'date' })
-  fechaNacimiento: Date;
+  trabajador_FechaNacimiento: Date;
 
   @Column({ nullable: false, length: 30 })
-  nacionalidad: string;
+  trabajador_Nacionalidad: string;
 
   @Column({ nullable: false })
-  horasVuelo: number;
+  trabajador_HorasVuelo: number;
 
-  @OneToMany(() => Tripulacion, (tripulacion) => tripulacion.trabajadorId)
+  @OneToMany(() => Tripulacion, (tripulacion) => tripulacion.tripulacion_TrabajadorIds)
   tripulaciones: Tripulacion[];
 }

@@ -15,20 +15,20 @@ export class Tripulacion {
   tripulacion_ID: number;
 
   @Column({ nullable: false, length: 20 })
-  nombre_Equipo: string;
+  tripulacion_NombreEquipo: string;
 
   @Column({ nullable: false })
-  cantidad_Tripulantes: number;
+  tripulacion_CantidadTripulantes: number;
 
   @Column({ nullable: false, length: 20 })
-  clase_Viaje: string;
+  tripulacion_ClaseViaje: string;
 
   @Column({ nullable: false })
-  valoracion: number;
+  tripulacion_Valoracion: number;
 
   @ManyToOne(() => Trabajador, (trabajador) => trabajador.id)
   @JoinColumn({ name: 'id' })
-  trabajadorId: number;
+  tripulacion_TrabajadorIds: number;
 
   @OneToMany(() => Vuelo, (vuelo) => vuelo.tripulacion_ID)
   vuelo_Id: Vuelo;

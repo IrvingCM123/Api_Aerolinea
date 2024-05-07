@@ -16,7 +16,7 @@ export class CreateTrabajadorDto {
   })
   @IsNotEmpty()
   @IsString()
-  nombre: string;
+  trabajador_Nombre: string;
 
   @ApiProperty({
     description: 'Apellidos del trabajador',
@@ -25,7 +25,7 @@ export class CreateTrabajadorDto {
   })
   @IsNotEmpty()
   @IsString()
-  apellidos: string;
+  trabajador_Apellidos: string;
 
   @ApiProperty({
     description: 'Teléfono del trabajador',
@@ -34,7 +34,7 @@ export class CreateTrabajadorDto {
   })
   @IsNotEmpty()
   @IsString()
-  telefono: string;
+  trabajador_Telefono: string;
 
   @ApiProperty({
     description: 'Correo electrónico del trabajador',
@@ -43,7 +43,7 @@ export class CreateTrabajadorDto {
   })
   @IsNotEmpty()
   @IsEmail()
-  correoElectronico: string;
+  trabajador_CorreoElectronico: string;
 
   @ApiProperty({
     description: 'Fecha de nacimiento del trabajador',
@@ -51,7 +51,7 @@ export class CreateTrabajadorDto {
   })
   @IsNotEmpty()
   @IsDateString()
-  fechaNacimiento: Date;
+  trabajador_FechaNacimiento: Date;
 
   @ApiProperty({
     description: 'Nacionalidad del trabajador',
@@ -60,7 +60,7 @@ export class CreateTrabajadorDto {
   })
   @IsNotEmpty()
   @IsString()
-  nacionalidad: string;
+  trabajador_Nacionalidad: string;
 
   @ApiProperty({
     description: 'Horas de vuelo del trabajador',
@@ -68,5 +68,5 @@ export class CreateTrabajadorDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  horasVuelo: number;
+  trabajador_HorasVuelo: number;
 }

@@ -15,18 +15,21 @@ export class TarifaDistancia {
   tarifa_distancia_Id: number;
 
   @Column({ nullable: false, length: 30 })
-  tarifa_distancia_Nombre: string;
+  tarifa_Distancia_Nombre: string;
 
   @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.tarifaDistanciaOrigen)
   @JoinColumn({ name: 'origen_id' })
-  origen: number;
+  origenId: number;
 
   @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.tarifaDistanciaDestino)
   @JoinColumn({ name: 'destino_id' })
-  destino: number;
+  destinoId: number;
 
   @Column()
   distancia: number;
+
+  @Column()
+  tarifa_Distancia_Estado: string;
 
   @Column()
   precioTarifa: number;

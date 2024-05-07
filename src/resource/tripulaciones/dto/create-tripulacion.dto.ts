@@ -17,7 +17,7 @@ export class CreateTripulacionDto {
   })
   @IsNotEmpty()
   @IsString()
-  nombre_Equipo: string;
+  tripulacion_NombreEquipo: string;
 
   @ApiProperty({
     description: 'Cantidad de tripulantes',
@@ -27,7 +27,7 @@ export class CreateTripulacionDto {
   @IsNotEmpty()
   @IsInt()
   @Min(1)
-  cantidad_Tripulantes: number;
+  tripulacion_CantidadTripulantes: number;
 
   @ApiProperty({
     description: 'Clase del viaje',
@@ -37,7 +37,7 @@ export class CreateTripulacionDto {
   })
   @IsNotEmpty()
   @IsString()
-  clase_Viaje: string;
+  tripulacion_ClaseViaje: string;
 
   @ApiProperty({
     description: 'Valoración de la tripulación',
@@ -47,7 +47,7 @@ export class CreateTripulacionDto {
   @IsNotEmpty()
   @IsInt()
   @Min(0)
-  valoracion: number;
+  tripulacion_Valoracion: number;
 
   @ApiProperty({
     description: 'IDs de los trabajadores',
@@ -58,5 +58,5 @@ export class CreateTripulacionDto {
   @IsNotEmpty()
   @IsArray()
   @ArrayMinSize(1)
-  trabajadorIds: number[];
+  tripulacion_TrabajadorIds: any;
 }

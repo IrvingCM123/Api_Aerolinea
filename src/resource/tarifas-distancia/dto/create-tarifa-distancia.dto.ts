@@ -8,7 +8,7 @@ export class CreateTarifaDistanciaDto {
   })
   @IsNotEmpty()
   @IsString()
-  tarifa_distancia_Nombre: string;
+  tarifa_Distancia_Nombre: string;
 
   @ApiProperty({
     description: 'Ubicación de origen para la tarifa de distancia',
@@ -33,6 +33,9 @@ export class CreateTarifaDistanciaDto {
   @IsNotEmpty()
   @IsInt()
   distancia: number;
+
+  @IsNotEmpty()
+  tarifa_Distancia_Estado: any;
 
   @ApiProperty({
     description: 'Precio de la tarifa de distancia',
