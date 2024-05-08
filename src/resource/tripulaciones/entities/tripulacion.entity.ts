@@ -26,10 +26,9 @@ export class Tripulacion {
   @Column({ nullable: false })
   tripulacion_Valoracion: number;
 
-  @ManyToOne(() => Trabajador, (trabajador) => trabajador.id)
-  @JoinColumn({ name: 'id' })
-  tripulacion_TrabajadorIds: number;
+  @OneToMany(() => Trabajador, (trabajador) => trabajador.tripulacion_ID, { cascade: true, eager: true})
+  trabajadores: Trabajador[];
 
-  @OneToMany(() => Vuelo, (vuelo) => vuelo.tripulacion_ID)
+  @OneToMany(() => Vuelo, (vuelo) => vuelo.tripulacion_ID) 
   vuelo_Id: Vuelo;
 }

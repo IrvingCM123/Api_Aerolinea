@@ -27,7 +27,8 @@ import { TransaccionModule } from 'src/common/transaction/transaccion.module';
     TripulacionesModule,
     UbicacionesModule,
     VuelosModule,
-    TransaccionModule
+    TransaccionModule,
+    TripulacionesModule
   ],
   controllers: [SeedController],
   providers: [SeedService],

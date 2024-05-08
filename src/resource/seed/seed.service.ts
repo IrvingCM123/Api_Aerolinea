@@ -14,7 +14,6 @@ import { registrarAeropuertos } from './data/seed-aeropuerto';
 import {
   initialTarifasDistancia,
   initialTrabajadores,
-  initialTripulaciones,
   initialUbicaciones,
   initialVuelos,
 } from './data/seeds';
@@ -35,6 +34,14 @@ import { registrar_Pilotos } from './data/seed-pilotos';
 import { Piloto } from '../pilotos/entities/piloto.entity';
 import { registrar_Tarifa_Clase } from './data/seed-tarifaClase';
 import { TarifaClase } from '../tarifas-clase/entities/tarifa-clase.entity';
+import { Tripulacion } from '../tripulaciones/entities/tripulacion.entity';
+import { Trabajador } from '../trabajadores/entities/trabajador.entity';
+import { registrarTripulacion } from './data/seed-tripulaciones';
+
+interface actualizar {
+  ID_Tripulacion: number,
+  trabajadores: number[]
+}
 
 @Injectable()
 export class SeedService {
@@ -55,9 +62,9 @@ export class SeedService {
     await this.insertPilotos();
     await this.insertAviones();
     await this.insertAeropuertos();
-    await this.insertTripulaciones();
     await this.insertTarifasClase();
     await this.insertTarifasDistancia();
+    await this.insertTripulaciones();
     //await this.insertVuelos();
     return 'SEED EXECUTED';
   }
@@ -125,14 +132,25 @@ export class SeedService {
 
   }
 
-  private async insertTripulaciones() {
-    const tripulaciones = initialTripulaciones.tripulaciones;
+  async insertTripulaciones() {
 
-    const insertPromises = [];
+    const trabajadores_Array = await this.consultar_Trabajadores();
 
-    tripulaciones.forEach((tripulacion) => {
-      insertPromises.push(this.tripulacionesService.create(tripulacion));
-    });
+    const tripulaciones = await registrarTripulacion(trabajadores_Array);
+
+    let tripulacionID: actualizar[] = [];
+
+    for (let i = 0; i < tripulaciones.length; i++) {
+      let resultado: any = await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Tripulacion, tripulaciones[i]);
+      const objeto = { ID_Tripulacion: resultado.resultado.tripulacion_ID, trabajadores: resultado.resultado.trabajadores };
+      tripulacionID.push(objeto);
+    }
+
+    for (let i = 0; i < tripulacionID.length; i++) {
+      for (let j = 0; j < tripulacionID[i].trabajadores.length; j++) {
+        await this.transaccionService.transaction(Tipo_Transaccion.Actualizar_Con_Parametros, Trabajador, tripulacionID[i].ID_Tripulacion, 'tripulacion_ID', (tripulacionID[i].trabajadores[j]).toString());
+      }
+    }
   }
 
   async insertTarifasClase() {
@@ -141,7 +159,7 @@ export class SeedService {
     tarifasClase.forEach(async (tarifaClase) =>
       await this.transaccionService.transaction(Tipo_Transaccion.Guardar, TarifaClase, tarifaClase)
     );
-    
+
   }
 
   private async insertTarifasDistancia() {
@@ -211,5 +229,30 @@ export class SeedService {
     return array_ID;
   }
 
+  async consultar_Trabajadores() {
+
+    const trabajadores: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, Trabajador, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < trabajadores.length; i++) {
+      array_ID.push(trabajadores[i].id);
+    }
+
+    return array_ID;
+  }
+
+  async consultar_Triuplacion() {
+
+    const tripulaciones: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, Tripulacion, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < tripulaciones.length; i++) {
+      array_ID.push(tripulaciones[i]);
+    }
+
+    return array_ID;
+  }
 
 }

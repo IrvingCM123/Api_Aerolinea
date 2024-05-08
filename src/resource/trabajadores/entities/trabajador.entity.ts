@@ -4,6 +4,8 @@ import {
   Column,
   ManyToMany,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Tripulacion } from '../../tripulaciones/entities/tripulacion.entity';
 
@@ -33,6 +35,7 @@ export class Trabajador {
   @Column({ nullable: false })
   trabajador_HorasVuelo: number;
 
-  @OneToMany(() => Tripulacion, (tripulacion) => tripulacion.tripulacion_TrabajadorIds)
-  tripulaciones: Tripulacion[];
+  @ManyToOne(() => Tripulacion, (tripulacion) => tripulacion.trabajadores)
+  @JoinColumn({ name: 'tripulacion_ID' })
+  tripulacion_ID: Tripulacion;
 }

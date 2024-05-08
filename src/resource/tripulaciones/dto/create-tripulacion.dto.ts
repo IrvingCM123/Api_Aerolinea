@@ -58,5 +58,5 @@ export class CreateTripulacionDto {
   @IsNotEmpty()
   @IsArray()
   @ArrayMinSize(1)
-  tripulacion_TrabajadorIds: any;
+  id: any;
 }

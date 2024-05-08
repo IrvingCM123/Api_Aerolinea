@@ -15,6 +15,11 @@ export class SeedController {
 
   @Get('trabajadores')
   async consulta() {
-    return this.seedService.insertTarifasClase();
+    return this.seedService.insertTripulaciones();
+  }
+
+  @Get('tripulaciones')
+  async buscar() {
+    return this.seedService.consultar_Triuplacion();
   }
 }

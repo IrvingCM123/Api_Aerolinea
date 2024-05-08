@@ -3,7 +3,7 @@ interface Tripulacion {
   tripulacion_CantidadTripulantes: number;
   tripulacion_ClaseViaje: string;
   tripulacion_Valoracion: number;
-  tripulacion_TrabajadorIds: number[];
+  id: number[];
 }
 
 interface SeedTripulaciones {
@@ -11,6 +11,10 @@ interface SeedTripulaciones {
 }
 
 export function registrarTripulaciones() {
+  }
+
+export function registrarTripulacion(trabajadores_id: any) {
+
   const nombresEquipos = [
     'Equipo A',
     'Equipo B',
@@ -23,8 +27,6 @@ export function registrarTripulaciones() {
     'Equipo I',
     'Equipo J',
   ];
-
-  const cantidadesTripulantes = [5, 4, 3, 4, 3, 5, 4, 3, 4, 5];
 
   const clasesViaje = [
     'Económica',
@@ -39,38 +41,19 @@ export function registrarTripulaciones() {
     'Primera Clase',
   ];
 
-  const valoraciones = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
-
-  const trabajadorIds = [
-    [1, 2, 3, 4, 5],
-    [6, 7, 8, 9],
-    [10, 1, 2],
-    [3, 4, 5, 6],
-    [7, 8, 9],
-    [10, 1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 1],
-    [2, 3, 4, 5],
-    [6, 7, 8, 9, 10],
-  ];
-
-  const tripulacionesGeneradas = [];
+  let tripulaciones = [];
 
   for (let i = 0; i < 10; i++) {
-    const tripulacion: Tripulacion = {
+    let tripulacion = {
       tripulacion_NombreEquipo: nombresEquipos[i],
-      tripulacion_CantidadTripulantes: cantidadesTripulantes[i],
+      tripulacion_CantidadTripulantes: Math.floor(Math.random() * 10) + 1,
       tripulacion_ClaseViaje: clasesViaje[i],
-      tripulacion_Valoracion: valoraciones[i],
-      tripulacion_TrabajadorIds: trabajadorIds[i],
+      tripulacion_Valoracion: Math.floor(Math.random() * 5) + 1,
+      trabajadores: trabajadores_id.sort(() => Math.random() - Math.random()).slice(0, 4)
     };
-    tripulacionesGeneradas.push(tripulacion);
+
+    tripulaciones.push(tripulacion);
   }
 
-  console.log(tripulacionesGeneradas);
-  return tripulacionesGeneradas;
+  return tripulaciones;
 }
-
-export const initialTripulaciones: SeedTripulaciones = {
-  tripulaciones: registrarTripulaciones(),
-};
