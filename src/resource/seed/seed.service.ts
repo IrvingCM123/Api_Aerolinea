@@ -15,7 +15,6 @@ import {
   initialTarifasDistancia,
   initialTrabajadores,
   initialUbicaciones,
-  initialVuelos,
 } from './data/seeds';
 import { TarifaDistanciaService } from '../tarifas-distancia/tarifa-distancia.service';
 import { Ubicacion } from '../ubicaciones/entities/ubicacion.entity';
