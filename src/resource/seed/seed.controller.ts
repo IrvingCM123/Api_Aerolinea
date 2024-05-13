@@ -20,6 +20,6 @@ export class SeedController {
 
   @Get('tripulaciones')
   async buscar() {
-    return this.seedService.consultar_Triuplacion();
+    return this.seedService.insertVuelos();
   }
 }

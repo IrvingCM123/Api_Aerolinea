@@ -17,11 +17,7 @@ import {
   initialUbicaciones,
   initialVuelos,
 } from './data/seeds';
-import { TarifaClaseService } from '../tarifas-clase/tarifas-clase.service';
 import { TarifaDistanciaService } from '../tarifas-distancia/tarifa-distancia.service';
-import { FabricantesService } from '../fabricantes/fabricantes.service';
-import { PilotosService } from '../pilotos/pilotos.service';
-import { ModelosService } from '../modelos/modelos.service';
 import { Ubicacion } from '../ubicaciones/entities/ubicacion.entity';
 import { Aeropuerto } from '../aeropuertos/entities/aeropuerto.entity';
 import { Fabricante } from '../fabricantes/entities/fabricante.entity';
@@ -37,6 +33,9 @@ import { TarifaClase } from '../tarifas-clase/entities/tarifa-clase.entity';
 import { Tripulacion } from '../tripulaciones/entities/tripulacion.entity';
 import { Trabajador } from '../trabajadores/entities/trabajador.entity';
 import { registrarTripulacion } from './data/seed-tripulaciones';
+import { TarifaDistancia } from '../tarifas-distancia/entities/tarifa-distancia.entity';
+import { registrar_Vuelos } from './data/seed-vuelos';
+import { Vuelo } from '../vuelos/entities/vuelo.entity';
 
 interface actualizar {
   ID_Tripulacion: number,
@@ -65,7 +64,7 @@ export class SeedService {
     await this.insertTarifasClase();
     await this.insertTarifasDistancia();
     await this.insertTripulaciones();
-    //await this.insertVuelos();
+    await this.insertVuelos();
     return 'SEED EXECUTED';
   }
 
@@ -180,15 +179,25 @@ export class SeedService {
     );
   }
 
-  //private async insertVuelos() {
-  //  const vuelos = initialVuelos.vuelos;
-  //
-  //  const insertPromises = [];
-  //
-  //  vuelos.forEach((vuelo) => {
-  //    insertPromises.push(this.vuelosService.create(vuelo));
-  //  });
-  //}
+  async insertVuelos() {
+    
+    const array_Pilotos = await this.consultar_Pilotos();
+
+    const array_Tripulacion = await this.consultar_Triuplacion();
+
+    const array_Tarifa_Clase = await this.consultar_Tarifa_Clase();
+
+    const array_Tarifa_Distancia = await this.consultar_Tarifa_Distancia();
+
+    const array_Aviones = await this.consultar_Aviones();
+
+    const vuelos = registrar_Vuelos(array_Pilotos, array_Tripulacion, array_Tarifa_Clase, array_Tarifa_Distancia, array_Aviones);
+
+    vuelos.forEach(async (vuelo) =>
+      await this.transaccionService.transaction(Tipo_Transaccion.Guardar, Vuelo, vuelo)
+    );
+
+  }
 
   private async consultar_Ubicaciones() {
 
@@ -250,6 +259,61 @@ export class SeedService {
 
     for (let i = 0; i < tripulaciones.length; i++) {
       array_ID.push(tripulaciones[i]);
+    }
+
+    return array_ID;
+  }
+
+  async consultar_Tarifa_Clase() {
+
+    const tarifa_Clase: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, TarifaClase, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < tarifa_Clase.length; i++) {
+      array_ID.push(tarifa_Clase[i].tarifa_Clase_Id);
+    }
+
+    return array_ID;
+
+  }
+
+  async consultar_Tarifa_Distancia() {
+
+    const tarifa_Distancia: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, TarifaDistancia, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < tarifa_Distancia.length; i++) {
+      array_ID.push(tarifa_Distancia[i].tarifa_distancia_Id);
+    }
+
+    return array_ID;
+
+  }
+
+  async consultar_Pilotos() {
+
+    const pilotos: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, Piloto, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < pilotos.length; i++) {
+      array_ID.push(pilotos[i].piloto_Id);
+    }
+
+    return array_ID;
+
+  }
+
+  async consultar_Aviones() {
+
+    const aviones: any = await this.transaccionService.transaction(Tipo_Transaccion.Consultar, Avion, '');
+
+    let array_ID = [];
+
+    for (let i = 0; i < aviones.length; i++) {
+      array_ID.push(aviones[i].avion_Id);
     }
 
     return array_ID;
