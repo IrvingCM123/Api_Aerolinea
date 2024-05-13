@@ -37,10 +37,4 @@ export class Viaje {
 
   @ManyToOne(() => Aeropuerto, { nullable: false })
   Aeropuerto_Origen: Aeropuerto;
-
-  @OneToOne(() => Vuelo, (vuelo) => vuelo.vuelo_Id, {
-    nullable: false,
-    eager: true,
-  })
-  Vuelo: Vuelo;
 }
