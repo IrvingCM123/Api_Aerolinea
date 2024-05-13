@@ -50,11 +50,11 @@ const password_azure = secret.PG_PASSWORD_AZURE;
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: host_azure,
+      host: host_local,
       port: 5432,
-      username: user_azure,
-      password: password_azure,
-      database: database_azure,
+      username: user_local,
+      password: password_local,
+      database: database_local,
       autoLoadEntities: true,
       synchronize: true,
       //extra: {
@@ -85,6 +85,6 @@ const password_azure = secret.PG_PASSWORD_AZURE;
   ],
   controllers: [AppController],
   providers: [AppService],
-  
+
 })
-export class AppModule {}
+export class AppModule { }
