@@ -14,29 +14,33 @@ interface SeedTrabajadores {
 
 export function registrarTrabajadores() {
   const nombresTrabajador = [
-    'Nombre Trabajador 1',
-    'Nombre Trabajador 2',
-    'Nombre Trabajador 3',
-    'Nombre Trabajador 4',
-    'Nombre Trabajador 5',
-    'Nombre Trabajador 6',
-    'Nombre Trabajador 7',
-    'Nombre Trabajador 8',
-    'Nombre Trabajador 9',
-    'Nombre Trabajador 10',
+    'Juan',
+    'María',
+    'Pedro',
+    'Ana',
+    'Luis',
+    'Laura',
+    'Carlos',
+    'Sofía',
+    'Diego',
+    'Elena',
+    'Miguel',
+    'Lucía',
   ];
 
   const apellidosTrabajador = [
-    'Apellidos Trabajador 1',
-    'Apellidos Trabajador 2',
-    'Apellidos Trabajador 3',
-    'Apellidos Trabajador 4',
-    'Apellidos Trabajador 5',
-    'Apellidos Trabajador 6',
-    'Apellidos Trabajador 7',
-    'Apellidos Trabajador 8',
-    'Apellidos Trabajador 9',
-    'Apellidos Trabajador 10',
+    'García',
+    'Rodríguez',
+    'Martínez',
+    'López',
+    'Sánchez',
+    'Pérez',
+    'González',
+    'Gómez',
+    'Fernández',
+    'Díaz',
+    'Moreno',
+    'Álvarez',
   ];
 
   const telefonos = [
@@ -53,62 +57,71 @@ export function registrarTrabajadores() {
   ];
 
   const correosElectronicos = [
-    'trabajador1@example.com',
-    'trabajador2@example.com',
-    'trabajador3@example.com',
-    'trabajador4@example.com',
-    'trabajador5@example.com',
-    'trabajador6@example.com',
-    'trabajador7@example.com',
-    'trabajador8@example.com',
-    'trabajador9@example.com',
-    'trabajador10@example.com',
+    'juan@example.com',
+    'maria@example.com',
+    'pedro@example.com',
+    'ana@example.com',
+    'luis@example.com',
+    'laura@example.com',
+    'carlos@example.com',
+    'sofia@example.com',
+    'diego@example.com',
+    'elena@example.com',
   ];
 
-  const fechasNacimiento = [
-    new Date('1990-01-01'),
-    new Date('1985-05-05'),
-    new Date('1995-10-10'),
-    new Date('1992-02-02'),
-    new Date('1998-03-03'),
-    new Date('1991-04-04'),
-    new Date('1994-06-06'),
-    new Date('1989-07-07'),
-    new Date('1993-08-08'),
-    new Date('1996-09-09'),
-  ];
+  const fechaInicio = new Date('1970-01-01').getTime();
+  const fechaFin = new Date('2005-12-31').getTime();
 
   const nacionalidadesTrabajador = [
-    'Nacionalidad Trabajador 1',
-    'Nacionalidad Trabajador 2',
-    'Nacionalidad Trabajador 3',
-    'Nacionalidad Trabajador 4',
-    'Nacionalidad Trabajador 5',
-    'Nacionalidad Trabajador 6',
-    'Nacionalidad Trabajador 7',
-    'Nacionalidad Trabajador 8',
-    'Nacionalidad Trabajador 9',
-    'Nacionalidad Trabajador 10',
+    'Español',
+    'Mexicano',
+    'Argentino',
+    'Colombiano',
+    'Chileno',
+    'Peruano',
+    'Ecuatoriano',
+    'Venezolano',
+    'Cubano',
+    'Uruguayo',
   ];
 
   const horasVuelo = [1000, 1500, 800, 1200, 700, 1100, 900, 1300, 600, 1000];
 
   const trabajadoresGenerados = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
+    const nombre =
+      nombresTrabajador[Math.floor(Math.random() * nombresTrabajador.length)];
+    const apellido =
+      apellidosTrabajador[
+        Math.floor(Math.random() * apellidosTrabajador.length)
+      ];
+    const telefono = telefonos[Math.floor(Math.random() * telefonos.length)];
+    const correoElectronico =
+      correosElectronicos[
+        Math.floor(Math.random() * correosElectronicos.length)
+      ];
+    const fechaNacimiento = new Date(
+      fechaInicio + Math.random() * (fechaFin - fechaInicio),
+    );
+    const nacionalidad =
+      nacionalidadesTrabajador[
+        Math.floor(Math.random() * nacionalidadesTrabajador.length)
+      ];
+    const horas = horasVuelo[Math.floor(Math.random() * horasVuelo.length)];
+
     const trabajador: Trabajador = {
-      trabajador_Nombre: nombresTrabajador[i],
-      trabajador_Apellidos: apellidosTrabajador[i],
-      trabajador_Telefono: telefonos[i],
-      trabajador_CorreoElectronico: correosElectronicos[i],
-      trabajador_FechaNacimiento: fechasNacimiento[i],
-      trabajador_Nacionalidad: nacionalidadesTrabajador[i],
-      trabajador_HorasVuelo: horasVuelo[i],
+      trabajador_Nombre: nombre,
+      trabajador_Apellidos: apellido,
+      trabajador_Telefono: telefono,
+      trabajador_CorreoElectronico: correoElectronico,
+      trabajador_FechaNacimiento: fechaNacimiento,
+      trabajador_Nacionalidad: nacionalidad,
+      trabajador_HorasVuelo: horas,
     };
     trabajadoresGenerados.push(trabajador);
   }
 
-  console.log(trabajadoresGenerados);
   return trabajadoresGenerados;
 }
 

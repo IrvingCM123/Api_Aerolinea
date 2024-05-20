@@ -44,15 +44,25 @@ export function registrar_Vuelos(
     const vuelo: Vuelo = {
       avion_Id: array_Aviones[Math.floor(Math.random() * array_Aviones.length)],
       fecha: new Date(generar_fechas()),
-      piloto_Id: array_Pilotos[Math.floor(Math.random() * array_Pilotos.length)],
-      copiloto_Id: array_Pilotos[Math.floor(Math.random() * array_Pilotos.length)],
-      tripulacion_ID: array_Tripulacion[Math.floor(Math.random() * array_Tripulacion.length)].tripulacion_ID,
+      piloto_Id:
+        array_Pilotos[Math.floor(Math.random() * array_Pilotos.length)],
+      copiloto_Id:
+        array_Pilotos[Math.floor(Math.random() * array_Pilotos.length)],
+      tripulacion_ID:
+        array_Tripulacion[Math.floor(Math.random() * array_Tripulacion.length)]
+          .tripulacion_ID,
       horaSalida: generar_horas(),
       pasajerosTotales: Math.floor(Math.random() * 200),
       pasajerosApartados: Math.floor(Math.random() * 200),
       estado: array_Estados[Math.floor(Math.random() * array_Estados.length)],
-      tarifa_Clase_Id: array_Tarifas_Clase[Math.floor(Math.random() * array_Tarifas_Clase.length)],
-      tarifa_distancia_Id: array_Tarifas_Distancia[Math.floor(Math.random() * array_Tarifas_Distancia.length)],
+      tarifa_Clase_Id:
+        array_Tarifas_Clase[
+          Math.floor(Math.random() * array_Tarifas_Clase.length)
+        ],
+      tarifa_distancia_Id:
+        array_Tarifas_Distancia[
+          Math.floor(Math.random() * array_Tarifas_Distancia.length)
+        ],
     };
     vuelos_generados.push(vuelo);
   }
@@ -71,8 +81,9 @@ function generar_horas() {
 function generar_fechas() {
   let fecha_generada = '';
   const año = Math.floor(Math.random() * (2024 - 2015) + 2015);
-  const dia = Math.floor(Math.random() * 31);
-  const mes = Math.floor(Math.random() * 12);
-  fecha_generada = (año + '-' + mes + '-' + dia).toString();
+  const mes = Math.floor(Math.random() * 12) + 1;
+  const diasEnMes = new Date(año, mes, 0).getDate();
+  const dia = Math.floor(Math.random() * diasEnMes) + 1;
+  fecha_generada = año + '-' + mes + '-' + dia;
   return fecha_generada;
 }

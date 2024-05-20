@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 import { Aeropuerto } from 'src/resource/aeropuertos/entities/aeropuerto.entity';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';

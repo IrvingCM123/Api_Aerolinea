@@ -24,6 +24,7 @@ import { TarifasClaseModule } from './resource/tarifas-clase/tarifas-clase.modul
 import { TarifasDistanciaModule } from './resource/tarifas-distancia/tarifa-distancia.module';
 import { UsuarioAdminModule } from './resource/usuario_admin/usuario_admin.module';
 import { SeedModule } from './resource/seed/seed.module';
+import { ViajesModule } from './resource/viajes/viajes.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -50,11 +51,11 @@ const password_azure = secret.PG_PASSWORD_AZURE;
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: host_azure,
+      host: host_local,
       port: 5432,
-      username: user_azure,
-      password: password_azure,
-      database: database_azure,
+      username: user_local,
+      password: password_local,
+      database: database_local,
       autoLoadEntities: true,
       synchronize: true,
       //extra: {
@@ -81,10 +82,10 @@ const password_azure = secret.PG_PASSWORD_AZURE;
     VuelosModule,
     TarifasClaseModule,
     TarifasDistanciaModule,
-    SeedModule
+    ViajesModule,
+    SeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
-  
 })
 export class AppModule {}

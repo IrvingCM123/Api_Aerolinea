@@ -4,6 +4,7 @@ import { Piloto } from 'src/resource/pilotos/entities/piloto.entity';
 import { TarifaClase } from 'src/resource/tarifas-clase/entities/tarifa-clase.entity';
 import { TarifaDistancia } from 'src/resource/tarifas-distancia/entities/tarifa-distancia.entity';
 import { Tripulacion } from 'src/resource/tripulaciones/entities/tripulacion.entity';
+import { Viaje } from 'src/resource/viajes/entities/viaje.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,6 +12,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('vuelos')

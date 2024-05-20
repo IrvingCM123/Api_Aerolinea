@@ -15,36 +15,50 @@ interface SeedModelosAvion {
 }
 
 export function registrarModelosAvion() {
-
   const modelos_Avion: string[] = [
-    "SkyRanger X210",
-    "AeroMaster G5",
-    "JetStream 4000",
-    "CloudChaser M2",
-    "Horizon S150",
-    "EagleEye A320",
-    "StratoCruiser 750",
-    "HawkSpirit Z300",
-    "Vortex T120",
-    "FalconFlyer D880"
-];
+    'SkyRanger X210',
+    'AeroMaster G5',
+    'JetStream 4000',
+    'CloudChaser M2',
+    'Horizon S150',
+    'EagleEye A320',
+    'StratoCruiser 750',
+    'HawkSpirit Z300',
+    'Vortex T120',
+    'FalconFlyer D880',
+  ];
 
-  const categorias_Avion = [CategoriaModelo.COMERCIAL, CategoriaModelo.PRIVADO, CategoriaModelo.MILITAR];
+  const categorias_Avion = [
+    CategoriaModelo.COMERCIAL,
+    CategoriaModelo.PRIVADO,
+    CategoriaModelo.MILITAR,
+  ];
 
-  const estados_Avion = [ESTADO_OPERATIVO.OPERATIVO, ESTADO_OPERATIVO.MANTENIMIENTO, ESTADO_OPERATIVO.FUERA_DE_SERVICIO];
+  const estados_Avion = [
+    ESTADO_OPERATIVO.OPERATIVO,
+    ESTADO_OPERATIVO.MANTENIMIENTO,
+    ESTADO_OPERATIVO.FUERA_DE_SERVICIO,
+  ];
 
-  let modelos_generados = [];
+  const modelos_generados = [];
 
-  for (let i = 0; i < 10; i++) {
-    const modelo = generar_ModelosAvion(modelos_Avion[Math.floor(Math.random() * modelos_Avion.length)], estados_Avion[Math.floor(Math.random() * estados_Avion.length)], categorias_Avion[Math.floor(Math.random() * categorias_Avion.length)]);
+  for (let i = 0; i < 100; i++) {
+    const modelo = generar_ModelosAvion(
+      modelos_Avion[Math.floor(Math.random() * modelos_Avion.length)],
+      estados_Avion[Math.floor(Math.random() * estados_Avion.length)],
+      categorias_Avion[Math.floor(Math.random() * categorias_Avion.length)],
+    );
     modelos_generados.push(modelo);
   }
   console.log(modelos_generados);
   return modelos_generados;
-
 }
 
-function generar_ModelosAvion(nombre: string, estado: Estado_Avion, categoria: Categoria_Avion): ModeloAvion {
+function generar_ModelosAvion(
+  nombre: string,
+  estado: Estado_Avion,
+  categoria: Categoria_Avion,
+): ModeloAvion {
   const modelo: ModeloAvion = {
     modelo_Avion_Nombre: nombre,
     modelo_Avion_Estado: estado,
