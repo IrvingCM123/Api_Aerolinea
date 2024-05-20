@@ -6,13 +6,13 @@ export class Fabricante {
   @PrimaryGeneratedColumn()
   fabricante_Id: number;
 
-  @Column({ nullable: false, length: 50 })
+  @Column({ nullable: false })
   fabricante_Nombre: string;
 
-  @Column({ nullable: false, length: 50 })
+  @Column({ nullable: false })
   fabricante_Descripcion: string;
 
-  @Column({ nullable: false, length: 12 })
+  @Column({ nullable: false })
   fabricante_Telefono: string;
 
   @Column({ nullable: false })

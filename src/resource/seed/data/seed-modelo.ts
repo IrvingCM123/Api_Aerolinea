@@ -50,7 +50,6 @@ export function registrarModelosAvion() {
     );
     modelos_generados.push(modelo);
   }
-  console.log(modelos_generados);
   return modelos_generados;
 }
 

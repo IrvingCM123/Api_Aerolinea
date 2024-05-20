@@ -5,10 +5,6 @@ interface Fabricante {
   fabricante_Email: string;
 }
 
-interface SeedFabricante {
-  fabricantes: Fabricante[];
-}
-
 export function registrarFabricantes() {
   const fabricantes_Nombres: string[] = [
     'AeroSky Dynamics',
@@ -30,7 +26,7 @@ export function registrarFabricantes() {
 
   const fabricantes_generados = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
     // Tomar fabricante random
     const fabricante = generar_Fabricantes(
       fabricantes_Nombres[
@@ -50,13 +46,13 @@ function generar_Fabricantes(fabricante: string) {
     ' es un fabricante de aviones que se especializa en la fabricación de aviones de pasajeros y carga.';
   const fabricante_Telefono = generar_Numeros_Telefono();
   const fabricante_Email = generar_Correos_Electronicos(fabricante_Nombre);
-
-  return {
-    fabricante_Nombre,
-    fabricante_Descripcion,
-    fabricante_Telefono,
-    fabricante_Email,
+  const Fabricante: Fabricante = {
+    fabricante_Nombre: fabricante_Nombre,
+    fabricante_Descripcion: fabricante_Descripcion,
+    fabricante_Telefono: fabricante_Telefono,
+    fabricante_Email: fabricante_Email,
   };
+  return Fabricante;
 }
 
 function generar_Correos_Electronicos(fabricantes_Nombre: string) {

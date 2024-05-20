@@ -92,11 +92,19 @@ export class SeedService {
   async insertFabricantes() {
     const fabricantes_Creados = registrarFabricantes();
 
-    fabricantes_Creados.forEach((fabricante) => {
-      this.transaccionService.transaction(
+    fabricantes_Creados.forEach(async (fabricante) => {
+      console.log(fabricante);
+      await this.transaccionService.transaction(
         Tipo_Transaccion.Guardar,
         Fabricante,
         fabricante,
+      );
+      console.log(
+        await this.transaccionService.transaction(
+          Tipo_Transaccion.Guardar,
+          Fabricante,
+          fabricante,
+        ),
       );
     });
   }
@@ -244,7 +252,6 @@ export class SeedService {
   async insertViajes() {
     const array_Aviones = await this.consultar_Aviones();
     const array_Aeropuertos = await this.consultar_Aeropuertos();
-    console.log('Aeropuertos:', array_Aeropuertos);
     const array_Vuelos = await this.consultar_Vuelos();
 
     const viajes = await registrarViajes(
@@ -308,7 +315,7 @@ export class SeedService {
     for (let i = 0; i < tripulaciones.length; i++) {
       array_ID.push(tripulaciones[i]);
     }
- 
+
     return array_ID;
   }
 
@@ -450,7 +457,7 @@ export class SeedService {
     const array_ID = [];
 
     for (let i = 0; i < aviones.length; i++) {
-      array_ID.push(aviones[i].avion_Id);
+      array_ID.push(aviones[i]);
     }
 
     return array_ID;

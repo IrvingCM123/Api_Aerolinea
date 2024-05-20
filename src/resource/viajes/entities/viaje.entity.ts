@@ -9,11 +9,11 @@ export class Viaje {
   @PrimaryGeneratedColumn()
   Viaje_ID: number;
 
-  @Column({ type: 'date', nullable: false })
-  Fecha_Salida: Date;
+  @Column({ nullable: false, type: 'date' })
+  fechaSalida: Date;
 
-  @Column({ type: 'date', nullable: false })
-  Fecha_Llegada: Date;
+  @Column({ nullable: false, type: 'date' })
+  fechaLlegada: Date;
 
   @Column({
     type: 'enum',
@@ -21,14 +21,17 @@ export class Viaje {
     nullable: false,
     default: Estado_Viaje.POR_INICIAR,
   })
-  Estado_Viaje: Estado_Viaje;
+  estadoViaje: Estado_Viaje;
 
   @ManyToOne(() => Avion, { nullable: false })
-  Numero_Avion: Avion;
+  numeroAvion: Avion;
 
   @ManyToOne(() => Aeropuerto, { nullable: false })
-  Aeropuerto_Destino: Aeropuerto;
+  aeropuertoDestino: Aeropuerto;
 
   @ManyToOne(() => Aeropuerto, { nullable: false })
-  Aeropuerto_Origen: Aeropuerto;
+  aeropuertoOrigen: Aeropuerto;
+
+  @ManyToOne(() => Vuelo, { nullable: false })
+  vueloId: Vuelo;
 }

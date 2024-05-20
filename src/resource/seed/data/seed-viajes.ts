@@ -1,5 +1,4 @@
 import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
-import { Aeropuerto } from 'src/resource/aeropuertos/entities/aeropuerto.entity';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';
 import { Vuelo } from 'src/resource/vuelos/entities/vuelo.entity';
 
@@ -22,7 +21,6 @@ export function registrarViajes(
   aeropuertos: any,
   vuelos: Vuelo[],
 ) {
-  
   const arrayEstados = [
     Estado_Viaje.POR_INICIAR,
     Estado_Viaje.EN_CURSO,
@@ -45,8 +43,6 @@ export function registrarViajes(
     const vueloIndex = Math.floor(Math.random() * vuelos.length);
     const vuelo = vuelos[vueloIndex];
 
-    console.log(aeropuertos[0]);
-
     const viaje: Viaje = {
       fechaSalida: generarFechas(),
       fechaLlegada: generarFechas(),
@@ -61,7 +57,6 @@ export function registrarViajes(
     };
     viajesGenerados.push(viaje);
   }
-  console.log(viajesGenerados);
   return viajesGenerados;
 }
 
@@ -71,10 +66,10 @@ function generarFechas() {
 
   endDate.setDate(endDate.getDate() + Math.floor(Math.random() * 30));
 
-  const randomDate = new Date(
+  const randomTime =
     startDate.getTime() +
-      Math.random() * (endDate.getTime() - startDate.getTime()),
-  );
+    Math.random() * (endDate.getTime() - startDate.getTime());
+  const randomDate = new Date(randomTime);
 
   return randomDate;
 }
