@@ -12,35 +12,33 @@ interface SeedAeropuertos {
   aeropuertos: Aeropuerto[];
 }
 
-let nombres_Aeropuertos = [
-  'Aeropuerto Internacional John F. Kennedy',
-  'Aeropuerto Internacional de Heathrow',
-  'Aeropuerto Nacional de Brasilia',
-  'Aeropuerto Internacional de Narita',
-  'Aeropuerto de Tegel',
-  'Aeropuerto El Dorado',
-  'Aeropuerto Internacional de Los Ángeles',
-  'Aeropuerto de Congonhas',
-  'Aeropuerto de Barajas',
-  'Aeropuerto de Gatwick',
-];
-
+function generarNombreAleatorio() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let nombre = '';
+  for (let i = 0; i < 5; i++) {
+    nombre += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  return `Aeropuerto ${nombre}`;
+}
 
 export function registrarAeropuertos(ubicaciones: any) {
-
   const array_Ubicaciones = ubicaciones;
 
-  const tipos_Aeropuertos = [TipoAeropuerto.INTERNACIONAL, TipoAeropuerto.NACIONAL, TipoAeropuerto.PRIVADO];
+  const tipos_Aeropuertos = [
+    TipoAeropuerto.INTERNACIONAL,
+    TipoAeropuerto.NACIONAL,
+    TipoAeropuerto.PRIVADO,
+  ];
 
-  const aeropuertos_Nombres = nombres_Aeropuertos;
+  const aeropuertos_generados = [];
 
-  let aeropuertos_generados = [];
-
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
     const aeropuerto: Aeropuerto = {
-      aeropuerto_Nombre: aeropuertos_Nombres[i],
-      aeropuerto_Tipo: tipos_Aeropuertos[Math.floor(Math.random() * tipos_Aeropuertos.length)],
-      aeropuerto_Ubicacion: array_Ubicaciones[Math.floor(Math.random() * array_Ubicaciones.length)],
+      aeropuerto_Nombre: generarNombreAleatorio(),
+      aeropuerto_Tipo:
+        tipos_Aeropuertos[Math.floor(Math.random() * tipos_Aeropuertos.length)],
+      aeropuerto_Ubicacion:
+        array_Ubicaciones[Math.floor(Math.random() * array_Ubicaciones.length)],
     };
     aeropuertos_generados.push(aeropuerto);
   }

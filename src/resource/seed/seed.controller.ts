@@ -12,14 +12,4 @@ export class SeedController {
   async executeSeed() {
     return this.seedService.runSeed();
   }
-
-  @Get('trabajadores')
-  async consulta() {
-    return this.seedService.insertTripulaciones();
-  }
-
-  @Get('tripulaciones')
-  async buscar() {
-    return this.seedService.insertVuelos();
-  }
 }

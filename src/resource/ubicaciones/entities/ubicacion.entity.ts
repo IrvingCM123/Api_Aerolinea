@@ -10,10 +10,19 @@ export class Ubicacion {
   @Column({ nullable: false, length: 30 })
   ubicacion_Nombre: string;
 
+  @Column({ type: 'decimal', precision: 10, scale: 8, nullable: false })
+  latitud: number;
+
+  @Column({ type: 'decimal', precision: 11, scale: 8, nullable: false })
+  longitud: number;
+
   @OneToMany(() => Aeropuerto, (aeropuerto) => aeropuerto.aeropuerto_Ubicacion)
   aeropuertosId: Aeropuerto[];
 
-  @OneToMany(() => TarifaDistancia, (tarifaDistancia) => tarifaDistancia.origenId)
+  @OneToMany(
+    () => TarifaDistancia,
+    (tarifaDistancia) => tarifaDistancia.origenId,
+  )
   tarifaDistanciaOrigen: TarifaDistancia;
 
   @OneToMany(

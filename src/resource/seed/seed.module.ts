@@ -13,6 +13,7 @@ import { VuelosModule } from '../vuelos/vuelos.module';
 import { ModelosModule } from '../modelos/modelos.module';
 import { SeedController } from './seed.controller';
 import { TransaccionModule } from 'src/common/transaction/transaccion.module';
+import { ViajesModule } from '../viajes/viajes.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { TransaccionModule } from 'src/common/transaction/transaccion.module';
     UbicacionesModule,
     VuelosModule,
     TransaccionModule,
-    TripulacionesModule
+    TripulacionesModule,
+    ViajesModule,
   ],
   controllers: [SeedController],
   providers: [SeedService],
