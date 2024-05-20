@@ -20,16 +20,25 @@ interface SeedVuelos {
   vuelos: Vuelo[];
 }
 
-export function registrar_Vuelos(pilotos: any, tripulacion: any, tarifasClase: any, tarifasDistancia: any, aviones: any ) {
-
+export function registrar_Vuelos(
+  pilotos: any,
+  tripulacion: any,
+  tarifasClase: any,
+  tarifasDistancia: any,
+  aviones: any,
+) {
   const array_Pilotos = pilotos;
   const array_Tripulacion = tripulacion;
   const array_Tarifas_Clase = tarifasClase;
   const array_Tarifas_Distancia = tarifasDistancia;
-  const array_Estados = [Estado_Viaje.POR_INICIAR, Estado_Viaje.EN_CURSO, Estado_Viaje.FINALIZADO];
+  const array_Estados = [
+    Estado_Viaje.POR_INICIAR,
+    Estado_Viaje.EN_CURSO,
+    Estado_Viaje.FINALIZADO,
+  ];
   const array_Aviones = aviones;
 
-  let vuelos_generados = [];
+  const vuelos_generados = [];
 
   for (let i = 0; i < 100; i++) {
     const vuelo: Vuelo = {
@@ -49,11 +58,10 @@ export function registrar_Vuelos(pilotos: any, tripulacion: any, tarifasClase: a
   }
 
   return vuelos_generados;
-
 }
 
 function generar_horas() {
-  let hora_generada: string = '';
+  let hora_generada = '';
   const hora = Math.floor(Math.random() * 24);
   const minutos = Math.floor(Math.random() * 59);
   hora_generada = (hora + ':' + minutos).toString();
@@ -61,7 +69,7 @@ function generar_horas() {
 }
 
 function generar_fechas() {
-  let fecha_generada: string = '';
+  let fecha_generada = '';
   const año = Math.floor(Math.random() * (2024 - 2015) + 2015);
   const dia = Math.floor(Math.random() * 31);
   const mes = Math.floor(Math.random() * 12);
