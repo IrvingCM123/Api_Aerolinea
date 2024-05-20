@@ -19,13 +19,10 @@ interface SeedViajes {
 
 export function registrarViajes(
   aviones: Avion[],
-  aeropuertos: Aeropuerto[],
+  aeropuertos: any,
   vuelos: Vuelo[],
 ) {
-  console.log('Aviones length:', aviones.length);
-  console.log('Aeropuertos length:', aeropuertos.length);
-  console.log('Vuelos length:', vuelos.length);
-
+  
   const arrayEstados = [
     Estado_Viaje.POR_INICIAR,
     Estado_Viaje.EN_CURSO,
@@ -39,17 +36,14 @@ export function registrarViajes(
       Math.random() * aeropuertos.length,
     );
     const aeropuertoDestino = aeropuertos[aeropuertoDestinoIndex];
-    console.log('Aeropuerto Destino:', aeropuertoDestino);
 
     const aeropuertoOrigenIndex = Math.floor(
       Math.random() * aeropuertos.length,
     );
     const aeropuertoOrigen = aeropuertos[aeropuertoOrigenIndex];
-    console.log('Aeropuerto Origen:', aeropuertoOrigen);
 
     const vueloIndex = Math.floor(Math.random() * vuelos.length);
     const vuelo = vuelos[vueloIndex];
-    console.log('Vuelo:', vuelo);
 
     console.log(aeropuertos[0]);
 
@@ -67,6 +61,7 @@ export function registrarViajes(
     };
     viajesGenerados.push(viaje);
   }
+  console.log(viajesGenerados);
   return viajesGenerados;
 }
 

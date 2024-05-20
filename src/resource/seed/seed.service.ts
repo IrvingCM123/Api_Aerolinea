@@ -244,9 +244,10 @@ export class SeedService {
   async insertViajes() {
     const array_Aviones = await this.consultar_Aviones();
     const array_Aeropuertos = await this.consultar_Aeropuertos();
+    console.log('Aeropuertos:', array_Aeropuertos);
     const array_Vuelos = await this.consultar_Vuelos();
 
-    const viajes = registrarViajes(
+    const viajes = await registrarViajes(
       array_Aviones,
       array_Aeropuertos,
       array_Vuelos,
@@ -307,7 +308,7 @@ export class SeedService {
     for (let i = 0; i < tripulaciones.length; i++) {
       array_ID.push(tripulaciones[i]);
     }
-
+ 
     return array_ID;
   }
 
@@ -318,12 +319,10 @@ export class SeedService {
       '',
     );
 
-    console.log('Aeropuertos consultados:', aeropuertos);
-
     const array_ID = [];
 
     for (let i = 0; i < aeropuertos.length; i++) {
-      array_ID.push(aeropuertos[i].aeropuerto_Id);
+      array_ID.push(aeropuertos[i]);
     }
 
     return array_ID;
@@ -339,7 +338,7 @@ export class SeedService {
     const array_ID = [];
 
     for (let i = 0; i < vuelos.length; i++) {
-      array_ID.push(vuelos[i].vuelo_Id);
+      array_ID.push(vuelos[i]);
     }
 
     return array_ID;
