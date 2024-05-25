@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Equal, FindOperator, LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { CreateViajeDto } from './dto/create-viaje.dto';
 import { UpdateViajeDto } from './dto/update-viaje.dto';
 import { Viaje } from './entities/viaje.entity';
@@ -11,6 +11,8 @@ import {
   Exito_Operaciones,
 } from 'src/common/helpers/operaciones.helpers';
 import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
+import { Ubicacion } from '../ubicaciones/entities/ubicacion.entity';
+import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 
 @Injectable()
 export class ViajesService {
@@ -20,7 +22,9 @@ export class ViajesService {
     private transaccionService: TransaccionService,
     @InjectRepository(Viaje)
     private readonly viajeRepository: Repository<Viaje>,
-  ) {}
+    @InjectRepository(Ubicacion)
+    private readonly ubiRepository: Repository<Ubicacion>,
+  ) { }
 
   async create(createViajeDto: CreateViajeDto) {
     const viaje_Creado = await this.transaccionService.transaction(
@@ -99,6 +103,69 @@ export class ViajesService {
       };
     }
   }
+
+  async findVueloByViajes(
+    destino: string,
+    origen: string,
+    fecha_llegada?: string
+  ) {
+
+    const destinoObj = await this.ubiRepository.findOneBy({ ubicacion_Nombre: destino })
+    const origObj = await this.ubiRepository.findOneBy({ ubicacion_Nombre: origen })
+    let dateStart = new Date()
+    let dateEnd = new Date()
+
+    if (fecha_llegada) {
+
+      const [day, month, year] = fecha_llegada.split('/').map(part => parseInt(part, 10));
+      dateStart = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+      dateEnd = new Date(Date.UTC(year, month - 1, day, 23, 59, 59));
+    }
+    console.log(dateStart)
+    console.log(dateEnd)
+
+    const viajes = await this.viajeRepository.find({
+      order: { fechaLlegada: 'ASC' },
+      where: {
+        estadoViaje: Estado_Viaje.POR_INICIAR,
+        fechaLlegada: fecha_llegada ? Between(dateStart.toUTCString(), dateEnd.toUTCString()) : undefined,
+        aeropuertoDestino: { aeropuerto_Ubicacion: destinoObj.ubicacion_Id },
+        aeropuertoOrigen: { aeropuerto_Ubicacion: origObj.ubicacion_Id },
+        vueloId: {
+          estado: Estado_Viaje.POR_INICIAR
+        }
+
+      }
+    })
+
+
+    const resp = viajes.map((v) => {
+
+      return {
+        Viaje_ID: v.Viaje_ID,
+        fechaSalida: new Date(v.fechaSalida).toLocaleDateString(),
+        hora_Salida: new Date(v.fechaSalida).toLocaleTimeString(),
+
+        fechaLlegada: new Date(v.fechaLlegada).toLocaleDateString(),
+        hora_Llegada: new Date(v.fechaLlegada).toLocaleTimeString(),
+
+        estadoViaje: v.estadoViaje,
+        aeropuertoDestino: v.aeropuertoDestino,
+        aeropuertoOrigen: v.aeropuertoOrigen,
+        //  capacidadAvion: v.numeroAvion.numeroAvion.avion_Capacidad_Pasajeros - this.vueloId.pasajerosApartados - this.vueloId.pasajerosTotales
+        asientosdisponibles: v.calculLugaresDisponoibles(),
+        // tarifa_Clase: v.vueloId.tarifa_Clase_Id,
+        tarifas_clases: v.tarifas_clase.map((t) => t.tarfa_clase),
+        tarifas_distancia: v.tarifas_distancia.map((t) => t.tarfa_distancia)
+
+      }
+    })
+
+
+    return resp
+  }
+
+
 
   private handleDBExceptions(error: any) {
     this.logger.error(error);

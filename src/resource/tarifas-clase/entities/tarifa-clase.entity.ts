@@ -21,6 +21,6 @@ export class TarifaClase {
   @Column({ nullable: false })
   precioTarifa: number;
 
-  @OneToMany(() => Vuelo, (vuelo) => vuelo.tarifa_Clase_Id)
-  vuelo_Id: Vuelo;
+  // @OneToMany(() => Vuelo, (vuelo) => vuelo.tarifa_Clase_Id)
+  // vuelo_Id: Vuelo;
 }

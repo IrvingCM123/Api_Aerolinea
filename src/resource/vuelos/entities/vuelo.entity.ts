@@ -23,8 +23,8 @@ export class Vuelo {
   @JoinColumn({ name: 'avion_Id' })
   avion_Id: Avion;
 
-  @Column({ type: 'date', nullable: false })
-  fecha: Date;
+  // @Column({ type: 'date', nullable: false })
+  // fecha: Date;
 
   @ManyToOne(() => Piloto, (piloto) => piloto.vuelo_Id, {
     nullable: false,
@@ -47,8 +47,8 @@ export class Vuelo {
   @JoinColumn({ name: 'tripulacion_ID' })
   tripulacion_ID: Tripulacion;
 
-  @Column({ type: 'text', nullable: false })
-  horaSalida: string;
+  // @Column({ type: 'text', nullable: false })
+  // horaSalida: string;   <---  jajajaja es un string XD
 
   @Column({ type: 'int', nullable: false })
   pasajerosTotales: number;
@@ -64,21 +64,21 @@ export class Vuelo {
   })
   estado: Estado_Viaje;
 
-  @ManyToOne(() => TarifaClase, (tarifaClase) => tarifaClase.vuelo_Id, {
-    nullable: false,
-    eager: true,
-  })
-  @JoinColumn({ name: 'tarifa_Clase_Id' })
-  tarifa_Clase_Id: TarifaClase;
+  // @ManyToOne(() => TarifaClase, (tarifaClase) => tarifaClase.vuelo_Id, {
+  //   nullable: false,
+  //   eager: true,
+  // })
+  // @JoinColumn({ name: 'tarifa_Clase_Id' })
+  // tarifa_Clase_Id: TarifaClase;
 
-  @ManyToOne(
-    () => TarifaDistancia,
-    (tarifaDistancia) => tarifaDistancia.vuelo_Id,
-    {
-      nullable: false,
-      eager: true,
-    },
-  )
-  @JoinColumn({ name: 'tarifa_distancia_Id' })
-  tarifa_distancia_Id: TarifaDistancia;
+  // @ManyToOne(
+  //   () => TarifaDistancia,
+  //   (tarifaDistancia) => tarifaDistancia.vuelo_Id,
+  //   {
+  //     nullable: false,
+  //     eager: true,
+  //   },
+  // )
+  // @JoinColumn({ name: 'tarifa_distancia_Id' })
+  // tarifa_distancia_Id: TarifaDistancia;
 }

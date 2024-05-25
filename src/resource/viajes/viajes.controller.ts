@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { ViajesService } from './viajes.service';
 import { CreateViajeDto } from './dto/create-viaje.dto';
@@ -13,7 +15,7 @@ import { UpdateViajeDto } from './dto/update-viaje.dto';
 
 @Controller('viajes')
 export class ViajesController {
-  constructor(private readonly viajesService: ViajesService) {}
+  constructor(private readonly viajesService: ViajesService) { }
 
   @Post()
   async create(@Body() createViajeDto: CreateViajeDto) {
@@ -23,6 +25,18 @@ export class ViajesController {
   @Get()
   async findAll() {
     return this.viajesService.findAll();
+  }
+  @Get("/busq")
+  async findVuelosofViajes(
+    @Query('lugarD') destino: string,
+    @Query('lugarO') origen: string,
+    @Query('fechallegada') fecha: string
+
+  ) {
+    if (!destino || !origen) {
+      throw new BadRequestException("Necesitamos un Origen y un Destino")
+    }
+    return this.viajesService.findVueloByViajes(destino, origen, fecha)
   }
 
   @Get(':id')
