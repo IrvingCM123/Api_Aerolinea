@@ -1,12 +1,26 @@
+import { faker } from '@faker-js/faker';
+
 interface Ubicacion {
   ubicacion_Nombre: string;
   latitud: number;
   longitud: number;
+  timezone: string
 }
 
 interface SeedUbicaciones {
   ubicaciones: Ubicacion[];
 }
+
+
+function generarUbicacion(): Ubicacion {
+  return {
+    ubicacion_Nombre: `${faker.address.city()}, ${faker.address.country()}`,
+    latitud: faker.address.latitude(),
+    longitud: faker.address.longitude(),
+    timezone: faker.address.timeZone()
+  };
+}
+
 
 export function registrarUbicaciones() {
   const ubicacionesData = [
@@ -58,6 +72,17 @@ export function registrarUbicaciones() {
   return ubicacionesGeneradas;
 }
 
+// Generar un array de ubicaciones falsas con diferencias horarias
+function generarUbicaciones(cantidad: number) {
+  const ubicaciones: Ubicacion[] = [];
+  for (let i = 0; i < cantidad; i++) {
+    ubicaciones.push(generarUbicacion());
+  }
+  return ubicaciones;
+}
+
+
 export const initialUbicaciones: SeedUbicaciones = {
-  ubicaciones: registrarUbicaciones(),
+
+  ubicaciones: generarUbicaciones(10),
 };

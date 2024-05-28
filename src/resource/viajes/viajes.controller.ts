@@ -30,7 +30,7 @@ export class ViajesController {
   async findVuelosofViajes(
     @Query('lugarD') destino: string,
     @Query('lugarO') origen: string,
-    @Query('fechallegada') fecha: string
+    @Query('fechasalida') fecha: string
 
   ) {
     if (!destino || !origen) {

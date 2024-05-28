@@ -144,7 +144,7 @@ export class CuentasService {
     }
   }
 
-  async actualizarContraseña(identificador: string, contraseña: string, codigo: number ) {
+  async actualizarContraseña(identificador: string, contraseña: string, codigo: number) {
 
     const cuentaUsuario: any = await this.cuentaRepository.findOne({
       where: { cuenta_Identificador: identificador },
@@ -152,17 +152,17 @@ export class CuentasService {
 
     if (!cuentaUsuario) {
       return {
-        status : 400,
-        message : Errores_Cuentas.CUENTA_NOT_FOUND
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
       }
     }
 
     const cuenta_ID = cuentaUsuario.id_Cuenta;
 
-    if (!(await bcrypt.compare(codigo, cuentaUsuario.cuenta_Codigo_Recuperacion))) {
+    if (!bcrypt.compare(`${codigo}`, cuentaUsuario.cuenta_Codigo_Recuperacion)) {
       return {
-        status : 400,
-        message : Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO
+        status: 400,
+        message: Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO
       }
     }
 
@@ -179,7 +179,7 @@ export class CuentasService {
       return {
         status: 400,
         message: Errores_Cuentas.CONTRASEÑA_NO_ACTUALIZADA
-      
+
       }
     }
   }
@@ -191,8 +191,8 @@ export class CuentasService {
 
     if (!cuentaUsuario) {
       return {
-        status : 400,
-        message : Errores_Cuentas.CUENTA_NOT_FOUND
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
       }
     }
 
@@ -222,15 +222,15 @@ export class CuentasService {
 
     if (!cuentaUsuario) {
       return {
-        status : 400,
-        message : Errores_Cuentas.CUENTA_NOT_FOUND
+        status: 400,
+        message: Errores_Cuentas.CUENTA_NOT_FOUND
       }
     }
 
     if (!(await bcrypt.compare(codigo, cuentaUsuario.cuenta_Codigo_Recuperacion))) {
       return {
-        status : 400,
-        message : Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO
+        status: 400,
+        message: Errores_Cuentas.NUMERO_ACTIVACION_NO_VALIDO
       }
     }
 

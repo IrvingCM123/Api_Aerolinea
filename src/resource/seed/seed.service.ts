@@ -1,4 +1,4 @@
-import { Connection, DataSourceOptions } from 'typeorm';
+import { Connection, DataSourceOptions, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { TrabajadoresService } from '../trabajadores/trabajadores.service';
 import { UbicacionesService } from '../ubicaciones/ubicaciones.service';
@@ -37,6 +37,8 @@ import { registrar_Vuelos } from './data/seed-vuelos';
 import { Vuelo } from '../vuelos/entities/vuelo.entity';
 import { Viaje } from '../viajes/entities/viaje.entity';
 import { registrarViajes } from './data/seed-viajes';
+import { InjectRepository } from '@nestjs/typeorm';
+import { th } from '@faker-js/faker';
 
 interface actualizar {
   ID_Tripulacion: number;
@@ -51,7 +53,9 @@ export class SeedService {
     private readonly tripulacionesService: TripulacionesService,
     private readonly tarifasDistanciaService: TarifaDistanciaService,
     public transaccionService: TransaccionService,
-  ) {}
+    @InjectRepository(Viaje)
+    private repoViaje: Repository<Viaje>
+  ) { }
 
   async runSeed() {
     await this.insertTrabajadores();
@@ -250,22 +254,23 @@ export class SeedService {
   }
 
   async insertViajes() {
-    const array_Aviones = await this.consultar_Aviones();
     const array_Aeropuertos = await this.consultar_Aeropuertos();
     const array_Vuelos = await this.consultar_Vuelos();
 
-    const viajes = await registrarViajes(
-      array_Aviones,
+    const viajes = registrarViajes(
       array_Aeropuertos,
       array_Vuelos,
     );
+    console.log(viajes)
+
 
     const insertPromises = viajes.map(async (viaje) => {
-      await this.transaccionService.transaction(
-        Tipo_Transaccion.Guardar,
-        Viaje,
-        viaje,
-      );
+      await this.repoViaje.save(viaje)
+      // await this.transaccionService.transaction(
+      //   Tipo_Transaccion.Guardar,
+      //   Viaje,
+      //   viaje,
+      // );
     });
 
     await Promise.all(insertPromises);

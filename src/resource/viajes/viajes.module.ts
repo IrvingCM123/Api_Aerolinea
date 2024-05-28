@@ -12,6 +12,6 @@ import { TarifaDistanciaViajes } from './entities/tarifadistancia-viajes.entity'
   imports: [TypeOrmModule.forFeature([Viaje, TarifaClaseViajes, TarifaDistanciaViajes]), TransaccionModule, UbicacionesModule],
   controllers: [ViajesController],
   providers: [ViajesService],
-  exports: [ViajesService,],
+  exports: [ViajesService, TypeOrmModule],
 })
 export class ViajesModule { }

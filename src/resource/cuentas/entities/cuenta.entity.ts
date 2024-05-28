@@ -15,7 +15,7 @@ import { Tarjeta } from 'src/resource/tarjeta/entities/tarjeta.entity';
 export class Cuenta {
 
     @PrimaryGeneratedColumn()
-    id_Cuenta: number;
+    id_Cuenta?: number;
 
     @Column({ unique: true, nullable: false })
     cuenta_Identificador: string;
@@ -24,27 +24,27 @@ export class Cuenta {
     cuenta_Contraseña: string;
 
     @Column({ type: 'enum', default: Estado.PENDIENTE, enum: Estado, nullable: true })
-    cuenta_Estado_Cuenta: string;
+    cuenta_Estado_Cuenta?: string;
 
-    @Column({ nullable: false, enum: Roles, default: Roles.USUARIO})
-    cuenta_Rol: string;
+    @Column({ nullable: false, enum: Roles, default: Roles.USUARIO })
+    cuenta_Rol?: string;
 
     @Column()
     @OneToOne(() => Usuario, { eager: true })
     @JoinColumn({ name: 'id_Usuario' })
-    id_Usuario: Usuario; 
-
-    @Column({ nullable: true }) 
-    cuenta_Numero_Activacion: string;
+    id_Usuario?: Usuario;
 
     @Column({ nullable: true })
-    cuenta_Codigo_Recuperacion: string;
+    cuenta_Numero_Activacion?: string;
 
     @Column({ nullable: true })
-    cuenta_Fecha_Registro: string;
+    cuenta_Codigo_Recuperacion?: string;
+
+    @Column({ nullable: true })
+    cuenta_Fecha_Registro?: string;
 
     @Column({ nullable: true })
     @OneToOne(() => Tarjeta, { eager: true })
     @JoinColumn({ name: 'id_Tarjeta' })
-    id_Tarjeta: Tarjeta;
+    id_Tarjeta?: Tarjeta;
 }

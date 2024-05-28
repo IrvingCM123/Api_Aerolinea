@@ -18,6 +18,9 @@ export class Viaje {
 
   @Column({ nullable: true, type: 'timestamptz' })
   fechaLlegada: Date | string
+
+  @Column({ nullable: true, type: 'integer' })
+  duracion_vuelo_ms: number
   @Column({
     type: 'enum',
     enum: Estado_Viaje,

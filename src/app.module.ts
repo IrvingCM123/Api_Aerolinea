@@ -52,6 +52,7 @@ const password_azure = secret.PG_PASSWORD_AZURE;
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: host_local,
+      dropSchema: true,
       port: 5432,
       username: user_local,
       password: password_local,

@@ -107,7 +107,7 @@ export class ViajesService {
   async findVueloByViajes(
     destino: string,
     origen: string,
-    fecha_llegada?: string
+    fecha_salida?: string
   ) {
 
     const destinoObj = await this.ubiRepository.findOneBy({ ubicacion_Nombre: destino })
@@ -115,20 +115,21 @@ export class ViajesService {
     let dateStart = new Date()
     let dateEnd = new Date()
 
-    if (fecha_llegada) {
+    if (fecha_salida) {
 
-      const [day, month, year] = fecha_llegada.split('/').map(part => parseInt(part, 10));
+      const [day, month, year] = fecha_salida.split('/').map(part => parseInt(part, 10));
       dateStart = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
       dateEnd = new Date(Date.UTC(year, month - 1, day, 23, 59, 59));
     }
     console.log(dateStart)
     console.log(dateEnd)
 
+    // TODO: manejar las hora por lugar de origen, agregar cunto dura el viaje y en base a esto sacar la hora de salida 
     const viajes = await this.viajeRepository.find({
-      order: { fechaLlegada: 'ASC' },
+      order: { fechaSalida: 'ASC' },
       where: {
         estadoViaje: Estado_Viaje.POR_INICIAR,
-        fechaLlegada: fecha_llegada ? Between(dateStart.toUTCString(), dateEnd.toUTCString()) : undefined,
+        fechaSalida: fecha_salida ? Between(dateStart.toUTCString(), dateEnd.toUTCString()) : undefined,
         aeropuertoDestino: { aeropuerto_Ubicacion: destinoObj.ubicacion_Id },
         aeropuertoOrigen: { aeropuerto_Ubicacion: origObj.ubicacion_Id },
         vueloId: {
