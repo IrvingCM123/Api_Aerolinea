@@ -138,17 +138,17 @@ export class ViajesService {
 
       }
     })
-
+    var opciones = { timeZone: destinoObj.timezone };
 
     const resp = viajes.map((v) => {
 
       return {
         Viaje_ID: v.Viaje_ID,
-        fechaSalida: new Date(v.fechaSalida).toLocaleDateString(),
-        hora_Salida: new Date(v.fechaSalida).toLocaleTimeString(),
+        fechaSalida: new Date(v.fechaSalida).toLocaleDateString('es-ES'),
+        hora_Salida: new Date(v.fechaSalida).toLocaleTimeString('es-ES'),
 
-        fechaLlegada: new Date(v.fechaLlegada).toLocaleDateString(),
-        hora_Llegada: new Date(v.fechaLlegada).toLocaleTimeString(),
+        fechaLlegada: new Date(v.fechaLlegada).toLocaleDateString('es-ES', opciones),
+        hora_Llegada: new Date(v.fechaLlegada).toLocaleTimeString('es-ES', opciones),
 
         estadoViaje: v.estadoViaje,
         aeropuertoDestino: v.aeropuertoDestino,
