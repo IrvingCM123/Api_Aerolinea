@@ -1,4 +1,5 @@
 import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
+import { Avion } from 'src/resource/aviones/entities/avion.entity';
 
 interface Vuelo {
   avion_Id: number;
@@ -36,13 +37,17 @@ export function registrar_Vuelos(
     Estado_Viaje.EN_CURSO,
     Estado_Viaje.FINALIZADO,
   ];
-  const array_Aviones = aviones;
+  const array_Aviones: Avion[] = aviones;
 
   const vuelos_generados = [];
 
   for (let i = 0; i < 100; i++) {
+    const avion = array_Aviones[Math.floor(Math.random() * array_Aviones.length)]
+    const pasajeros_totales = Math.floor(Math.random() * avion.avion_Capacidad_Pasajeros)
+    const pasajeros_apa = Math.floor(Math.random() * (avion.avion_Capacidad_Pasajeros - pasajeros_totales))
+
     const vuelo: Vuelo = {
-      avion_Id: array_Aviones[Math.floor(Math.random() * array_Aviones.length)],
+      avion_Id: avion.avion_Id,
       fecha: new Date(generar_fechas()),
       piloto_Id:
         array_Pilotos[Math.floor(Math.random() * array_Pilotos.length)],
@@ -52,16 +57,16 @@ export function registrar_Vuelos(
         array_Tripulacion[Math.floor(Math.random() * array_Tripulacion.length)]
           .tripulacion_ID,
       horaSalida: generar_horas(),
-      pasajerosTotales: Math.floor(Math.random() * 200),
-      pasajerosApartados: Math.floor(Math.random() * 200),
+      pasajerosTotales: pasajeros_totales,
+      pasajerosApartados: pasajeros_apa,
       estado: array_Estados[Math.floor(Math.random() * array_Estados.length)],
       tarifa_Clase_Id:
         array_Tarifas_Clase[
-          Math.floor(Math.random() * array_Tarifas_Clase.length)
+        Math.floor(Math.random() * array_Tarifas_Clase.length)
         ],
       tarifa_distancia_Id:
         array_Tarifas_Distancia[
-          Math.floor(Math.random() * array_Tarifas_Distancia.length)
+        Math.floor(Math.random() * array_Tarifas_Distancia.length)
         ],
     };
     vuelos_generados.push(vuelo);

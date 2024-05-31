@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Equal, FindOperator, LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { CreateViajeDto } from './dto/create-viaje.dto';
@@ -115,6 +115,10 @@ export class ViajesService {
     let dateStart = new Date()
     let dateEnd = new Date()
 
+    if (!destinoObj || !origObj) {
+      throw new BadRequestException('Ubicaciones no encontradas')
+    }
+
     if (fecha_salida) {
 
       const [day, month, year] = fecha_salida.split('/').map(part => parseInt(part, 10));
@@ -155,7 +159,6 @@ export class ViajesService {
         aeropuertoOrigen: v.aeropuertoOrigen,
         //  capacidadAvion: v.numeroAvion.numeroAvion.avion_Capacidad_Pasajeros - this.vueloId.pasajerosApartados - this.vueloId.pasajerosTotales
         asientosdisponibles: v.calculLugaresDisponoibles(),
-        // tarifa_Clase: v.vueloId.tarifa_Clase_Id,
         tarifas_clases: v.tarifas_clase.map((t) => t.tarfa_clase),
         tarifas_distancia: v.tarifas_distancia.map((t) => t.tarfa_distancia)
 
