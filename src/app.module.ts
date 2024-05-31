@@ -25,6 +25,7 @@ import { TarifasDistanciaModule } from './resource/tarifas-distancia/tarifa-dist
 import { UsuarioAdminModule } from './resource/usuario_admin/usuario_admin.module';
 import { SeedModule } from './resource/seed/seed.module';
 import { ViajesModule } from './resource/viajes/viajes.module';
+import { ReservaModule } from './reserva/reserva.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -85,6 +86,7 @@ const password_azure = secret.PG_PASSWORD_AZURE;
     TarifasDistanciaModule,
     ViajesModule,
     SeedModule,
+    ReservaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
