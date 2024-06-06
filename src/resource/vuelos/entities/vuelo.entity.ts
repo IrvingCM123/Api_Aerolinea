@@ -2,7 +2,7 @@ import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';
 import { Piloto } from 'src/resource/pilotos/entities/piloto.entity';
 import { Tripulacion } from 'src/resource/tripulaciones/entities/tripulacion.entity';
-import { Reserva } from '../../../reserva/entities/reserva.entity';
+import { Reserva } from '../../reserva/entities/reserva.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Reserva } from '../../../reserva/entities/reserva.entity';
+import { Reserva } from '../../reserva/entities/reserva.entity';
 
 @Entity()
 export class Usuario {

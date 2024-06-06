@@ -12,8 +12,8 @@ import {
   Errores_Operaciones,
   Exito_Operaciones,
 } from 'src/common/helpers/operaciones.helpers';
-import { ReservaService } from '../../reserva/reserva.service';
-import { CreateReservaDto } from '../../reserva/dto/create-reserva.dto';
+import { ReservaService } from '../reserva/reserva.service';
+import { CreateReservaDto } from '../reserva/dto/create-reserva.dto';
 
 
 @Injectable()

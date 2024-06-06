@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, OneToMany } from 'typeorm';
-import { Vuelo } from '../../resource/vuelos/entities/vuelo.entity';
-import { Usuario } from '../../resource/usuario/entities/usuario.entity';
+import { Vuelo } from '../../vuelos/entities/vuelo.entity';
+import { Usuario } from '../../usuario/entities/usuario.entity';
 
 @Entity()
 export class Reserva {
