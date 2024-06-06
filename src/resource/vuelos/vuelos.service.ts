@@ -12,6 +12,9 @@ import {
   Errores_Operaciones,
   Exito_Operaciones,
 } from 'src/common/helpers/operaciones.helpers';
+import { ReservaService } from '../../reserva/reserva.service';
+import { CreateReservaDto } from '../../reserva/dto/create-reserva.dto';
+
 
 @Injectable()
 export class VuelosService {
@@ -21,6 +24,7 @@ export class VuelosService {
     @InjectRepository(Vuelo)
     private readonly vueloRepository: Repository<Vuelo>,
     private transaccionService: TransaccionService,
+    private reservaService: ReservaService, 
   ) {}
 
   async create(createVueloDto: CreateVueloDto) {
@@ -103,6 +107,13 @@ export class VuelosService {
         message: Exito_Operaciones.Eliminar,
       };
     }
+  }
+
+  // Método para buscar un vuelo y realizar una reserva
+  async findOneAndReserve(id: number, usuarioId: number) {
+    // Buscar el vuelo por ID
+    const vuelo = await this.findOne(id);
+
   }
 
   private handleDBExceptions(error: any) {

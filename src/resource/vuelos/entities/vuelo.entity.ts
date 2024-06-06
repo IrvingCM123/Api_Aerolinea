@@ -1,19 +1,20 @@
 import { Estado_Viaje } from 'src/common/enums/estado-viaje.enum';
 import { Avion } from 'src/resource/aviones/entities/avion.entity';
 import { Piloto } from 'src/resource/pilotos/entities/piloto.entity';
-import { TarifaClase } from 'src/resource/tarifas-clase/entities/tarifa-clase.entity';
-import { TarifaDistancia } from 'src/resource/tarifas-distancia/entities/tarifa-distancia.entity';
 import { Tripulacion } from 'src/resource/tripulaciones/entities/tripulacion.entity';
+import { Reserva } from '../../../reserva/entities/reserva.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('vuelos')
 export class Vuelo {
+  
   @PrimaryGeneratedColumn()
   Vuelo_ID: number;
 
@@ -49,6 +50,11 @@ export class Vuelo {
 
   // @Column({ type: 'text', nullable: false })
   // horaSalida: string;   <---  jajajaja es un string XD
+
+  // Relación uno a muchos con Reserva
+  @OneToMany(() => Reserva, (reserva) => reserva.vuelo) // Indicar la relación con Reserva
+  reserva: Reserva[]; // Nombre de la propiedad para acceder a las reservas desde un vuelo
+
 
   @Column({ type: 'int', nullable: false })
   pasajerosTotales: number;
