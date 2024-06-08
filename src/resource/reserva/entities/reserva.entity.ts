@@ -18,4 +18,12 @@ export class Reserva {
 
   @Column({ type: 'timestamp', nullable: false })
   fechaExpiracion: Date; // Fecha y hora de expiración de la reserva
+
+  // @Column({ nullable: true, type: 'timestamptz' })
+  // fechaReserva: Date | string
+
+  // @Column({ nullable: true, type: 'timestamptz' })
+  // fechaExpiracion: Date | string
+
+  
 }

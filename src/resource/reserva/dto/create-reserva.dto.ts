@@ -1,4 +1,4 @@
-import { IsNumber, IsDate } from 'class-validator';
+import { IsNumber, IsISO8601 } from 'class-validator';
 
 export class CreateReservaDto {
   @IsNumber()
@@ -7,9 +7,9 @@ export class CreateReservaDto {
   @IsNumber()
   readonly usuarioId: number;
 
-  @IsDate()
-  readonly fechaReserva: Date;
+  @IsISO8601({ strict: true })
+  readonly fechaReserva: string;
 
-  @IsDate()
-  readonly fechaExpiracion: Date;
+  @IsISO8601({ strict: true })
+  readonly fechaExpiracion: string;
 }
