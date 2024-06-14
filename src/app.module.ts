@@ -26,6 +26,7 @@ import { UsuarioAdminModule } from './resource/usuario_admin/usuario_admin.modul
 import { SeedModule } from './resource/seed/seed.module';
 import { ViajesModule } from './resource/viajes/viajes.module';
 import { ReservaModule } from './resource/reserva/reserva.module';
+import { BoletosModule } from './resource/boleto/boleto.module';
 
 const dotenv_Config = require('dotenv').config();
 const secret = dotenv_Config.parsed;
@@ -87,8 +88,9 @@ const password_azure = secret.PG_PASSWORD_AZURE;
     ViajesModule,
     SeedModule,
     ReservaModule,
+    BoletosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
