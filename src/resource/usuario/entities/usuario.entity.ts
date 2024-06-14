@@ -3,6 +3,7 @@ import { Reserva } from '../../reserva/entities/reserva.entity';
 
 @Entity()
 export class Usuario {
+
   @PrimaryGeneratedColumn()
   id_Usuario: number;
 
@@ -15,6 +16,6 @@ export class Usuario {
   @Column({ nullable: false })
   usuario_Edad: number;
 
-  @OneToMany(() => Reserva, reserva => reserva.usuario)
-  reserva: Reserva[];
+  @OneToMany(() => Reserva, (reserva) => reserva.id_usuario)
+  reserva_ID: Reserva[];
 }

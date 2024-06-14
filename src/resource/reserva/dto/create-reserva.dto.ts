@@ -2,10 +2,10 @@ import { IsNumber, IsISO8601 } from 'class-validator';
 
 export class CreateReservaDto {
   @IsNumber()
-  readonly vueloId: number;
+  readonly vuelo_Id: number;
 
   @IsNumber()
-  readonly usuarioId: number;
+  readonly id_usuario: number;
 
   @IsISO8601({ strict: true })
   readonly fechaReserva: string;

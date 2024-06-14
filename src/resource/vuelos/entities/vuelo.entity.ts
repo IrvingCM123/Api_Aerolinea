@@ -34,7 +34,7 @@ export class Vuelo {
   @JoinColumn({ name: 'piloto_Id' })
   piloto_Id: Piloto;
 
-  @ManyToOne(() => Piloto, (copiloto) => copiloto.copiloto_Id, {
+  @ManyToOne(() => Piloto, (copiloto) => copiloto.vuelo_Id, {
     nullable: false,
     eager: true,
   })
@@ -52,9 +52,8 @@ export class Vuelo {
   // horaSalida: string;   <---  jajajaja es un string XD
 
   // Relación uno a muchos con Reserva
-  @OneToMany(() => Reserva, (reserva) => reserva.vuelo) // Indicar la relación con Reserva
-  reserva: Reserva[]; // Nombre de la propiedad para acceder a las reservas desde un vuelo
-
+  @OneToMany(() => Reserva, (reserva) => reserva.vuelo_Id) // Indicar la relación con Reserva
+  reserva_ID: Reserva[]; // Nombre de la propiedad para acceder a las reservas desde un vuelo
 
   @Column({ type: 'int', nullable: false })
   pasajerosTotales: number;

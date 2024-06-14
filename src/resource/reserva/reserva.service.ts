@@ -52,13 +52,13 @@ export class ReservaService {
   }
 
   // Método para encontrar una reserva por su ID
-  async findOne(id: number | FindOneOptions<Reserva>) {
+  async findOne(reserva_ID: number | FindOneOptions<Reserva>) {
     const options: FindOneOptions<Reserva> =
-      typeof id === 'number' ? { where: { id } } : id;
+      typeof reserva_ID === 'number' ? { where: { reserva_ID } } : reserva_ID;
     const reserva = await this.reservaRepository.findOne(options);
     if (!reserva) {
-      if (typeof id === 'number') {
-        throw new NotFoundException(`Reserva with ID ${id} not found`);
+      if (typeof reserva_ID === 'number') {
+        throw new NotFoundException(`Reserva with ID ${reserva_ID} not found`);
       } else {
         throw new NotFoundException(`Reserva not found`);
       }
