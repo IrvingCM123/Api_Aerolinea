@@ -1,15 +1,17 @@
-import { IsNumber, IsISO8601 } from 'class-validator';
+import { IsInt, IsNotEmpty, IsBoolean } from 'class-validator';
 
 export class CreateReservaDto {
-  @IsNumber()
-  readonly vuelo_Id: number;
+  @IsNotEmpty()
+  @IsInt()
+  Vuelo_ID: number;
 
-  @IsNumber()
-  readonly id_usuario: number;
+  @IsNotEmpty()
+  @IsInt()
+  id_Usuario: number;
 
-  @IsISO8601({ strict: true })
-  readonly fechaReserva: string;
+  @IsInt()
+  cantidadBoletos: number;
 
-  @IsISO8601({ strict: true })
-  readonly fechaExpiracion: string;
+  @IsBoolean()
+  viajeRedondo: boolean;
 }

@@ -52,7 +52,7 @@ export class Vuelo {
   // horaSalida: string;   <---  jajajaja es un string XD
 
   // Relación uno a muchos con Reserva
-  @OneToMany(() => Reserva, (reserva) => reserva.vuelo_Id) // Indicar la relación con Reserva
+  @OneToMany(() => Reserva, (reserva) => reserva.Vuelo_ID) // Indicar la relación con Reserva
   reserva_ID: Reserva[]; // Nombre de la propiedad para acceder a las reservas desde un vuelo
 
   @Column({ type: 'int', nullable: false })
