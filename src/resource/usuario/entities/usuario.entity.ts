@@ -16,6 +16,6 @@ export class Usuario {
   @Column({ nullable: false })
   usuario_Edad: number;
 
-  @OneToMany(() => Reserva, (reserva) => reserva.id_Usuario)
+  @OneToMany(() => Reserva, (reserva) => reserva.Usuario)
   reserva_ID: Reserva[];
 }

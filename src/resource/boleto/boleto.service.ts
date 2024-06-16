@@ -14,6 +14,7 @@ import { Estado_Logico } from '../../common/enums/estado_logico.enum';
 
 @Injectable()
 export class BoletosService {
+  [x: string]: any;
   private readonly logger = new Logger('BoletosService');
 
   constructor(

@@ -1,123 +1,74 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOneOptions } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { Reserva } from './entities/reserva.entity';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
-import { BoletosService } from '../boleto/boleto.service';
+
 import { TransaccionService } from 'src/common/transaction/transaccion.service';
 import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
 import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
-import { Errores_Operaciones, Exito_Operaciones } from 'src/common/helpers/operaciones.helpers';
-function formatDateToISOString(date: Date): string {
-  return date.toISOString().split('.')[0] + 'Z';
-}
+import {
+  Errores_Operaciones,
+  Exito_Operaciones,
+} from 'src/common/helpers/operaciones.helpers';
+
 @Injectable()
 export class ReservaService {
   private readonly logger = new Logger('ReservaService');
-  
+
   constructor(
     @InjectRepository(Reserva)
     private readonly reservaRepository: Repository<Reserva>,
-    private readonly boletosService: BoletosService,
-    private readonly transaccionService: TransaccionService,
+    private transaccionService: TransaccionService,
   ) {}
 
+  // Método para crear una nueva reserva
   async create(createReservaDto: CreateReservaDto) {
-    this.logger.debug('Iniciando creación de reserva');
-    const now = new Date();
-    const expiration = new Date(now.getTime() + 5 * 60000); // 5 minutos después
+    // Utilizar el servicio de transacción para guardar la reserva en la base de datos
+    const reserva_Creada = await this.transaccionService.transaction(
+      Tipo_Transaccion.Guardar,
+      Reserva,
+      createReservaDto,
+    );
 
-    const reservaData = {
-      ...createReservaDto,
-      fechaReserva: now,
-      fechaExpiracion: expiration,
-    };
-
-    this.logger.debug('Datos de la reserva:', reservaData);
-
-    try {
-      const reserva_Creada = await this.transaccionService.transaction(
-        Tipo_Transaccion.Guardar,
-        Reserva,
-        reservaData,
-      );
-
-      if (!(reserva_Creada instanceof Reserva)) {
-        throw new Error('Error al crear la reserva');
-      }
-
-      await this.createBoletos(reserva_Creada, createReservaDto.cantidadBoletos);
-
-      if (createReservaDto.viajeRedondo) {
-        const reserva_CreadaRedonda = await this.transaccionService.transaction(
-          Tipo_Transaccion.Guardar,
-          Reserva,
-          reservaData,
-        );
-
-        if (reserva_CreadaRedonda instanceof Reserva) {
-          await this.createBoletos(reserva_CreadaRedonda, createReservaDto.cantidadBoletos);
-        }
-      }
-
-      return {
-        status: 201,
-        message: Exito_Operaciones.Crear,
-      };
-    } catch (error) {
-      this.logger.error('Error al crear la reserva:', error.message);
-      this.logger.error(error.stack);  // Agregar la pila de errores para más detalles
+    // Manejar la respuesta de la transacción
+    if (reserva_Creada == 'Error') {
       return {
         status: 400,
         message: Errores_Operaciones.EROR_CREAR,
       };
-    }
-  }
-
-  private async createBoletos(reserva: Reserva, cantidadBoletos: number) {
-    for (let i = 0; i < cantidadBoletos; i++) {
-      const createBoletoDto = {
-        Usuario: reserva.id_Usuario.id_Usuario,
-        Viaje: reserva.Vuelo_ID.Vuelo_ID,
-        Numero_Boleto: `BOL-${reserva.reserva_ID}-${i + 1}`,
-        Fecha_Compra: new Date(), // Convert to Date object
-        Precio: 100.50, // Asumimos un precio fijo, ajustar según lógica de negocio
-        Estado_Pago: false, // Asumimos que el pago está completado
-        reserva_ID: reserva.reserva_ID, // Asociar boleto con la reserva
+    } else {
+      return {
+        status: 201,
+        message: Exito_Operaciones.Crear,
       };
-  
-      this.logger.debug('Creando boleto con datos:', createBoletoDto);
-  
-      const result = await this.boletosService.create(createBoletoDto);
-  
-      if (result.status !== 201) {
-        throw new Error(`Error al crear el boleto: ${result.message}`);
-      }
-  
-      this.logger.debug('Resultado de la creación del boleto:', result);
     }
   }
 
-  // Otros métodos...
-
+  // Método para encontrar todas las reservas
   async findAll() {
     return await this.reservaRepository.find();
   }
-  
-  async findOne(reserva_ID: number) {
-    try {
-      const options: FindOneOptions<Reserva> = {
-        where: { reserva_ID },
-      };
-      const reserva = await this.reservaRepository.findOneOrFail(options);
-      return reserva;
-    } catch (error) {
-      throw new NotFoundException(`Reserva with ID ${reserva_ID} not found`);
+
+  // Método para encontrar una reserva por su ID
+  async findOne(reserva_ID: number | FindOneOptions<Reserva>) {
+    const options: FindOneOptions<Reserva> =
+      typeof reserva_ID === 'number' ? { where: { reserva_ID } } : reserva_ID;
+    const reserva = await this.reservaRepository.findOne(options);
+    if (!reserva) {
+      if (typeof reserva_ID === 'number') {
+        throw new NotFoundException(`Reserva with ID ${reserva_ID} not found`);
+      } else {
+        throw new NotFoundException(`Reserva not found`);
+      }
     }
+    return reserva;
   }
 
+  // Método para actualizar una reserva
   async update(id: number, updateReservaDto: UpdateReservaDto) {
+    // Utilizar el servicio de transacción para actualizar la reserva en la base de datos
     const reserva_Modificar = await this.transaccionService.transaction(
       Tipo_Transaccion.Actualizar,
       Reserva,
@@ -126,7 +77,8 @@ export class ReservaService {
       id.toString(),
     );
 
-    if (reserva_Modificar === 'Error') {
+    // Manejar la respuesta de la transacción
+    if (reserva_Modificar == 'Error') {
       return {
         status: 400,
         message: Errores_Operaciones.ERROR_ACTUALIZAR,
@@ -139,7 +91,9 @@ export class ReservaService {
     }
   }
 
+  // Método para eliminar una reserva
   async remove(id: number) {
+    // Utilizar el servicio de transacción para eliminar la reserva de la base de datos
     const reserva_Eliminar = await this.transaccionService.transaction(
       Tipo_Transaccion.Actualizar_Con_Parametros,
       Reserva,
@@ -148,7 +102,8 @@ export class ReservaService {
       id.toString(),
     );
 
-    if (reserva_Eliminar === 'Error') {
+    // Manejar la respuesta de la transacción
+    if (reserva_Eliminar == 'Error') {
       return {
         status: 400,
         message: Errores_Operaciones.ERROR_ELIMINAR,
@@ -161,6 +116,7 @@ export class ReservaService {
     }
   }
 
+  // Método privado para manejar excepciones de la base de datos
   private handleDBExceptions(error: any) {
     this.logger.error(error);
     throw new Error('Unexpected error occurred');
