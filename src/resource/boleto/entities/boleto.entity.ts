@@ -25,4 +25,7 @@ export class Boleto {
 
   @Column({ default: false, nullable: false })
   Estado_Pago: boolean;
+
+  @ManyToOne(() => Reserva, { nullable: false, eager: true})
+  reserva_ID: Reserva;
 }
