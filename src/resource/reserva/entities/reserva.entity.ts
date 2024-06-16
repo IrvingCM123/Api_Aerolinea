@@ -13,7 +13,7 @@ export class Reserva {
   @ManyToOne(() => Usuario, (usuario) => usuario.reserva_ID)
   id_usuario: Usuario;
 
-  @Column({ type: 'timestamp', nullable: false })	// Fecha y hora de la reserva
+  @Column({ type: 'timestamp', nullable: false })	// Fecha y hora | cambiar automaticamente a la fecha y hora actual
   fechaReserva: Date;
 
   @Column({ type: 'timestamp', nullable: false })
