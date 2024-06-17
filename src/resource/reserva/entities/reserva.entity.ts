@@ -7,15 +7,18 @@ export class Reserva {
   @PrimaryGeneratedColumn()
   reserva_ID: number;
 
-  @ManyToOne(() => Vuelo, (vuelo) => vuelo.reserva_ID)
-  vuelo_Id: Vuelo;
+  @ManyToOne(() => Vuelo, { nullable: false, eager: true })
+  Vuelo: Vuelo;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.reserva_ID)
-  id_usuario: Usuario;
+  @ManyToOne(() => Usuario, { nullable: false, eager: true })
+  Usuario: Usuario;
 
-  @Column({ type: 'timestamp', nullable: false })	// Fecha y hora | cambiar automaticamente a la fecha y hora actual
+  @Column({ type: 'timestamp', nullable: false })	// Fecha y hora | cambiar automáticamente a la fecha y hora actual
   fechaReserva: Date;
 
   @Column({ type: 'timestamp', nullable: false })
   fechaExpiracion: Date; // Fecha y hora de expiración de la reserva
+
+  @Column({ type: 'int', nullable: false })
+  cantidadPasajeros: number; // Nueva columna para la cantidad de pasajeros
 }

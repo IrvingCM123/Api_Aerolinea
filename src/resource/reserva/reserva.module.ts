@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Reserva } from './entities/reserva.entity';
 import { TransaccionModule } from 'src/common/transaction/transaccion.module';
 import { TransaccionService } from 'src/common/transaction/transaccion.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reserva]),],
+  imports: [TypeOrmModule.forFeature([Reserva]),  ScheduleModule.forRoot(),],
   controllers: [ReservaController],
   providers: [ReservaService, TransaccionService],
   exports: [ReservaService],

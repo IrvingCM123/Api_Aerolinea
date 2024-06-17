@@ -1,17 +1,14 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, LessThan, Repository } from 'typeorm';
 import { Reserva } from './entities/reserva.entity';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
-
 import { TransaccionService } from 'src/common/transaction/transaccion.service';
 import { Tipo_Transaccion } from 'src/common/enums/tipo_Transaccion.enum';
 import { Estado_Logico } from 'src/common/enums/estado_logico.enum';
-import {
-  Errores_Operaciones,
-  Exito_Operaciones,
-} from 'src/common/helpers/operaciones.helpers';
+import { Errores_Operaciones, Exito_Operaciones } from 'src/common/helpers/operaciones.helpers';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class ReservaService {
@@ -25,15 +22,25 @@ export class ReservaService {
 
   // Método para crear una nueva reserva
   async create(createReservaDto: CreateReservaDto) {
+    // Generar fechas automáticamente
+    const fechaCreacion = new Date();
+    const fechaExpiracion = new Date(fechaCreacion.getTime() + 5 * 60000); // 5 minutos después de la creación
+
+    const reservaDto = {
+      ...createReservaDto,
+      fechaCreacion,
+      fechaExpiracion,
+    };
+
     // Utilizar el servicio de transacción para guardar la reserva en la base de datos
     const reserva_Creada = await this.transaccionService.transaction(
       Tipo_Transaccion.Guardar,
       Reserva,
-      createReservaDto,
+      reservaDto,
     );
 
     // Manejar la respuesta de la transacción
-    if (reserva_Creada == 'Error') {
+    if (reserva_Creada === 'Error') {
       return {
         status: 400,
         message: Errores_Operaciones.EROR_CREAR,
@@ -78,7 +85,7 @@ export class ReservaService {
     );
 
     // Manejar la respuesta de la transacción
-    if (reserva_Modificar == 'Error') {
+    if (reserva_Modificar === 'Error') {
       return {
         status: 400,
         message: Errores_Operaciones.ERROR_ACTUALIZAR,
@@ -103,7 +110,7 @@ export class ReservaService {
     );
 
     // Manejar la respuesta de la transacción
-    if (reserva_Eliminar == 'Error') {
+    if (reserva_Eliminar === 'Error') {
       return {
         status: 400,
         message: Errores_Operaciones.ERROR_ELIMINAR,
@@ -114,6 +121,21 @@ export class ReservaService {
         message: Exito_Operaciones.Eliminar,
       };
     }
+  }
+
+  // Tarea programada para eliminar reservas expiradas
+  @Cron(CronExpression.EVERY_MINUTE)
+  async handleExpiredReservations() {
+    const now = new Date();
+    const expiredReservations = await this.reservaRepository.find({
+      where: { fechaExpiracion: LessThan(now) },
+    });
+
+    for (const reserva of expiredReservations) {
+      await this.reservaRepository.remove(reserva);
+    }
+
+    this.logger.log(`Eliminadas ${expiredReservations.length} reservas expiradas`);
   }
 
   // Método privado para manejar excepciones de la base de datos
